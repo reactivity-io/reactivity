@@ -15,8 +15,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 /**
- * Base package for Java library defining common fundamentals objects.
+ * Broadcaster configuration package.
  */
-package io.reactivity.core.lib;
+package io.reactivity.core.broadcaster;

@@ -16,7 +16,43 @@
  */
 
 
+package io.reactivity.core.broadcaster.repository.couchbase;
+
+import io.reactivity.core.lib.ViewType;
+import io.reactivity.core.lib.event.ArtifactView;
+
 /**
- * Base package for Java library defining common fundamentals objects.
+ * <p>
+ * This factory resolves the {@link ViewType} of an {@link ArtifactView} and builds the proper {@link ArtifactViewQuery}
+ * ready to execute a query for this view.
+ * </p>
+ *
+ * @author Guillaume DROUET
+ * @since 0.1.0
  */
-package io.reactivity.core.lib;
+enum ArtifactViewQueryFactory {
+
+    /**
+     * Singleton.
+     */
+    INSTANCE;
+
+    /**
+     * <p>
+     * Creates a {@link ArtifactViewQuery} from the given {@link ArtifactView}.
+     * </p>
+     *
+     * @param view the view
+     * @return the view query
+     */
+    ArtifactViewQuery create(final ArtifactView view) {
+        final ViewType type = ViewType.valueOf(view.getType().toUpperCase());
+
+        switch (type) {
+            case LIST:
+                return new ListArtifactViewQuery(view);
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
+}

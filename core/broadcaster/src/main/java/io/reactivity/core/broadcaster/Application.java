@@ -16,7 +16,27 @@
  */
 
 
+package io.reactivity.core.broadcaster;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.reactive.config.WebReactiveConfigurationSupport;
+
 /**
- * Base package for Java library defining common fundamentals objects.
+ * Bootstrap class.
+ *
+ * @author Guillaume DROUET
  */
-package io.reactivity.core.lib;
+@SpringBootApplication
+public class Application extends WebReactiveConfigurationSupport {
+
+    /**
+     * Main.
+     *
+     * @param args ignored args
+     * @throws Exception if spring fails
+     */
+	public static void main(final String[] args) throws Exception {
+		SpringApplication.run(Application.class, args);
+	}
+}

@@ -16,7 +16,30 @@
  */
 
 
+package io.reactivity.core.broadcaster.repository.couchbase;
+
+import com.couchbase.client.java.AsyncBucket;
+import io.reactivity.core.lib.event.Artifact;
+import rx.Observable;
+
 /**
- * Base package for Java library defining common fundamentals objects.
+ * <p>
+ * This interface is able to execute a query based on a particular internal
+ * {@link io.reactivity.core.lib.event.ArtifactView} to retrieve some artifacts.
+ * </p>
+ *
+ * @author Guillaume DROUET
+ * @since 0.1.0
  */
-package io.reactivity.core.lib;
+interface ArtifactViewQuery {
+
+    /**
+     * <p>
+     * Executes the query.
+     * </p>
+     *
+     * @param bucket the bucket to be used
+     * @return the result artifacts
+     */
+    Observable<Artifact> query(AsyncBucket bucket);
+}

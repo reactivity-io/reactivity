@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE example</title>
+</head>
+
+<p>
+    Events:
+    <ul id="events"></ul>
+    <button id="subscribe-artifacts-events">Subscribe</button>
+    <button id="more">More</button>
+</p>
+
+<script type="application/javascript">
+    var artifactEventSource = null;
+    var events = document.getElementById("events");
+    var lastArtifact;
+    var viewId;
+    addEvent("click", document.getElementById('subscribe-artifacts-events'), subscribe);
+    addEvent("click", document.getElementById('more'), more);
+
+    var req = new XMLHttpRequest();
+    req.open('GET', 'http://' + document.domain + ':8080/load/organizations', false);
+    req.send(null);
+
+    JSON.parse(req.responseText).forEach(onEvent);
+
+    function onEvent(e) {
+        if (e.event === 'READ_ARTIFACT') {
+            lastArtifact = parseInt(e.updated);
+        } else if (e.event === 'READ_VIEW') {
+            viewId = e.id;
+        }
+
+        var newElement = document.createElement("li");
+        newElement.innerHTML = JSON.stringify(e);
+        events.appendChild(newElement);
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function more() {
+        var req = new XMLHttpRequest();
+        req.open('GET', 'http://' + document.domain + ':8080/load/artifacts/' + viewId + '/limit/1/maxage/' + (lastArtifact - 1), false);
+        req.send(null);
+
+        JSON.parse(req.responseText).forEach(onEvent);
+    }
+
+    function subscribe() {
+        var req = new XMLHttpRequest();
+        req.open('GET', 'http://' + document.domain + ':8080/subscribe/1', false);
+        console.log("loading");
+        req.send(null);
+
+        JSON.parse(req.responseText).forEach(onEvent);
+
+                      /*
+        var artifactEvents = document.getElementById("artifacts-events");
+        artifactEventSource = new EventSource("/sse/events");
+        artifactEventSource.onmessage = function (e) {
+            var newElement = document.createElement("li");
+            newElement.innerHTML = e.data;
+            events.appendChild(newElement);
+            window.scrollTo(0, document.body.scrollHeight);
+        };              */
+    }
+
+    function addEvent(evnt, elem, func) {
+        if (elem.addEventListener)  // W3C DOM
+            elem.addEventListener(evnt, func, false);
+        else if (elem.attachEvent) { // IE DOM
+            elem.attachEvent("on" + evnt, func);
+        }
+        else { // No much to do
+            elem[evnt] = func;
+        }
+    }
+</script>
+</body>
+</html>

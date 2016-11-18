@@ -43,7 +43,12 @@ public enum EventType {
     /**
      * Read organization event.
      */
-    READ_ORGANIZATION;
+    READ_ORGANIZATION,
+
+    /**
+     * Error event.
+     */
+    ERROR;
 
     /**
      * <p>

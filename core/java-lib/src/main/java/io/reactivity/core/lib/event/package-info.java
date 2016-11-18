@@ -17,11 +17,6 @@
 
 
 /**
- * <p>
  * This package defines several events that can be generated inside Reactivity platform.
- * </p>
- *
- * @author Guillaume DROUET
- * @since 0.1.0
  */
 package io.reactivity.core.lib.event;

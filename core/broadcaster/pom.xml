@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.reactivity.core</groupId>
+    <artifactId>broadcaster</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Reactivity core broadcaster</name>
+    <description>Microservice holding client SSE connections and broadcasting events</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.BUILD-SNAPSHOT</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-data.version>2.0.0.DATACMNS-836-SNAPSHOT</spring-data.version>
+        <couchbase-client.version>2.3.4</couchbase-client.version>
+        <rxjava.version>1.1.9</rxjava.version>
+        <rxjava-reactive-streams.version>1.1.1</rxjava-reactive-streams.version>
+        <reactor-core.version>3.0.3.RELEASE</reactor-core.version>
+        <reactor-netty.version>0.5.2.RELEASE</reactor-netty.version>
+        <spring-web-reactive.version>0.1.0.BUILD-SNAPSHOT</spring-web-reactive.version>
+        <reactive-streams-common.version>0.6.0.BUILD-SNAPSHOT</reactive-streams-common.version>
+    </properties>
+
+    <dependencies>
+	
+		<!-- Spring Data with couchbase (including RxJava for async driver) -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+            <version>${spring-data.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.couchbase.client</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${couchbase-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.reactivex</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>${rxjava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.reactivex</groupId>
+            <artifactId>rxjava-reactive-streams</artifactId>
+            <version>${rxjava-reactive-streams.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactive-streams-commons</artifactId>
+            <version>${reactive-streams-common.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.reactivity.core</groupId>
+            <artifactId>java-lib</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+		<!-- Spring with reactive support using Netty -->
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            <version>${reactor-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor.ipc</groupId>
+            <artifactId>reactor-netty</artifactId>
+            <version>${reactor-netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot.experimental</groupId>
+            <artifactId>spring-boot-starter-web-reactive</artifactId>
+            <version>${spring-web-reactive.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <!-- RxNetty -->
+            <id>jfrog-snapshots</id>
+            <name>JFrog Snapshots</name>
+            <url>https://oss.jfrog.org/libs-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>

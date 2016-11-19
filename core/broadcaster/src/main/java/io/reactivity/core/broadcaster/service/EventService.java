@@ -21,6 +21,7 @@ package io.reactivity.core.broadcaster.service;
 import io.reactivity.core.broadcaster.repository.ReactivityRepository;
 import io.reactivity.core.lib.ReactivityEntity;
 import io.reactivity.core.lib.event.ArtifactView;
+import io.reactivity.core.lib.event.Error;
 import io.reactivity.core.lib.event.Event;
 import io.reactivity.core.lib.event.EventType;
 import io.reactivity.core.lib.event.Organization;
@@ -29,6 +30,7 @@ import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import rsc.publisher.PublisherJust;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -67,12 +69,35 @@ public class EventService {
      * @param viewId the view ID
      * @return the event flux
      */
-    public Flux<Event<? extends ReactivityEntity>> loadArtifacts(final String viewId, final int limit, final long maxAge) {
-        final Function<ArtifactView, ArtifactView> periodAdapter =
-                v -> new ArtifactView(v, new Period(v.getPeriod().getFrom(), maxAge, limit, v.getPeriod().getCategory()));
+    public Flux<Event<ReactivityEntity>> loadArtifacts(final String viewId, final int limit, final long maxAge) {
 
+        // When the view is retrieve, update the period state to select artifacts according to parameters
+        final Function<ReactivityEntity, ReactivityEntity> periodAdapter =
+                v -> {
+                    if (v instanceof ArtifactView) {
+                        final ArtifactView cast = ArtifactView.class.cast(v);
+                        final Period p = cast.getPeriod();
+
+                        return new ArtifactView(cast, new Period(p.getFrom(), maxAge, limit, p.getCategory()));
+                    }
+
+                    return v;
+                };
+
+        // Load the view and substitute the item to the corresponding artifacts
         return Flux.from(repository.findViewById(viewId, periodAdapter))
-                .concatMap(v -> repository.findArtifactFromView(v, EventType.READ_ARTIFACT::newEvent));
+                .concatMap(v -> {
+                    if (v instanceof ArtifactView) {
+                        final ArtifactView cast = ArtifactView.class.cast(v);
+                        return repository.findArtifactFromView(cast, EventType.READ_ARTIFACT::newEvent);
+                    } else if (v instanceof Error) {
+                        return PublisherJust.just(EventType.ERROR.newEvent(v));
+                    }
+
+                    // Handle artifact view or error only
+                    throw new IllegalArgumentException(
+                            String.format("Unsupported ReactivityEntity in this mapper: %s", v.getClass().getName()));
+                });
     }
 
     /**
@@ -83,7 +108,7 @@ public class EventService {
      * @param userId the user ID
      * @return the organization event flux
      */
-    public Flux<Event<? extends ReactivityEntity>> loadOrganizations(final String userId) {
+    public Flux<Event<ReactivityEntity>> loadOrganizations(final String userId) {
         // Retrieve the organizations: member ID can be an arbitrary value as it is currently mocked
         return Flux.from(repository.findOrganizationsWithMember(userId, EventType.READ_ORGANIZATION::newEvent));
     }
@@ -97,7 +122,7 @@ public class EventService {
      * @param organizationId the organization ID
      * @return the event flux
      */
-    public Flux<Event<? extends ReactivityEntity>> subscribe(final String organizationId) {
+    public Flux<Event<ReactivityEntity>> subscribe(final String organizationId) {
         return Flux.create(emitter -> {
             // Complete the emitter once all flux have been completed
             final AtomicInteger fluxCount = new AtomicInteger(1);
@@ -108,7 +133,7 @@ public class EventService {
                 }
             };
 
-            final Consumer<Event<? extends ReactivityEntity>> emit = e -> {
+            final Consumer<Event<ReactivityEntity>> emit = e -> {
                 fluxCount.incrementAndGet();
                 emitter.next(e);
             };
@@ -116,9 +141,9 @@ public class EventService {
             // When an organization is received...
             Flux.from(repository.findOrganizationsWithMember(organizationId, o -> o)).doOnError(onError).subscribe(o -> {
                 // ... retrieve the associated views
-                final Publisher<Event<? extends ReactivityEntity>> viewsPub =
+                final Publisher<Event<ReactivityEntity>> viewsPub =
                         repository.findViewsFromOrganization(o.getId(), EventType.READ_VIEW::newEvent);
-                final Flux<Event<? extends ReactivityEntity>> views = fluxDecorator.decorate(
+                final Flux<Event<ReactivityEntity>> views = fluxDecorator.decorate(
                         Flux.from(viewsPub)
                                 .doOnError(onError)
                                 .doOnComplete(finishFlux), "findViewsFromOrganization(" + o.getId() + ")");
@@ -130,7 +155,7 @@ public class EventService {
 
                     if (v.getData() instanceof ArtifactView) {
                         final ArtifactView view = ArtifactView.class.cast(v.getData());
-                        final Publisher<Event<? extends ReactivityEntity>> artifactsPub =
+                        final Publisher<Event<ReactivityEntity>> artifactsPub =
                                 repository.findArtifactFromView(view, EventType.READ_ARTIFACT::newEvent);
 
                         // ... and retrieve the associated artifacts

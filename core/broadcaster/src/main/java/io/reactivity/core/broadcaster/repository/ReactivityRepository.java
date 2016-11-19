@@ -18,8 +18,7 @@
 
 package io.reactivity.core.broadcaster.repository;
 
-import io.reactivity.core.lib.event.Artifact;
-import io.reactivity.core.lib.event.Organization;
+import io.reactivity.core.lib.ReactivityEntity;
 import io.reactivity.core.lib.event.ArtifactView;
 import org.reactivestreams.Publisher;
 
@@ -48,7 +47,7 @@ public interface ReactivityRepository {
      * @param <T> the desired returned type
      * @return a publisher where source is the retrieved organizations
      */
-    <T> Publisher<T> findOrganizationsWithMember(String memberId, Function<Organization, T> mapper);
+    <T> Publisher<T> findOrganizationsWithMember(String memberId, Function<ReactivityEntity, T> mapper);
 
     /**
      * <p>
@@ -60,7 +59,7 @@ public interface ReactivityRepository {
      * @param <T> the desired returned type
      * @return a publisher where source is the retrieved views
      */
-    <T> Publisher<T> findViewsFromOrganization(String organizationId, Function<ArtifactView, T> mapper);
+    <T> Publisher<T> findViewsFromOrganization(String organizationId, Function<ReactivityEntity, T> mapper);
 
     /**
      * <p>
@@ -72,7 +71,7 @@ public interface ReactivityRepository {
      * @param <T> the desired returned type
      * @return a publisher where source is the retrieved artifacts
      */
-    <T> Publisher<T> findArtifactFromView(ArtifactView view, Function<Artifact, T> mapper);
+    <T> Publisher<T> findArtifactFromView(ArtifactView view, Function<ReactivityEntity, T> mapper);
 
     /**
      * <p>
@@ -84,5 +83,5 @@ public interface ReactivityRepository {
      * @param <T> the desired returned type
      * @return a publisher where source is the retrieved view
      */
-    <T> Publisher<T> findViewById(String id, Function<ArtifactView, T> mapper);
+    <T> Publisher<T> findViewById(String id, Function<ReactivityEntity, T> mapper);
 }

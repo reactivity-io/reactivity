@@ -57,7 +57,7 @@ public class EventController {
      * @return the event flux
      */
     @GetMapping("/load/artifacts/{viewId}/limit/{limit}/maxage/{maxAge}")
-    Flux<Event<? extends ReactivityEntity>> loadArtifacts(
+    Flux<Event<ReactivityEntity>> loadArtifacts(
             @PathVariable(name = "viewId") final String viewId,
             @PathVariable(name = "limit") final int limit,
             @PathVariable(name = "maxAge") final long maxAge) {
@@ -73,7 +73,7 @@ public class EventController {
      * @return the organization event flux
      */
     @GetMapping("/load/organizations")
-    public Flux<Event<? extends ReactivityEntity>> loadOrganizations(
+    public Flux<Event<ReactivityEntity>> loadOrganizations(
             @CookieValue(value = "SESSION", required = false) final String sessionId) {
         // Retrieve the organizations: member ID can be an arbitrary value (here the session ID) as it is currently mocked
         return eventService.loadOrganizations(sessionId);
@@ -88,7 +88,7 @@ public class EventController {
      * @return the event flux
      */
     @GetMapping("/subscribe/{organizationId}")
-    Flux<Event<? extends ReactivityEntity>> subscribe(@PathVariable(name = "organizationId") final String organizationId) {
+    Flux<Event<ReactivityEntity>> subscribe(@PathVariable(name = "organizationId") final String organizationId) {
         return eventService.subscribe(organizationId);
     }
 }

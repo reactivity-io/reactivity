@@ -77,8 +77,19 @@ public class Error extends ReactivityEntity {
      *
      * @return the error
      */
-    public static Event<Error> timeout() {
+    public static Event<ReactivityEntity> timeoutEvent() {
         return EventType.ERROR.newEvent(new Error("The service has timed out."));
+    }
+
+    /**
+     * <p>
+     * Creates an exception event error.
+     * </p>
+     *
+     * @return the error
+     */
+    public static Event<ReactivityEntity> exceptionEvent() {
+        return EventType.ERROR.newEvent(exception());
     }
 
     /**
@@ -88,8 +99,8 @@ public class Error extends ReactivityEntity {
      *
      * @return the error
      */
-    public static Event<Error> exception() {
-        return EventType.ERROR.newEvent(new Error("An error has occurred. See logs for more details."));
+    public static ReactivityEntity exception() {
+        return new Error("An error has occurred. See logs for more details.");
     }
 
     /**

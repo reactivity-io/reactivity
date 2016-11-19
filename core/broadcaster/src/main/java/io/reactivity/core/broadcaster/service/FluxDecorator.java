@@ -77,10 +77,9 @@ public class FluxDecorator {
      * @param log the log name
      * @return the decorated {@code Flux}
      */
-    Flux<Event<? extends ReactivityEntity>> decorate(final Flux<Event<? extends ReactivityEntity>> flux,
-                                                            final String log) {
-        return flux.timeout(TIMEOUT, PublisherJust.fromCallable(Error::timeout))
-                .switchOnError(PublisherJust.fromCallable(Error::exception))
+    Flux<Event<ReactivityEntity>> decorate(final Flux<Event<ReactivityEntity>> flux, final String log) {
+        return flux.timeout(TIMEOUT, PublisherJust.fromCallable(Error::timeoutEvent))
+                .switchOnError(PublisherJust.fromCallable(Error::exceptionEvent))
                 .log(log);
     }
 }

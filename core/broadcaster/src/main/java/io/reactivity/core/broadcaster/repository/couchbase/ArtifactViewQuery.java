@@ -19,7 +19,7 @@
 package io.reactivity.core.broadcaster.repository.couchbase;
 
 import com.couchbase.client.java.AsyncBucket;
-import io.reactivity.core.lib.event.Artifact;
+import io.reactivity.core.lib.ReactivityEntity;
 import rx.Observable;
 
 /**
@@ -41,5 +41,5 @@ interface ArtifactViewQuery {
      * @param bucket the bucket to be used
      * @return the result artifacts
      */
-    Observable<Artifact> query(AsyncBucket bucket);
+    Observable<ReactivityEntity> query(AsyncBucket bucket);
 }

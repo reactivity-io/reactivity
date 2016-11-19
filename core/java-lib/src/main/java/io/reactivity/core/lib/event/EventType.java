@@ -70,10 +70,9 @@ public enum EventType {
      * </p>
      *
      * @param data the data payload
-     * @param <T> the payload type that must be a {@link ReactivityEntity}
      * @return the event
      */
-    public <T extends ReactivityEntity> Event<T> newEvent(final T data) {
+    public Event<ReactivityEntity> newEvent(final ReactivityEntity data) {
         return newEvent(name(), data);
     }
 }

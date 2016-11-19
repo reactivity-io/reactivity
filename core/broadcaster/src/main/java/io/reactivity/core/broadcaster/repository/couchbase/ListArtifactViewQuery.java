@@ -24,9 +24,12 @@ import com.couchbase.client.java.query.*;
 import com.couchbase.client.java.query.dsl.Expression;
 import com.couchbase.client.java.query.dsl.Sort;
 import com.couchbase.client.java.query.dsl.path.LimitPath;
+import io.reactivity.core.lib.ReactivityEntity;
 import io.reactivity.core.lib.event.Artifact;
 import io.reactivity.core.lib.event.ArtifactView;
 import io.reactivity.core.lib.event.Period;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 import java.util.Collections;
@@ -53,6 +56,11 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
     private final ArtifactView view;
 
     /**
+     * The logger.
+     */
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    /**
      * <p>
      * Builds a new instance.
      * </p>
@@ -67,7 +75,7 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
      * {@inheritDoc}
      */
     @Override
-    public Observable<Artifact> query(final AsyncBucket bucket) {
+    public Observable<ReactivityEntity> query(final AsyncBucket bucket) {
 
         // Prepare the statement and parameters
         final JsonObject params = JsonObject.create().put("organization", view.getOrganization());
@@ -84,16 +92,19 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
             expression = expression.and(Expression.x(timestampField).lte(period.getTo()));
         }
 
-        final LimitPath limitPath = Select.select(FIELDS).from("artifact").where(expression).orderBy(Sort.desc(timestampField));
-        final Statement statement = period.getLimit() != null ? limitPath.limit(period.getLimit()) : limitPath;
+        final LimitPath limitPath = Select.select(FIELDS)
+                .from(bucket.name())
+                .where(expression)
+                .orderBy(Sort.desc(timestampField));
 
         // Build the query
+        final Statement statement = period.getLimit() != null ? limitPath.limit(period.getLimit()) : limitPath;
         final ParameterizedN1qlQuery query = N1qlQuery.parameterized(statement, params);
 
         // Execute and map to an Observable of Artifact
         return bucket.query(query).flatMap(result -> result.parseSuccess() ?
                 // Map each internal JSON object to an Artifact and handles statement failure
-                result.rows().map(this::toArtifact) : CouchbaseReactvityRepository.error(result));
+                result.rows().map(this::toArtifact) : CouchbaseReactvityRepository.error(result, log));
     }
 
     /**

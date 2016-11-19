@@ -22,9 +22,12 @@ import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.query.AsyncN1qlQueryResult;
 import io.reactivity.core.broadcaster.repository.ReactivityRepository;
+import io.reactivity.core.lib.ReactivityEntity;
 import io.reactivity.core.lib.event.Artifact;
 import io.reactivity.core.lib.event.ArtifactView;
+import io.reactivity.core.lib.event.Error;
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
 import rx.Observable;
 import rx.RxReactiveStreams;
 
@@ -60,7 +63,7 @@ abstract class CouchbaseReactvityRepository implements ReactivityRepository {
      * {@inheritDoc}
      */
     @Override
-    public <T> Publisher<T> findArtifactFromView(final ArtifactView view, final Function<Artifact, T> mapper) {
+    public <T> Publisher<T> findArtifactFromView(final ArtifactView view, final Function<ReactivityEntity, T> mapper) {
         final ArtifactViewQuery artifactViewQuery = ArtifactViewQueryFactory.INSTANCE.create(view);
 
         return RxReactiveStreams.toPublisher(artifactViewQuery.query(bucket).map(mapper::apply));
@@ -72,12 +75,14 @@ abstract class CouchbaseReactvityRepository implements ReactivityRepository {
      * </p>
      *
      * @param asyncQueryResult the result
+     * @param log the error logger
      * @return the observable error
      */
-    static Observable<Artifact> error(final AsyncN1qlQueryResult asyncQueryResult) {
+    static Observable<ReactivityEntity> error(final AsyncN1qlQueryResult asyncQueryResult, final Logger log) {
         return asyncQueryResult.errors().flatMap(
-                jsonErrors -> Observable.<Artifact>error(
-                        new IllegalStateException(
-                                jsonErrors.getInt("code") + ": " + jsonErrors.getString("msg"))));
+                err -> {
+                    log.error("N1QL query failed. Code: {}. Message: {}.", err.getInt("code"), err.getString("msg"));
+                    return Observable.fromCallable(Error::exception);
+                });
     }
 }

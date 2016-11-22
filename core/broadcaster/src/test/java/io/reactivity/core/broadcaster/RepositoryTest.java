@@ -21,7 +21,6 @@ package io.reactivity.core.broadcaster;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonObject;
-import io.reactivity.core.broadcaster.config.CouchbaseConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ import java.util.function.BiConsumer;
  * @since 0.1.0
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = CouchbaseConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class RepositoryTest {
 
     /**

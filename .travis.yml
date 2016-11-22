@@ -1,0 +1,10 @@
+language: java
+jdk:
+  - oraclejdk8
+env:
+  - MODULE=core
+  - MODULE=core/java-lib
+  - MODULE=core/broadcaster
+before_install:
+  - cp config/settings.xml ~/.m2/settings.xml
+script: cd $MODULE && mvn clean deploy

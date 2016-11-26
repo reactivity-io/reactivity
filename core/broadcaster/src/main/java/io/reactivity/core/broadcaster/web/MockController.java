@@ -1,6 +1,7 @@
 package io.reactivity.core.broadcaster.web;
 
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,17 @@ import java.util.UUID;
 public class MockController {
 
     /**
+     * Path to index.html file.
+     */
+    private final String INDEX = "classpath:mocks/index.html";
+
+    /**
+     * Resource loader.
+     */
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+    /**
      * <p>
      * Generates a test index.html page with a new cookie to track the user session.
      * </p>
@@ -38,7 +50,7 @@ public class MockController {
         responseHeaders.add("Set-Cookie", "SESSION=" + sessionId);
         responseHeaders.set("Content-Type", "text/html");
 
-        try (InputStreamReader isr = new InputStreamReader(new ClassPathResource("mocks/index.html").getInputStream())) {
+        try (InputStreamReader isr = new InputStreamReader(resourceLoader.getResource(INDEX).getInputStream())) {
             return new ResponseEntity<>(FileCopyUtils.copyToString(isr), responseHeaders, HttpStatus.OK);
         }
     }

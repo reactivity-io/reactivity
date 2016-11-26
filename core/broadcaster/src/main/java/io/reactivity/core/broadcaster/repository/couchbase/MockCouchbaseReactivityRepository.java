@@ -29,6 +29,7 @@ import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.FileCopyUtils;
 import rx.Observable;
@@ -51,6 +52,12 @@ import java.util.function.Function;
  */
 @Repository
 public class MockCouchbaseReactivityRepository extends CouchbaseReactvityRepository {
+
+    /**
+     * Resource loader.
+     */
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     /**
      * <p>
@@ -113,7 +120,7 @@ public class MockCouchbaseReactivityRepository extends CouchbaseReactvityReposit
     }
 
     private String loadMockedImage(final String mockName) {
-        final Resource cpr = new ClassPathResource("mocks/" + mockName);
+        final Resource cpr = resourceLoader.getResource("classpath:mocks/" + mockName);
         final byte[] picture;
 
         try (final InputStream is = cpr.getInputStream()) {

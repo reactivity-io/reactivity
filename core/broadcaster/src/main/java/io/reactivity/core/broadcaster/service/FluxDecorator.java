@@ -24,6 +24,8 @@ import io.reactivity.core.lib.event.Event;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import rsc.publisher.PublisherJust;
@@ -47,6 +49,11 @@ public class FluxDecorator {
      * Timeout applied to {@code Flux}.
      */
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
+
+    /**
+     * Logger.
+     */
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * <p>
@@ -79,6 +86,7 @@ public class FluxDecorator {
      */
     Flux<Event<ReactivityEntity>> decorate(final Flux<Event<ReactivityEntity>> flux, final String log) {
         return flux.timeout(TIMEOUT, PublisherJust.fromCallable(Error::timeoutEvent))
+                .doOnError(t -> logger.error("Intercepted Flux error", t))
                 .switchOnError(PublisherJust.fromCallable(Error::exceptionEvent))
                 .log(log);
     }

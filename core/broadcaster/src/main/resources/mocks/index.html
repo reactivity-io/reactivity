@@ -21,7 +21,7 @@
     addEvent("click", document.getElementById('more'), more);
 
     var req = new XMLHttpRequest();
-    req.open('GET', 'http://' + document.domain + ':8080/load/organizations', false);
+    req.open('GET', '/load/organizations', false);
     req.send(null);
 
     JSON.parse(req.responseText).forEach(onEvent);
@@ -41,7 +41,7 @@
 
     function more() {
         var req = new XMLHttpRequest();
-        req.open('GET', 'http://' + document.domain + ':8080/load/artifacts/' + viewId + '/limit/1/maxage/' + (lastArtifact - 1), false);
+        req.open('GET', '/load/artifacts/' + viewId + '/limit/1/maxage/' + (lastArtifact - 1), false);
         req.send(null);
 
         JSON.parse(req.responseText).forEach(onEvent);
@@ -49,7 +49,7 @@
 
     function subscribe() {
         var req = new XMLHttpRequest();
-        req.open('GET', 'http://' + document.domain + ':8080/subscribe/1', false);
+        req.open('GET', '/subscribe/1', false);
         console.log("loading");
         req.send(null);
 

@@ -22,7 +22,7 @@
         <rxjava.version>1.1.9</rxjava.version>
         <rxjava-reactive-streams.version>1.1.1</rxjava-reactive-streams.version>
         <reactor-core.version>3.0.3.RELEASE</reactor-core.version>
-        <reactor-netty.version>0.5.2.RELEASE</reactor-netty.version>
+        <spring-boot-dependencies.version>2.0.0.BUILD-SNAPSHOT</spring-boot-dependencies.version>
         <spring-web-reactive.version>0.1.0.BUILD-SNAPSHOT</spring-web-reactive.version>
         <reactive-streams-common.version>0.6.0.BUILD-SNAPSHOT</reactive-streams-common.version>
     </properties>
@@ -33,7 +33,14 @@
                 <!-- Import dependency management from Spring Boot -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.0.0.BUILD-SNAPSHOT</version>
+                <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot.experimental</groupId>
+                <artifactId>spring-boot-dependencies-web-reactive</artifactId>
+                <version>${spring-web-reactive.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -41,8 +48,8 @@
     </dependencyManagement>
 
     <dependencies>
-	
-		<!-- Spring Data with couchbase (including RxJava for async driver) -->
+
+        <!-- Spring Data with couchbase (including RxJava for async driver) -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
@@ -75,7 +82,7 @@
             <version>${project.version}</version>
         </dependency>
 
-		<!-- Spring with reactive support using Netty -->
+        <!-- Spring with reactive support using Netty -->
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
@@ -84,12 +91,10 @@
         <dependency>
             <groupId>io.projectreactor.ipc</groupId>
             <artifactId>reactor-netty</artifactId>
-            <version>${reactor-netty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot.experimental</groupId>
             <artifactId>spring-boot-starter-web-reactive</artifactId>
-            <version>${spring-web-reactive.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>

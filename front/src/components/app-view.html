@@ -1,10 +1,47 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
-
 <dom-module id="app-view">
   <template>
     <style>
+      .view {
+        width:220px;
+        height:250px;
+        background-color: var(--app-primary-color);
+        display: block;
+        position: relative;
+        border-radius: 2px;
+        box-sizing: border-box;
+        overflow: hidden;
+        cursor: pointer;
+        transition: box-shadow 200ms;
+        transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+        color: white;
+        border: none;
+        padding: 16px;
+      }
+
+      .view:hover {
+        box-shadow: 0 5px 10px rgba(0,0,0,.15);
+      }
+
+      h1 {
+        font-size: 28px;
+        margin: 20px 0;
+      }
+
+      h2 {
+        font-size: 18px;
+        margin: 20px 0;
+      }
+      h3 {
+        font-size: 14px;
+        margin: 20px 0;
+      }
+
     </style>
-    view
+    <div class="view" on-click="handleTap">
+      <h1>{{name}}</h1>
+      <h2>{{version}}</h2>
+      <h3>{{updated}}</h3>
+    </div>
   </template>
 
   <script>
@@ -13,12 +50,12 @@
       static get is() {
         return 'app-view';
       }
-
-      constructor() {
-        super();
+      handleTap(e) {
+        e.preventDefault();
+        document.dispatchEvent(new CustomEvent('nav',{detail: {path: `/view/${this.id}`}}));
       }
     }
-    // Register custom element definition using standard platform API
+
     customElements.define(AppView.is, AppView);
   </script>
 </dom-module>

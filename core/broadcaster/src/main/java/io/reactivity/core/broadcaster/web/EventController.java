@@ -23,10 +23,7 @@ import io.reactivity.core.lib.event.Event;
 import io.reactivity.core.lib.event.Organization;
 import io.reactivity.core.lib.ReactivityEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 /**
@@ -52,7 +49,7 @@ public class EventController {
      * </p>
      *
      * @param viewId the view ID
-     * @param limit maximum number of returned artifacts
+     * @param limit  maximum number of returned artifacts
      * @param maxAge highest possible age for an artifact
      * @return the event flux
      */

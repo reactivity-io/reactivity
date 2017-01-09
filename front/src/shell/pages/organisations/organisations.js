@@ -1,4 +1,4 @@
-class ShellOrganisations extends Polymer.Element {
+class ShellOrganisations extends GlobalConst(Polymer.Element) {
     static get is() {
         return 's-organisations';
     }
@@ -11,7 +11,7 @@ class ShellOrganisations extends Polymer.Element {
     connectedCallback() {
         super.connectedCallback();
         var req = new XMLHttpRequest();
-        req.open('GET', 'http://localhost:3000/api/load/organizations', true);
+        req.open('GET', `${this.wsURL}/load/organizations`, true);
         req.onreadystatechange = () => {
             if (req.readyState == 4) {
                 if(req.status == 200) {

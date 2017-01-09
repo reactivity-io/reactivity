@@ -82,11 +82,25 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Spring with reactive support -->
+        <!-- Spring with reactive support using Netty -->
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
             <version>${reactor-core.version}</version>
+        </dependency>
+        <!--dependency>
+            <groupId>io.projectreactor.ipc</groupId>
+            <artifactId>reactor-netty</artifactId>
+        </dependency-->
+        <dependency>
+            <groupId>org.springframework.boot.experimental</groupId>
+            <artifactId>spring-boot-starter-web-reactive</artifactId>
+            <!--exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions-->
         </dependency>
 
         <dependency>
@@ -129,7 +143,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-dependencies.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -140,41 +153,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <!-- Select the Reactive module: default is netty -->
-    <profiles>
-        <profile>
-            <id>netty</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>io.projectreactor.ipc</groupId>
-                    <artifactId>reactor-netty</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot.experimental</groupId>
-                    <artifactId>spring-boot-starter-web-reactive</artifactId>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-starter-tomcat</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>tomcat</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot.experimental</groupId>
-                    <artifactId>spring-boot-starter-web-reactive</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 
     <repositories>
         <repository>

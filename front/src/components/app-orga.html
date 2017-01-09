@@ -1,191 +1,117 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html  ">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 
 <dom-module id="app-orga">
   <template>
-    <style>
-      div.business-card {
-        height: 427px;
-        width: 320px;
-        -webkit-perspective: 1000;
-        perspective: 1000;
-        margin: 25px 5px 15px 5px;
+    <style is="custom-style">
+
+      paper-card {
+        width: 100%;
       }
 
-      .disabled {
-        filter: blur(1px) grayscale(1);
-      }
-
-      /*div.business-card:hover .flipper, div.business-card.hover .flipper {*/
-      /*-webkit-transform: rotateY(180deg) rotateZ(90deg);*/
-      /*transform: rotateY(180deg) rotateZ(90deg);*/
-      /*}*/
-
-      div.flipper {
-        -webkit-transition: 0.6s;
-        transition: 0.6s;
-        -webkit-transform-style: preserve-3d;
-        transform-style: preserve-3d;
+      iron-icon {
+        display: -ms-inline-flexbox;
+        display: -webkit-inline-flex;
+        display: inline-flex;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
         position: relative;
-        -webkit-transform-origin: center 160px;
-        transform-origin: center 160px;
+        vertical-align: middle;
+        fill: currentcolor;
+        stroke: none;
+        width: 24px;
+        height: 24px;
       }
 
-      div.front, div.back {
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 427px;
-        width: 320px;
-        box-shadow: 0 0 50px rgba(0, 0, 0, 0.75);
+      .horizontal {
+        display: flex;
+        flex-direction: row;
       }
 
-      div.front {
-        background-color: white;
-        z-index: 0;
+      .justified {
+        justify-content: space-between;
       }
 
-      div.front:before, div.front:after {
+      paper-checkbox {
         display: block;
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        border-width: 160px;
-        border-style: solid;
-        border-color: transparent;
+        margin-bottom: 4px;
+        --paper-checkbox-label-color: white;
+        --paper-checkbox-unchecked-color: white;
       }
 
-      div.front:before {
-        border-top-color: #429be9;
-        border-left-color: #429be9;
-        z-index: 2;
+      .cafe-header {
+        @apply(--paper-font-headline);
+        text-transform: capitalize;
       }
 
-      div.front:after {
-        border-top-color: #1e88e5;
-        border-right-color: #1e88e5;
+      .cafe-light {
+        color: var(--paper-grey-600);
       }
 
-      div.front div.name {
-        position: absolute;
-        bottom: 8.5px;
-        left: 85px;
+      .cafe-location {
+        float: right;
+        font-size: 15px;
+        vertical-align: middle;
+
       }
 
-      div.front div.name span {
-        display: block;
-        font-size: 40px;
-        line-height: 45px;
+      .cafe-reserve {
+        color: var(--google-blue-500);
       }
 
-      div.front div.name span.first {
-        color: #2055a8;
+      iron-icon.mood {
+        --iron-icon-width: 16px;
+        --iron-icon-height: 16px;
+        color: rgb(15, 157, 88);
       }
 
-      div.front div.name span.last {
-        color: #288FBD;
+      iron-icon.mood:last-of-type {
+        color: var(--app-secondary-color);
       }
-
-      div.front div.name span.title {
-        font-size: 20px;
-        line-height: 20px;
-      }
-
-      div.back {
-        background-color: #005D8C;
-        color: white;
-        width: 427px;
-        height: 320px;
-        box-sizing: border-box;
-        -webkit-transform: rotateY(180deg) rotateZ(90deg);
-        transform: rotateY(180deg) rotateZ(90deg);
-      }
-
-      div.back div.container-sm {
-        float: left;
-        width: 40%;
-        height: 100%;
-        position: relative;
-      }
-
-      div.back div.container-lg {
-        float: left;
-        width: 60%;
-        margin-top: 2rem;
-      }
-
-      div.back figure.logo-white {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 120px;
-        height: 120px;
-        display: block;
-        margin: -60px -60px;
-      }
-
-      div.back figure.logo-white:before, div.back figure.logo-white:after {
-        display: block;
-        content: '';
-        position: absolute;
-        border-style: solid;
-        border-color: transparent;
-      }
-
-      div.back figure.logo-white:before {
-        top: 0;
-        left: 0;
-        border-width: 60px;
-        border-top-color: white;
-        border-left-color: white;
-        z-index: 2;
-      }
-
-      div.back figure.logo-white:after {
-        bottom: 0;
-        right: 0;
-        border-width: 56px;
-        border-right-color: white;
-      }
-
-      div.back a {
-        color: white;
-        text-decoration: none;
-        display: block;
-      }
-
-      div.back a:hover {
-        text-decoration: underline;
-      }
-
-      div.back ul.social {
-        font-size: 1.25rem;
-      }
-
-      div.back ul.social li {
-        margin-top: 1rem;
-      }
-
-      div.back ul.social li:first-child {
-        margin-top: 2rem;
-      }
-
     </style>
-    <div id="card" class="business-card" on-click="handleTap">
-      <div class="flipper">
-        <div class="front">
-          <div class="name">
-            <span class="first">{{name}}</span>
-            <span class="last">{{number}}</span>
-            <span class="title">{{date}}</span>
+    <paper-card image="data:image/png;base64,{{image}}" alt="reactivx" >
+      <div class="card-content">
+        <div class="cafe-header">{{name}}
+          <div class="cafe-location cafe-light">
+            <iron-icon icon="editor:attach-file"></iron-icon>
+            <span>{{number}}</span>
           </div>
         </div>
+        <div class="cafe-rating">
+          <iron-icon class="mood" icon="social:mood"></iron-icon>
+          <iron-icon class="mood" icon="social:mood"></iron-icon>
+          <iron-icon class="mood" icon="social:mood"></iron-icon>
+          <iron-icon class="mood" icon="social:mood"></iron-icon>
+          <iron-icon class="mood" icon="social:mood"></iron-icon>
+        </div>
+        <!--<p>$・Italian, Cafe</p>-->
+        <p class="cafe-light">{{description}}</p>
       </div>
-    </div>
+      <div class="card-actions">
+        <!--<p>Tonight's availability</p>-->
+        <!--<div class="horizontal justified">-->
+        <!--<paper-icon-button icon="icons:event"></paper-icon-button>-->
+        <!--<paper-button>5:30PM</paper-button>-->
+        <!--<paper-button>7:30PM</paper-button>-->
+        <!--<paper-button>9:00PM</paper-button>-->
+        <!--</div>-->
+        <a on-tap="handleTap"><paper-button class="cafe-reserve">Open</paper-button></a>
+      </div>
+    </paper-card>
   </template>
-
   <script>
     // Extend Polymer.Element base class
     class AppOrga extends Polymer.Element {
@@ -196,28 +122,19 @@
       static get config() {
         return {
           properties: {
-            name: {
-              type: String
-            },
-            number: {
-              type: Number
-            },
-            date: {
-              type: Number
-            },
+            id: String,
+            name: String,
+            image: String
           }
         };
       }
 
-      ready() {
-        super.ready();
-        if (!this.name) {
-          this.$.card.className += ' disabled';
-        }
-      }
-
-      handleTap() {
-        document.dispatchEvent(new CustomEvent('routeChange', {"detail": {"page":'/reactivity'} }), { "bubbles": true});
+      handleTap(e) {
+        //TODO: check with GIUM struct of organisation's ID "Organisation/1"
+        var decodeUrl = this.id.split('/');
+        var orgaId = decodeUrl[decodeUrl.length -1];
+        e.preventDefault();
+        document.dispatchEvent(new CustomEvent('nav',{detail: {path: `/organisation/${orgaId}`}}));
       }
     }
     // Register custom element definition using standard platform API

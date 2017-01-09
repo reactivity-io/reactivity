@@ -13,7 +13,8 @@
     "paper-button": "2.0-preview",
     "paper-checkbox": "2.0-preview",
     "paper-icon-button": "2.0-preview",
-    "app-router": "blasten/app-router#master"
+    "app-router": "blasten/app-router#master",
+    "lodash": "^4.17.4"
   },
   "resolutions": {
     "polymer": "2.0-preview",

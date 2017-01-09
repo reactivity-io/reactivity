@@ -1,0 +1,49 @@
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+<dom-module id="app-artifact-list">
+    <template>
+        <style>
+            .artifact {
+                width: 100%;
+                height: 60px;
+                background-color: #2b2b2b;
+                border-bottom: 1px solid #555555;
+                color: #555555;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+            .description {
+                font-size: 16px;
+                color: white;
+                margin:0;
+            }
+            .sub {
+                display: flex;
+            }
+            .sub p {
+                font-size: 14px;
+                color: #555555;
+                margin:0 5px 0 0;
+            }
+        </style>
+        <div class="artifact" >
+            <p class="description">{{description}}</p>
+            <span class="sub"><p>{{assignee}}, </p> <p>{{priority}}, </p> <p>{{category}} </p></span>
+        </div>
+    </template>
+    <script>
+        // Extend Polymer.Element base class
+        class AppArtifactList extends Polymer.Element {
+            static get is() {
+                return 'app-artifact-list';
+            }
+        }
+
+        // Register custom element definition using standard platform API
+        customElements.define(AppArtifactList.is, AppArtifactList);
+    </script>
+</dom-module>

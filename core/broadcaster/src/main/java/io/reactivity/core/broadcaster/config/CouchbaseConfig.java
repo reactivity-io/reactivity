@@ -22,13 +22,6 @@ import org.springframework.context.annotation.Configuration;
  * This configuration initializes couchbase connection.
  * </p>
  *
- * <p>
- * See the class constants for properties that can be configured and their default values. Node that properties can be
- * configured in several ways thanks to Spring Boot property resolution. For instance, you can run the application with
- * program argument {@code --reactivity.couchbase.nodes=xxx} to define the {@code reactivity.couchbase.nodes} property.
- * More details here: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
- * </p>
- *
  * @author Guillaume DROUET
  * @since 0.1.0
  */
@@ -36,25 +29,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "reactivity.couchbase")
 public class CouchbaseConfig {
 
-    /**
-     * Default value for property {@code reactivity.couchbase.nodes}.
-     */
-    public static final String DEFAULT_COUCHBASE_NODES = "127.0.0.1";
-
-    /**
-     * Default value for property {@code reactivity.couchbase.bucket}.
-     */
-    public static final String DEFAULT_COUCHBASE_BUCKET = "artifact";
-
-    /**
-     * Nodes to use. See {@link #DEFAULT_COUCHBASE_NODES default} value.
-     */
-    private String[] nodes = new String[] { DEFAULT_COUCHBASE_NODES } ;
-
-    /**
-     * Bucket name. See {@link #DEFAULT_COUCHBASE_BUCKET default} value.
-     */
-    private String bucket = DEFAULT_COUCHBASE_BUCKET;
+//    private String[] nodes = new String[] { "127.0.0.1" } ;
+    private String[] nodes = new String[] { "ec2-35-160-191-149.us-west-2.compute.amazonaws.com" } ;
 
     /**
      * <p>
@@ -63,10 +39,18 @@ public class CouchbaseConfig {
      *
      * @return the {@code Bucket}
      */
+//    @Bean
+//    Bucket sync() {
+//        final CouchbaseCluster cluster = CouchbaseCluster.create(nodes);
+//        final Bucket bucket = cluster.openBucket("artifact");
+//        bucket.bucketManager().createN1qlPrimaryIndex(true, false);
+//
+//        return bucket;
+//    }
     @Bean
     Bucket sync() {
         final CouchbaseCluster cluster = CouchbaseCluster.create(nodes);
-        final Bucket bucket = cluster.openBucket(this.bucket);
+        final Bucket bucket = cluster.openBucket("default");
         bucket.bucketManager().createN1qlPrimaryIndex(true, false);
 
         return bucket;
@@ -81,16 +65,5 @@ public class CouchbaseConfig {
      */
     public void setNodes(final String[] nodes) {
         this.nodes = nodes;
-    }
-
-    /**
-     * <p>
-     * Sets the bucket where data are managed.
-     * </p>
-     *
-     * @param bucket the bucket name
-     */
-    public void setBucket(final String bucket) {
-        this.bucket = bucket;
     }
 }

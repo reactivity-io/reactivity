@@ -7,9 +7,9 @@
 
 <p>
     Events:
-    <ul id="events"></ul>
-    <button id="subscribe-artifacts-events">Subscribe</button>
-    <button id="more">More</button>
+<ul id="events"></ul>
+<button id="subscribe-artifacts-events">Subscribe</button>
+<button id="more">More</button>
 </p>
 
 <script type="application/javascript">
@@ -55,15 +55,15 @@
 
         JSON.parse(req.responseText).forEach(onEvent);
 
-                      /*
-        var artifactEvents = document.getElementById("artifacts-events");
-        artifactEventSource = new EventSource("/sse/events");
-        artifactEventSource.onmessage = function (e) {
-            var newElement = document.createElement("li");
-            newElement.innerHTML = e.data;
-            events.appendChild(newElement);
-            window.scrollTo(0, document.body.scrollHeight);
-        };              */
+        /*
+         var artifactEvents = document.getElementById("artifacts-events");
+         artifactEventSource = new EventSource("/sse/events");
+         artifactEventSource.onmessage = function (e) {
+         var newElement = document.createElement("li");
+         newElement.innerHTML = e.data;
+         events.appendChild(newElement);
+         window.scrollTo(0, document.body.scrollHeight);
+         };              */
     }
 
     function addEvent(evnt, elem, func) {

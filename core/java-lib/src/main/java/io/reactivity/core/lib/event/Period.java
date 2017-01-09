@@ -24,7 +24,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * <p>
  * A period of time defined by a {@link ArtifactView}. Artifacts can be selected by defining a range of timestamps.
  * One of the two timestamps (the first corresponding to the oldest artifact and the second to the newest artifact)
- * can be {@code null}. A limit of returned artifact can be specified. Otherwise, artifacts are selected without limit.
+ * can be {@code null} or negative to be ignored. A limit of returned artifact can be specified.
+ * Otherwise, artifacts are selected without limit.
  *
  * @author Guillaume DROUET
  * @since 0.1.0

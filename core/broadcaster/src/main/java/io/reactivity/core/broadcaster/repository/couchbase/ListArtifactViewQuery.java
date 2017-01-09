@@ -84,11 +84,11 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
 
         Expression expression = Expression.x("organization").eq(Expression.x("$organization"));
 
-        if (period.getFrom() != null) {
+        if (accept(period.getFrom())) {
             expression = expression.and(Expression.x(timestampField).gte(period.getFrom()));
         }
 
-        if (period.getTo() != null) {
+        if (accept(period.getTo())) {
             expression = expression.and(Expression.x(timestampField).lte(period.getTo()));
         }
 
@@ -122,5 +122,17 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
                 o.getLong("updated"),
                 Collections.singletonList(view.getId()),
                 o.getObject("categories").toMap());
+    }
+
+    /**
+     * <p>
+     * Indicates if the given {@code Long} is not {@code null} and not negative.
+     * </p>
+     *
+     * @param value long value
+     * @return {@code true} if the value is greater or equals to 0, {@code false} otherwise
+     */
+    private boolean accept(final Long value) {
+        return value != null && value.compareTo(0L) > -1;
     }
 }

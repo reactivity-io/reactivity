@@ -29,17 +29,85 @@
                 color: #555555;
                 margin:0 5px 0 0;
             }
+
+            /*Loader*/
+            .loader{
+                list-style-type: none;
+                float: left;
+            }
+            .loader li {
+                display: inline-block;
+                height: .5em;
+                width: .5em;
+                margin-bottom: .7em;
+                background: white;
+                border-radius: 50%;
+                transition: opacity 0.22222s ease;
+                animation: bbbounce 2s infinite ease;
+            }
+            .loader li:nth-of-type(1){
+                animation-delay: 0.22222s;
+            }
+            .loader li:nth-of-type(2) {
+                animation-delay: 0.44444s;
+            }
+            .loader li:nth-of-type(3) {
+                animation-delay: 0.66667s;
+            }
+
+            @keyframes bbbounce {
+                0%,100% {
+                    opacity: 1;
+                    transform: translateY(0em) scale(1);
+                }
+                50% {
+                    opacity: .8;
+                    transform: translateY(1em) scale(0.8);
+                }
+            }
+
         </style>
-        <div class="artifact" >
-            <p class="description">{{description}}</p>
-            <span class="sub"><p>{{assignee}}, </p> <p>{{priority}}, </p> <p>{{category}} </p></span>
-        </div>
+        <dom-if if="[[!isLoadings()]]">
+            <template>
+                <div class="artifact">
+                    <p class="description">{{description}}</p>
+                    <span class="sub"><p>{{assignee}}, </p> <p>{{priority}}, </p> <p>{{category}} </p></span>
+                </div>
+            </template>
+        </dom-if>
+
+        <dom-if if="[[isLoadings()]]">
+            <template>
+                <div class="artifact">
+                    <ul class='loader'>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </template>
+        </dom-if>
+
     </template>
     <script>
         // Extend Polymer.Element base class
         class AppArtifactList extends Polymer.Element {
             static get is() {
                 return 'app-artifact-list';
+            }
+
+            static get config () {
+                return {
+                    properties: {
+                        isLoading: {
+                            type: Boolean,
+                            notify: true
+                        }
+                    }
+                }
+            }
+            isLoadings() {
+                return this.isLoading;
             }
         }
 

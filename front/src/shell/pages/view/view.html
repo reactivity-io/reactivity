@@ -8,7 +8,7 @@
             }
         </style>
         <div id="content">
-            <dom-repeat class="hidden" items="{{artifacts}}">
+            <dom-repeat items="{{artifacts}}">
                 <template>
                     <app-artifact-list
                             id="{{item.id}}"
@@ -20,6 +20,12 @@
                     </app-artifact-list>
                 </template>
             </dom-repeat>
+
+            <dom-if if="[[isLoading]]">
+                <template>
+                    <app-artifact-list is-loading="{{isLoading}}"></app-artifact-list>
+                </template>
+            </dom-if>
         </div>
     </template>
     <script src="view.js"></script>

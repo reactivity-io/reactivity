@@ -14,20 +14,21 @@ class ShellView extends GlobalConst(Polymer.Element) {
         super.connectedCallback();
 
         //throttle : function that only invokes func at most once per every wait milliseconds (350)
-        this._scroll= _.throttle(this.scroll.bind(this), 350);
-        this.$.content.addEventListener('scroll', this._scroll);
+        this._scrollListener= _.throttle(this._handleScroll.bind(this), 350);
+        this.$.content.addEventListener('scroll', this._scrollListener);
 
         if(this.id) {
             this.fetch(this.limit, -1, (data) => {
-                this.setProperties({artifacts: data});
+                this.setProperties({artifacts: data, isLoading: false});
             })
         }
     }
-    scroll(e) {
+    _handleScroll() {
         if(this.$.content.scrollTop >= (this.$.content.scrollHeight - this.$.content.offsetHeight) - 150) {
             if (!this.isLoading && this.maxage ) {
+                this.setProperties({isLoading : true});
                 this.fetch(100, this.maxage, (data) => {
-                    this.setProperties({artifacts: this.artifacts.concat(data)});
+                    this.setProperties({artifacts: this.artifacts.concat(data), isLoading: false});
                 })
             }
         }
@@ -35,7 +36,6 @@ class ShellView extends GlobalConst(Polymer.Element) {
     fetch(limit, maxage, callback) {
         var data;
         var req = new XMLHttpRequest();
-        this.isLoading = true;
         req.open('GET', `${this.wsURL}/load/artifacts/${this.id}/limit/${this.limit}/maxage/${maxage}`, true);
         req.onreadystatechange = () => {
             if (req.readyState == 4) {
@@ -49,7 +49,6 @@ class ShellView extends GlobalConst(Polymer.Element) {
                 } else {
                     alert("Erreur pendant le chargement de la page.\n");
                 }
-                this.isLoading = false;
             }
         };
         req.send(null);

@@ -1,4 +1,4 @@
-class ShellOrganisations extends GlobalConst(Polymer.Element) {
+class ShellOrganisations extends mix(Polymer.Element).with(GlobalConst, Http) {
     static get is() {
         return 's-organisations';
     }
@@ -10,18 +10,10 @@ class ShellOrganisations extends GlobalConst(Polymer.Element) {
 
     connectedCallback() {
         super.connectedCallback();
-        var req = new XMLHttpRequest();
-        req.open('GET', `${this.wsURL}/load/organizations`, true);
-        req.onreadystatechange = () => {
-            if (req.readyState == 4) {
-                if(req.status == 200) {
-                    this.organisations = JSON.parse(req.responseText);
-                } else {
-                    alert("Don't be silly launch the server !\n");
-                }
-            }
-        };
-        req.send(null);
+
+        this.fetch('GET', `${this.wsURL}/load/organizations`).then((data) => {
+            this.organisations = data;
+        });
     }
 }
 // Register custom element definition using standard platform API

@@ -16,8 +16,8 @@ gulp.task('default', () => {
     // Serve files from the root of this project
     browserSync.init({
         server: {
-            baseDir: "./",
-            index: "index.html",
+            baseDir: './',
+            index: 'index.html',
             middleware: [
                 historyApiFallback(),
                 proxyMiddleware('/api', options)

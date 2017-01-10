@@ -12,7 +12,7 @@ class ShellOrganisations extends mix(Polymer.Element).with(GlobalConst, Http) {
         super.connectedCallback();
 
         this.fetch('GET', `${this.wsURL}/load/organizations`).then((data) => {
-            this.organisations = data;
+            this.setProperties({organisations: data});
         });
     }
 }

@@ -63,6 +63,11 @@
                 document.addEventListener('error', () => {
                     this.$.router.go('/404');
                 });
+
+                document.addEventListener('changeColor', (e) => {
+                    this.updateStyles({'--app-primary-color': e.detail.primary});
+                    this.updateStyles({'--app-secondary-color': e.detail.secondary});
+                });
                 //No need to removeListener cause this is the main entry point of the application (if unmount no more fun)
             }
         }

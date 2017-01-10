@@ -3,6 +3,11 @@
 <dom-module id="s-organisations">
     <template>
         <style>
+            :host{
+                display: block;
+                height: calc(100vh - var(--topbar-height));
+                background-color: var(--app-secondary-color);
+            }
             #content {
                 display: flex;
                 flex-wrap: wrap;

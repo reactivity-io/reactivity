@@ -1,31 +1,22 @@
-class ShellOrganisation extends GlobalConst(Polymer.Element) {
+class ShellOrganisation extends mix(Polymer.Element).with(GlobalConst, Http) {
     static get is() {
         return 's-organisation';
     }
-    constructor (props) {
+
+    constructor(props) {
         super(props);
         this.views = [];
         this.artifacts = [];
     }
+
     connectedCallback() {
         super.connectedCallback();
 
-        if(this.id) {
-            var req = new XMLHttpRequest();
-            req.open('GET', `${this.wsURL}/subscribe/${this.id}`, true);
-            req.onreadystatechange = () => {
-                if (req.readyState == 4) {
-                    if (req.status == 200) {
-                        this.data = JSON.parse(req.responseText);
-                        var groups = _.groupBy(this.data, "event");
-                        this.setProperties({views : groups['READ_VIEW'], artifacts: groups['READ_ARTIFACT']});
-
-                    } else {
-                        alert("Erreur pendant le chargement de la page.\n");
-                    }
-                }
-            };
-            req.send(null);
+        if (this.id) {
+            this.fetch('GET', `${this.wsURL}/subscribe/${this.id}`).then((data) => {
+                const groups = _.groupBy(data, 'event');
+                this.setProperties({views: groups['READ_VIEW'], artifacts: groups['READ_ARTIFACT']});
+            });
         }
     }
 }

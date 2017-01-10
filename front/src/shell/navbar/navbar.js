@@ -3,9 +3,9 @@ class ShellNavbar extends Polymer.Element {
         return 's-navbar';
     }
 
-    handleClick (e) {
+    handleClick(e) {
         e.preventDefault();
-        document.dispatchEvent(new CustomEvent('nav',{detail: {path:e.currentTarget.pathname}}));
+        document.dispatchEvent(new CustomEvent('nav', {detail: {path: e.currentTarget.pathname}}));
     }
 }
 

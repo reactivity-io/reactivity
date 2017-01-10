@@ -16,25 +16,29 @@
                 padding: 0 10px;
                 box-sizing: border-box;
             }
+
             .description {
                 font-size: 16px;
                 color: white;
-                margin:0;
+                margin: 0;
             }
+
             .sub {
                 display: flex;
             }
+
             .sub p {
                 font-size: 14px;
                 color: #555555;
-                margin:0 5px 0 0;
+                margin: 0 5px 0 0;
             }
 
             /*Loader*/
-            .loader{
+            .loader {
                 list-style-type: none;
                 float: left;
             }
+
             .loader li {
                 display: inline-block;
                 height: .5em;
@@ -45,18 +49,21 @@
                 transition: opacity 0.22222s ease;
                 animation: bbbounce 2s infinite ease;
             }
-            .loader li:nth-of-type(1){
+
+            .loader li:nth-of-type(1) {
                 animation-delay: 0.22222s;
             }
+
             .loader li:nth-of-type(2) {
                 animation-delay: 0.44444s;
             }
+
             .loader li:nth-of-type(3) {
                 animation-delay: 0.66667s;
             }
 
             @keyframes bbbounce {
-                0%,100% {
+                0%, 100% {
                     opacity: 1;
                     transform: translateY(0em) scale(1);
                 }
@@ -87,7 +94,6 @@
                 </div>
             </template>
         </dom-if>
-
     </template>
     <script>
         // Extend Polymer.Element base class
@@ -96,7 +102,7 @@
                 return 'app-artifact-list';
             }
 
-            static get config () {
+            static get config() {
                 return {
                     properties: {
                         isLoading: {
@@ -106,6 +112,7 @@
                     }
                 }
             }
+
             isLoadings() {
                 return this.isLoading;
             }

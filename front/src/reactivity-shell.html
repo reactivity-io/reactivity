@@ -18,7 +18,7 @@
                 --topbar-height: 65px;
                 margin: 0;
                 display: block;
-                height:100vh;
+                height: 100vh;
                 font-family: 'Roboto', 'Noto', sans-serif;
             }
 
@@ -31,10 +31,13 @@
         <s-navbar></s-navbar>
 
         <app-router id="router" class="flex" mode="pushstate">
-            <app-route path="/" import="./src/shell/pages/organisations/organisations.html" element="s-organisations"></app-route>
-            <app-route path="/settings" import="./src/shell/pages/settings/settings.html" element="s-settings"></app-route>
-            <app-route path="/organisation/:id" import="./src/shell/pages/organisation/organisation.html" element="s-organisation" ></app-route>
-            <app-route path="/view/:id" import="./src/shell/pages/view/view.html" element="s-view" ></app-route>
+            <app-route path="/" import="./src/shell/pages/organisations/organisations.html"
+                       element="s-organisations"></app-route>
+            <app-route path="/settings" import="./src/shell/pages/settings/settings.html"
+                       element="s-settings"></app-route>
+            <app-route path="/organisation/:id" import="./src/shell/pages/organisation/organisation.html"
+                       element="s-organisation"></app-route>
+            <app-route path="/view/:id" import="./src/shell/pages/view/view.html" element="s-view"></app-route>
             <app-route path="*" import="./src/shell/pages/404/view-404.html"></app-route>
         </app-router>
 
@@ -47,14 +50,27 @@
                 return 's-reactivity';
             }
 
+            static get config() {
+                return {
+                    listeners: {
+                        'nav': '_onNav',
+                        'error': '_onError'
+                    }
+                }
+            }
+
             connectedCallback() {
                 super.connectedCallback();
 
-                console.log('%cWelcome to Reactivity!\n%cweb components are the <bees-knees>',"font-size:1.5em;color:#4558c9;","color:#d61a7f;font-size:1em;")
+                console.log('%cWelcome to Reactivity!\n%cweb components are the <bees-knees>', "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;")
 
                 //The application (My-app element) manage the routing so let him switch page :)
-                document.addEventListener('nav', (e)=> {
-                    this.$.router.go(e.detail.path)
+                document.addEventListener('nav', (e) => {
+                    this.$.router.go(e.detail.path);
+                });
+
+                document.addEventListener('error', () => {
+                    this.$.router.go('/404');
                 });
                 //No need to removeListener cause this is the main entry point of the application (if unmount no more fun)
             }
@@ -62,6 +78,9 @@
         // Register custom element definition using standard platform API
         customElements.define(ReactivityShell.is, ReactivityShell);
     </script>
-    <script src="./constants/const.mixin.js"></script>
+    <script src="./mixins/mixinBuilder.js"></script>
+    <script src="./mixins/const.mixin.js"></script>
+    <script src="./mixins/http.mixin.js"></script>
     <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/q/q.js"></script>
 </dom-module>

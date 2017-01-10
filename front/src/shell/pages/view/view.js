@@ -5,7 +5,9 @@ class ShellView extends mix(Polymer.Element).with(GlobalConst, Http) {
 
     constructor(props) {
         super(props);
-        this.limit = 50;
+        this.artifactLimit = 50;
+        //Limit in pixel before fetching others data
+        this.threshold = 1500;
         this.artifacts = [];
         //load on init
         this.isLoading = true;
@@ -14,27 +16,23 @@ class ShellView extends mix(Polymer.Element).with(GlobalConst, Http) {
 
     connectedCallback() {
         super.connectedCallback();
-
-        //throttle:function that only invokes func at most once every (350) milli sec
-        this._scrollListener = _.throttle(this._handleScroll.bind(this), 350);
-        this.$.content.addEventListener('scroll', this._scrollListener);
-
         if (this.id) {
-            this.fetchNextData(this.limit, -1);
+            this.$.content.addEventListener('scroll', this._handleScroll.bind(this));
+            this.fetchNextData(this.artifactLimit, -1);
         }
     }
 
     _handleScroll() {
-        if (this.$.content.scrollTop >= (this.$.content.scrollHeight - this.$.content.offsetHeight) - 150) {
+        if (this.$.content.scrollTop >= (this.$.content.scrollHeight - this.$.content.offsetHeight) - this.threshold) {
             if (!this.isLoading && this.maxage) {
                 this.setProperties({isLoading: true});
-                this.fetchNextData(100, this.maxage);
+                this.fetchNextData(this.artifactLimit, this.maxage);
             }
         }
     }
 
     fetchNextData(limit, maxage) {
-        this.fetch('GET', `${this.wsURL}/load/artifacts/${this.id}/limit/${this.limit}/maxage/${maxage}`)
+        this.fetch('GET', `${this.wsURL}/load/artifacts/${this.id}/limit/${limit}/maxage/${maxage}`)
             .then((data) => {
                 if (data.length) {
                     this.maxage = data[data.length - 1].updated - 1;

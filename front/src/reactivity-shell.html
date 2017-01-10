@@ -50,15 +50,6 @@
                 return 's-reactivity';
             }
 
-            static get config() {
-                return {
-                    listeners: {
-                        'nav': '_onNav',
-                        'error': '_onError'
-                    }
-                }
-            }
-
             connectedCallback() {
                 super.connectedCallback();
 

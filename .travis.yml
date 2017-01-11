@@ -1,19 +1,40 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
+dist: trusty
+sudo: required
+addons:
+  firefox: latest
+  sauce_connect: true
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
 env:
+  matrix:
   - MODULE=core
   - MODULE=core/java-lib
   - MODULE=core/broadcaster
+  global:
+  - secure: jyieF62Bdxn8KzePW73qAWOsV6n83gIGDpKGpgbpbCDG+R5AcMqFSXf32A7So148YczZIjlhWUx85Vrol9NURpimxcFfZU9nKCPjZt7QpGuzXInbxy8Qrze1I/PN40nMVGxNEam7pwXIMZwbOFPv/PG+fDw7BCDSfsoTwTMbk1FvjhpBngo6DBtbyld30HEhIVSSLhROgcQ7zzcfHYdu9IxvnDFnuNict1m1+HGJf0jDAbFRzGteMq7/tu+rM9HHd5UyCSI2sGWo4P3tAcXw/l3VV/MxhG6cRofvQQEY7H+2JpJ5U6CDprrN7sOUrc777cmOzXzB1sYLaNNniQiScQtZJTYcJbhPF/rOYn8FjrFDMxC0EB7oQQ58Z4dUViKNAdR54zxFwm/OqDssAV43fAOFfkiZGfdKjR+CQQMWRD7UdaCfsy3w/xFw5KiNObyUtvbBJABVYWjsIIF0yU20Qu8Cr5DCfUjUTyNiWz/LjN3cQjtv6HB7A3UWc/ohjhU/GZoWvvJ5WySKLMuL8msH5/R3UE+u8TZYTi9pSG/k6BSoVO4DRAmvG/7FdepwHJYnW1Ol1Bd2u0OdqiwhByu0yDH9jolJ/VYBq8A880nU+dW5SVhwTNSvLgo3jclr4IwkCydZvZ6YjiqpKSqW69TRWyPLOFVLtn943yFX89OXhwY=
+  - secure: Y0Ck+5ZLdbv2qC5uySGZZmuU1++fBvLOtUquAiFn4IPXzaMTbURqr0jY6+R/ibiJdnTgKk4H65Gl4S2d2UPSVTeIUoxnzSSiUHhoxp1FUrGuK8wxuk0ZMffRIMWODRxLJsuFKXTt7NpwGmDx53Kzzp0cbMo9ilkVFJu+6PBxmTC2lRZwIeHFo4U56DjNwWaHA3dXwfiv1S6tsfem3kxGHb9SsfN4UGyXTRqKZBK+DwEs07Uwwq6FkCqsSzcV42uTx2t9qRrVbs3elIPdNKIitEE/V+juQTg94c3BHspXHZhgExByAm/2SSOZaE2syyrFGPSPRf1XKbzwkiGCJiCWzT8naOZB8CC6V4QxDwbrh6nU9lH2BQdcDZj9/pcT6HPc8nhoBKwl4Rzpnsva4b70cZE57KaRwiDQ4lUvFPJ3YepPiz0QKNnEPYHAbLFIMBvsVcMGGkKg4aMSiBfCXu62PTAAqUNQJKRVEIpYAs6AHE3IUUsh+gZ24yWddEHRE3mUvi3vIYnNUjlt0e9fTqfitl1wMV68CZb5llm19jLYFZ0uX54d0xkCtdmNWBvZBip4lVpuR/qQYgLp2LOiEqgzFNLg4x6DxRabUAZ0tP/daIQ2WBBTXKIkxCk2Am/xwFCyz9Bzb97DTSUjvdtI++bGd1nn6LN8AZ01RhO4I5Rff/0=
+
 before_install:
-  - cp config/settings.xml ~/.m2/settings.xml
-  - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
-script: 
-  - mvn -f $MODULE/pom.xml clean deploy
+- cp config/settings.xml ~/.m2/settings.xml
+- echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
+before_script:
+- npm install -g bower polylint web-component-tester
+- bower install
+- polylint
+script:
+- mvn -f $MODULE/pom.xml clean deploy
+- xvfb-run wct front/test --skip-plugin sauce
+- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct front/test -s 'default' --skip-plugin local; fi
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io
-  username: $CF_DEPLOY_USERNAME
+  username: "$CF_DEPLOY_USERNAME"
   password:
     secure: RE8snuhO5HKpV8RUPpVXP7KTaqSJb3DS4FSIzaCMy/+N54Uqvnk3ecFyXGJpgYSCRmiZEohP9hXSGYaRX2aXOQvnxtnRcH73X0J8c5T1o3gvLKUdlyZg2HIEMUu7x2pVekJqe300hlhi5Uxgm2MLjdFD74xhoN7USKnBdXOF/cyjyIomEr4HX8UCxMxjbgeAyGXvPyrH1bQbp6j9QdZy06zpMD0+MYzl66qYV4pgxeey/jyqh+ldAQOtXqXueIGG3PQr+zFQTX9Jnw7ilKvP9HqTAngt32GaccB+zCmMhmKFouodJzKtFnpGOQ6d82XgdKMcZcZfGK9zMI1ZDVLWrftfjap+8TFuHpiJbghj52bGrMAD0/+d14LxsSVj0NyuQ7a/7RwalfF9aZOs1CNrLO9KkKy+5ncUKv6dLZtBZ9bN9+bwdb3pfS78C7JaJQOkv6jjXYIJv/yssBla90gfXJY+htnax+5Owss391JYsjhKFtbYL9LhEe587t5lsz7tkOygRPQ+zARInmJt6DBc/rHdtLDMOdhEaA+MKt9Sfn2TZuTXKsu3/pbM95+061u3wmZl7jxqjhnfMhHn1JkD0CkmWxbKLbL9ELy99TvySjdaT+qVar5AXSpL3iyLX/APjFz0RA+1jO8kOlfYebFZYNwoClJG7oTw9XcUuePGb7Q=
   organization: Reactivity
@@ -22,4 +43,4 @@ deploy:
   on:
     repo: reactivity-io/reactivity
     branch: travis-deploy
-    condition: $MODULE = 'core/broadcaster'
+    condition: "$MODULE = 'core/broadcaster'"

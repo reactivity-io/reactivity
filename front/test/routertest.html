@@ -2,16 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../node_modules/web-component-tester/browser.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
     <link rel="import" href="../src/reactivity-shell.html">
 </head>
 <body>
 <s-reactivity id="fixture"></s-reactivity>
 <script>
-    suite('testsdf sdf sdf ', function() {
-        test('is testsdf', function() {
-            expect(document.querySelector('s-reactivity').shadowRoot.querySelector('s-navbar')).to.not.be.null;
+    suite('<s-reactivity>', function() {
+        test('have navbar', function() {
+            assert.isNotNull(document.querySelector('s-reactivity').shadowRoot.querySelector('s-navbar'));
         });
     });
 </script>

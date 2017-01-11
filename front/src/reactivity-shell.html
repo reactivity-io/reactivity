@@ -28,7 +28,7 @@
             }
         </style>
 
-        <s-navbar></s-navbar>
+        <s-navbar ></s-navbar>
 
         <app-router id="router" class="flex" mode="pushstate">
             <app-route path="/" import="./src/shell/pages/organisations/organisations.html"
@@ -40,7 +40,6 @@
             <app-route path="/view/:id" import="./src/shell/pages/view/view.html" element="s-view"></app-route>
             <app-route path="*" import="./src/shell/pages/404/view-404.html"></app-route>
         </app-router>
-
     </template>
 
     <script>

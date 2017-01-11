@@ -50,7 +50,7 @@ public class CouchbaseConfig {
     @Bean
     Bucket sync() {
         final CouchbaseCluster cluster = CouchbaseCluster.create(nodes);
-        final Bucket bucket = cluster.openBucket("default");
+        final Bucket bucket = cluster.openBucket("nana");
         bucket.bucketManager().createN1qlPrimaryIndex(true, false);
 
         return bucket;

@@ -12,16 +12,34 @@ let Http = (superclass) => class extends superclass {
                         deferred.resolve(retval);
                     } catch (e) {
                         deferred.reject(e.message);
-                        document.dispatchEvent(new CustomEvent('error', {detail: {message: e.message}}));
+                        this.dispatchCustomError(e.message);
                     }
                 } else {
-                    deferred.reject(req.error);
-                    document.dispatchEvent(new CustomEvent('error'));
+                    deferred.reject(req.responseText);
+                    this.dispatchRequestError(req);
                 }
             }
         };
         req.send(null);
 
         return deferred.promise;
+    }
+
+    dispatchRequestError(req) {
+        document.dispatchEvent(new CustomEvent('error', {
+            detail: {
+                status: req.status,
+                statusText: req.statusText,
+                message: req.responseText
+            }
+        }));
+    }
+
+    dispatchCustomError(message) {
+        document.dispatchEvent(new CustomEvent('error', {
+            detail: {
+                message: message
+            }
+        }));
     }
 };

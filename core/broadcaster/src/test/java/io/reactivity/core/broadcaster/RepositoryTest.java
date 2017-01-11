@@ -81,6 +81,6 @@ public class RepositoryTest {
                     .put("categories", JsonObject.from(categories));
 
             return bucket.insert(JsonDocument.create(id, object));
-        }).repeat(1000).subscribe();
+        }).repeat(100).subscribe();
     }
 }

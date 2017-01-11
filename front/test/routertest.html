@@ -2,15 +2,20 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <script src="/components/web-component-tester/browser.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+    <link rel="import" href="../src/reactivity-shell.html"/>
 </head>
 <body>
-<s-reactivity id="fixture"></s-reactivity>
+<s-reactivity></s-reactivity>
 <script>
-    WCT.loadSuites([
-        'awesome-tests.js'
-    ]);
-
+    suite('<s-reactivity>', function () {
+        test('SHOULD BE TRUUUUe', function () {
+            assert.isNotNull({toto: 'toto'});
+        });
+        test('have navbar', function () {
+            assert.isNotNull(document.querySelector('s-reactivity').shadowRoot.querySelector('s-navbar'));
+        });
+    });
 </script>
 </body>
 </html>

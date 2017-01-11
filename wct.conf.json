@@ -2,14 +2,8 @@
   "verbose": true,
   "plugins": {
     "sauce": {
-      "disabled": true,
-      "browsers": [
-        {
-          "browserName": "chrome",
-          "platform": "Windows 10",
-          "version": "55"
-        }
-      ]
+      "disabled": false,
+      "browsers": ["chrome"]
     },
     "local": {
       "browsers": ["chrome"]

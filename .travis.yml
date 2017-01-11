@@ -24,9 +24,11 @@ before_install:
 - cp config/settings.xml ~/.m2/settings.xml
 - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
 before_script:
+- cd front
 - npm install -g bower polylint web-component-tester
 - bower install
 - polylint
+- cd ..
 script:
 - mvn -f $MODULE/pom.xml clean deploy
 - xvfb-run wct front/test --skip-plugin sauce

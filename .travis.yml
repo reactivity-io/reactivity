@@ -30,7 +30,7 @@ before_script:
 - cd ..
 script:
 - mvn -f $MODULE/pom.xml clean deploy
-- xvfb-run wct front/ --skip-plugin local
+- xvfb-run wct front/ --plugin sauce --skip-plugin local
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io

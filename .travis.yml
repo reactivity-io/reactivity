@@ -26,6 +26,7 @@ before_install:
 before_script:
 - cd front
 - npm install
+- npm install -g web-component-tester
 - cd ..
 script:
 - mvn -f $MODULE/pom.xml clean deploy

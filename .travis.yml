@@ -30,8 +30,8 @@ before_script:
 - cd ..
 script:
 - mvn -f $MODULE/pom.xml clean deploy
-- xvfb-run wct front/test --skip-plugin sauce
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct front/test -s 'default' --skip-plugin local; fi
+- xvfb-run wct front --skip-plugin sauce
+- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then wct front -s 'default' --skip-plugin local; fi
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io

@@ -17,7 +17,11 @@
     "lodash": "^4.17.4",
     "q": "^1.4.1"
   },
+  "devDependencies": {
+    "web-component-tester": "^4.0.0"
+  },
   "resolutions": {
+    "lodash": "^3.7.0",
     "polymer": "2.0-preview",
     "webcomponentsjs": "v1"
   }

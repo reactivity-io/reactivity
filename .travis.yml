@@ -25,9 +25,7 @@ before_install:
 - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
 before_script:
 - cd front
-- npm install -g bower polylint web-component-tester
-- bower install
-- polylint
+- npm install
 - cd ..
 script:
 - mvn -f $MODULE/pom.xml clean deploy

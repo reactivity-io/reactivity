@@ -2,7 +2,25 @@
   "name": "web-front",
   "version": "0.0.1",
   "description": "Web application to manage the activity that matters",
-  "main": "main.js",
+  "keywords": [
+    "e2e",
+    "End-To-End-Test",
+    "protractor",
+    "selenium",
+    "jasmine",
+    "saucelabs",
+    "polymer"
+  ],
+  "license": "MIT",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactivity-io/reactivity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reactivity-io/reactivity/issues"
+  },
+  "homepage": "https://github.com/reactivity-io/reactivity/blob/front/front/README.md",
   "scripts": {
     "postinstall": "bower install",
     "start": "gulp",
@@ -12,7 +30,7 @@
     "e2e": "./node_modules/.bin/protractor e2e/conf.js",
     "lint": "./node_modules/.bin/eslint ."
   },
-  "author": "Nathan DAMIE",
+  "author": "Nathan damie <nathan.damie@gmail.com>",
   "devDependencies": {
     "bower": "^1.8.0",
     "browser-sync": "^2.18.5",

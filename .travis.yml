@@ -44,3 +44,5 @@ deploy:
     repo: reactivity-io/reactivity
     branch: travis-deploy
     condition: "$MODULE = 'core/broadcaster'"
+notifications:
+  slack: reactivity:eHHORgWgihkLbNPLR4B7RAOv

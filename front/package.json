@@ -6,9 +6,10 @@
   "scripts": {
     "postinstall": "bower install",
     "start": "gulp",
-    "webdriverupdate": "webdriver-manager update",
-    "webdriverstart": "webdriver-manager start",
-    "e2e": "protractor e2e/conf.js",
+    "test": "./node_modules/.bin/wct --skip-plugin sauce --plugin local",
+    "webdriver:update": "webdriver-manager update",
+    "webdriver:start": "webdriver-manager start --standalone",
+    "e2e": "./node_modules/.bin/protractor e2e/conf.js",
     "lint": "./node_modules/.bin/eslint ."
   },
   "author": "Nathan DAMIE",
@@ -21,6 +22,7 @@
     "gulp": "github:gulpjs/gulp#4.0",
     "http-proxy-middleware": "^0.17.3",
     "protractor": "^5.0.0",
+    "web-component-tester": "^5.0.0",
     "webdriver-manager": "^11.1.1"
   }
 }

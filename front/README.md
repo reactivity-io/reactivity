@@ -9,11 +9,31 @@
 npm install
 ```
 
+### This apps need a server to init WS so plz launch springboot application first
+
 ### Launch server with panel
 ```sh
 npm start
 ```
 
-### This apps need a server to init SSE connection an provide data.
+### Unit test
+```sh
+npm test
+```
 
-plz check the express-sse-with-electron-panel project in the same repo.
+### e2e
+
+Once:
+```sh
+npm run webdriver:update
+```
+
+in a new cmd / bash
+```sh
+npm run webdriver:start
+```
+
+launch e2e test
+```sh
+npm run e2e
+```

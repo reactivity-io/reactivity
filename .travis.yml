@@ -22,11 +22,15 @@ env:
 before_install:
 - cp config/settings.xml ~/.m2/settings.xml
 - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
-before_script:
-- if [ "$MODULE" = "core/broadcaster" ]; then npm install -g web-component-tester; fi
 script:
 - mvn -f $MODULE/pom.xml clean deploy
-- if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run wct front/test --plugin sauce --skip-plugin local; fi
+- 'if [ "$MODULE" = "core/broadcaster" ]; then
+          cd front;
+          npm install;
+          npm test;
+          npm run e2e;
+          cd ..;
+  fi'
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io

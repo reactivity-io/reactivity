@@ -44,7 +44,7 @@ public class CouchbaseConfig {
     /**
      * Default value for property {@code reactivity.couchbase.bucket}.
      */
-    public static final String DEFAULT_COUCHBASE_BUCKET = "artifact";
+    public static final String BUCKET = "artifact";
 
     /**
      * Nodes to use. See {@link #DEFAULT_COUCHBASE_NODES default} value.
@@ -52,9 +52,9 @@ public class CouchbaseConfig {
     private String[] nodes = new String[] { DEFAULT_COUCHBASE_NODES } ;
 
     /**
-     * Bucket name. See {@link #DEFAULT_COUCHBASE_BUCKET default} value.
+     * Bucket name. See {@link #BUCKET default} value.
      */
-    private String bucket = DEFAULT_COUCHBASE_BUCKET;
+    private String bucket = BUCKET;
 
     /**
      * <p>

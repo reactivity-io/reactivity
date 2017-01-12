@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Configuration;
  * <p>
  * This configuration initializes couchbase connection.
  * </p>
- *
+ * <p>
  * <p>
  * See the class constants for properties that can be configured and their default values. Node that properties can be
  * configured in several ways thanks to Spring Boot property resolution. For instance, you can run the application with
@@ -35,26 +35,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "reactivity.couchbase")
 public class CouchbaseConfig {
+    /**
+     * Default value for property {@code reactivity.couchbase.bucket}.
+     */
+    public static final String DEFAULT_COUCHBASE_BUCKET = "artifact";
 
     /**
      * Default value for property {@code reactivity.couchbase.nodes}.
      */
     public static final String DEFAULT_COUCHBASE_NODES = "127.0.0.1";
 
-    /**
-     * Default value for property {@code reactivity.couchbase.bucket}.
-     */
-    public static final String BUCKET = "artifact";
 
     /**
      * Nodes to use. See {@link #DEFAULT_COUCHBASE_NODES default} value.
      */
-    private String[] nodes = new String[] { DEFAULT_COUCHBASE_NODES } ;
+    private String[] nodes = new String[]{DEFAULT_COUCHBASE_NODES};
 
     /**
-     * Bucket name. See {@link #BUCKET default} value.
+     * Bucket name. See {@link #DEFAULT_COUCHBASE_BUCKET default} value.
      */
-    private String bucket = BUCKET;
+    private String bucket = DEFAULT_COUCHBASE_BUCKET;
 
     /**
      * <p>

@@ -31,6 +31,7 @@ script:
           nvm install node;
           npm install;
           xvfb-run npm test;
+          npm run webdriver:update;
           xvfb-run npm run e2e;
           cd ..;
   fi'

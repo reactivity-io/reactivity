@@ -1,5 +1,4 @@
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 
 <dom-module id="app-artifact-list">
     <template>
@@ -7,9 +6,9 @@
             .artifact {
                 width: 100%;
                 height: 60px;
-                background-color: #2b2b2b;
-                border-bottom: 1px solid #555555;
-                color: #555555;
+                background-color: var(--app-greyscale-1);
+                border-bottom: 1px solid var(--app-greyscale-5);
+                color: var(--app-greyscale-6);
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -19,7 +18,7 @@
 
             .description {
                 font-size: 16px;
-                color: white;
+                color: var(--app-greyscale-7);
                 margin: 0;
             }
 
@@ -44,7 +43,7 @@
                 height: .5em;
                 width: .5em;
                 margin-bottom: .7em;
-                background: white;
+                background: var(--app-greyscale-7);
                 border-radius: 50%;
                 transition: opacity 0.22222s ease;
                 animation: bbbounce 2s infinite ease;

@@ -1,33 +1,31 @@
 <dom-module id="s-settings">
-  <template>
-    <style>
-      :host{
-        display: block;
-        height: calc(100vh - var(--topbar-height));
-        background-color: var(--app-secondary-color);
-      }
-      #content {
-        color: white;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        padding: 0 130px;
-      }
-      .block {
-        width: 23%;
-        height: 100px;
-        margin-bottom: 1%;
-        background-color: magenta;
-      }
-    </style>
-    <div id="content">
-      <div class="block" primary="blue" secondary="lightblue" on-click="changeColor">blue</div>
-      <div class="block" primary="pink" secondary="lightpink" on-click="changeColor">rose</div>
-      <div class="block" primary="purple" secondary="mediumpurple" on-click="changeColor">purple</div>
-      <div class="block" primary="green" secondary="lightgreen" on-click="changeColor">green</div>
-      <div class="block" primary="plum" secondary="palevioletred" on-click="changeColor">plum</div>
-    </div>
-  </template>
-  <script src="./settings.js"></script>
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: calc(100vh - var(--topbar-height));
+                background-color: var(--app-greyscale-1);
+            }
+
+            #content {
+                color: white;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                flex-wrap: wrap;
+                padding: 0 130px;
+            }
+
+            .block {
+                width: 23%;
+                height: 100px;
+                margin-bottom: 1%;
+                background-color: var(--app-greyscale-3);
+            }
+        </style>
+        <div id="content">
+            Settings
+        </div>
+    </template>
+    <script src="./settings.js"></script>
 </dom-module>

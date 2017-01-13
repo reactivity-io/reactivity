@@ -1,0 +1,213 @@
+<dom-module id="color-konami">
+    <template>
+        <style>
+            :host {
+                position: fixed;
+                top: var(--topbar-height);
+                right: 0;
+                height: 100%;
+            }
+
+            #panel {
+                display: flex;
+                width: 0;
+                height: 100%;
+                overflow: hidden;
+                background-color: var(--app-greyscale-4);
+                flex-direction: column;
+                transition: width 0.3s;
+                border-left: 1px solid #555555;
+            }
+
+            .color-line {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .color-box {
+                width: 20px;
+                height: 20px;
+            }
+
+            .element {
+                width: 100%;
+                height: 40px;
+                display: flex;
+                padding: 0 13px;
+                align-items: center;
+                background-color: var(--app-primary-ligth);
+                font-size: 14px;
+                color: var(--app-greyscale-7);
+            }
+
+            .element-open {
+                background-color: var(--app-primary-color);
+            }
+
+            .element-core {
+                margin: 15px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .element-sub-title {
+                height: 30px;
+                display: flex;
+                align-items: center;
+                padding: 0 20px;
+                font-size: 12px;
+                background-color: var(--app-greyscale-2);
+                color: var(--app-greyscale-7);
+            }
+        </style>
+        <div id="panel">
+            <div class="element">color</div>
+            <div class="element-sub-title">
+                Primary color
+            </div>
+            <div class="element-core">
+                <dom-repeat items="{{defaultColor}}">
+                    <template>
+                        <div class="color-line" on-click="changeColor" data-colors="[[item]]">
+                            <div style="background-color:{{item.primary}}" class="color-box"></div>
+                            <div style="background-color:{{item.primaryDark}}" class="color-box"></div>
+                            <div style="background-color:{{item.primaryLight}}" class="color-box"></div>
+                        </div>
+                    </template>
+                </dom-repeat>
+            </div>
+            <div class="element-sub-title">greyscales</div>
+            <div class="element-core">
+
+                <dom-repeat items="{{greyscales}}">
+                    <template>
+                        <div class="color-line" on-click="changeGrey" data-colors="[[item]]">
+                            <div style="background-color:{{item.greyscale1}}" class="color-box"></div>
+                            <div style="background-color:{{item.greyscale2}}" class="color-box"></div>
+                            <div style="background-color:{{item.greyscale3}}" class="color-box"></div>
+                            <div style="background-color:{{item.greyscale4}}" class="color-box"></div>
+                            <div style="background-color:{{item.greyscale5}}" class="color-box"></div>
+                            <div style="background-color:{{item.greyscale6}}" class="color-box"></div>
+                            <div style="background-color:{{item.greyscale7}}" class="color-box"></div>
+                        </div>
+                    </template>
+                </dom-repeat>
+            </div>
+            <div class="element">header</div>
+            <div class="element-sub-title">height</div>
+            <div class="element-core">
+                <input type="range" min="20" max="120" value="65" on-change="changeTopbar"/>
+            </div>
+            <div class="element">card</div>
+        </div>
+    </template>
+
+    <script>
+        // Extend Polymer.Element base class
+        class ColorKonami extends Polymer.Element {
+            static get is() {
+                return 'color-konami';
+            }
+
+            constructor() {
+                super();
+                this.defaultColor = [
+                    {
+                        primary: '#081B28',
+                        primaryDark: '#54898D',
+                        primaryLight: '#E0E9DB',
+                    },
+                    {
+                        primary: '#00468A',
+                        primaryDark: '#00284E',
+                        primaryLight: '#017DF5',
+                    },
+                    {
+                        primary: '#8B3B81',
+                        primaryDark: '#542364',
+                        primaryLight: '#FFBEA3',
+                    },
+                    {
+                        primary: '#BF4B60',
+                        primaryDark: '#32A6AE',
+                        primaryLight: '#D9C58B',
+                    }
+                ];
+                this.greyscales = [
+                    { //3D
+                        greyscale1: "#2F2F2F",
+                        greyscale2: "#5B5B5B",
+                        greyscale3: "#A4A4A4",
+                        greyscale4: "#E6E6E6",
+                        greyscale5: "#EFEFEF",
+                        greyscale6: "#F9F9F9",
+                        greyscale7: "#FFFFFF",
+                    },
+                    { //dracula
+                        greyscale1: "#2b2b2b",
+                        greyscale2: "#313335",
+                        greyscale3: "#3C3E3F",
+                        greyscale4: "#3c3f41",
+                        greyscale5: "#515658",
+                        greyscale6: "#65686A",
+                        greyscale7: "#FFFFFF",
+                    },
+                    { //revert dracula
+                        greyscale1: "#FFFFFF",
+                        greyscale2: "#65686A",
+                        greyscale3: "#515658",
+                        greyscale4: "#3c3f41",
+                        greyscale5: "#3C3E3F",
+                        greyscale6: "#313335",
+                        greyscale7: "#2b2b2b",
+                    }
+                ]
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+                var index = 0;
+                var konami = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+                document.addEventListener('keyup', (e) => {
+                    if (e.keyCode === konami[index]) {
+                        index++;
+                        if (index === konami.length) {
+                            this.$.panel.style.width = "300px";
+                        }
+                    } else {
+                        index = 0;
+                    }
+                });
+            }
+
+            init(ctrl) {
+                this.ctrl = ctrl;
+            }
+
+            changeColor(e) {
+                const colors = e.currentTarget.dataColors;
+                this.ctrl.updateStyles({'--app-primary-color': colors.primary});
+                this.ctrl.updateStyles({'--app-primary-dark': colors.primaryDark});
+                this.ctrl.updateStyles({'--app-primary-ligth': colors.primaryLight});
+            }
+
+            changeGrey(e) {
+                const colors = e.currentTarget.dataColors;
+                this.ctrl.updateStyles({'--app-greyscale-1': colors.greyscale1});
+                this.ctrl.updateStyles({'--app-greyscale-2': colors.greyscale2});
+                this.ctrl.updateStyles({'--app-greyscale-3': colors.greyscale3});
+                this.ctrl.updateStyles({'--app-greyscale-4': colors.greyscale4});
+                this.ctrl.updateStyles({'--app-greyscale-5': colors.greyscale5});
+                this.ctrl.updateStyles({'--app-greyscale-6': colors.greyscale6});
+                this.ctrl.updateStyles({'--app-greyscale-7': colors.greyscale7});
+            }
+
+            changeTopbar(e) {
+                const tobar = e.currentTarget.value;
+                this.ctrl.updateStyles({'--topbar-height': `${tobar}px`});
+            }
+        }
+        customElements.define(ColorKonami.is, ColorKonami);
+    </script>
+</dom-module>

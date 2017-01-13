@@ -1,8 +1,7 @@
 language: java
 jdk:
 - oraclejdk8
-node_js:
-- "6.1"
+node_js: "6.1"
 dist: trusty
 sudo: required
 addons:

@@ -1,7 +1,8 @@
 language: java
 jdk:
 - oraclejdk8
-node_js: "6.1"
+node_js:
+- "6"
 dist: trusty
 sudo: required
 addons:
@@ -27,6 +28,7 @@ script:
 - mvn -f $MODULE/pom.xml clean deploy
 - 'if [ "$MODULE" = "core/broadcaster" ]; then
           cd front;
+          nvm install node;
           npm install;
           xvfb-run npm test;
           xvfb-run npm run e2e;

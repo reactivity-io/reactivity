@@ -28,7 +28,7 @@ before_install:
     fi'
 script:
 - mvn -f $MODULE/pom.xml clean deploy
-- 'if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run npm test; fi'
+- 'if [ "$MODULE" = "core/broadcaster" ]; then cd front; xvfb-run npm test; fi'
 - 'if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run npm run e2e; fi'
 deploy:
 - provider: cloudfoundry

@@ -26,6 +26,7 @@ before_install:
 - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
 - 'if [ "$MODULE" = "core/broadcaster" ]; then
             cd front;
+            nvm install node
             npm install;
             npm run webdriver:update;
             cd ..;

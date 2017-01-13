@@ -8,11 +8,6 @@ sudo: required
 addons:
   firefox: latest
   sauce_connect: true
-  apt:
-    sources:
-    - google-chrome
-    packages:
-    - google-chrome-stable
 env:
   matrix:
   - MODULE=core
@@ -26,15 +21,15 @@ before_install:
 - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
 - 'if [ "$MODULE" = "core/broadcaster" ]; then
             cd front;
-            nvm install node
+            nvm install node;
             npm install;
             npm run webdriver:update;
             cd ..;
-    fi';
+    fi'
 script:
 - mvn -f $MODULE/pom.xml clean deploy
-- 'if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run npm test; fi';
-- 'if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run npm run e2e; fi';
+- 'if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run npm test; fi'
+- 'if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run npm run e2e; fi'
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io

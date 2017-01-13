@@ -27,8 +27,8 @@ script:
 - 'if [ "$MODULE" = "core/broadcaster" ]; then
           cd front;
           npm install;
-          npm test;
-          npm run e2e;
+          xvfb-run npm test;
+          xvfb-run npm run e2e;
           cd ..;
   fi'
 deploy:

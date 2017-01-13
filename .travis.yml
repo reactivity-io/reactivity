@@ -24,7 +24,7 @@ env:
 before_install:
 - cp config/settings.xml ~/.m2/settings.xml
 - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
-- - 'if [ "$MODULE" = "core/broadcaster" ]; then
+- 'if [ "$MODULE" = "core/broadcaster" ]; then
             cd front;
             npm install;
             npm run webdriver:update;

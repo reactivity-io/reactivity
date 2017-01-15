@@ -27,6 +27,8 @@ install:
             npm run webdriver:update;
             cd ..;
     fi'
+before_script:
+- chmod +x script/*.sh
 script:
 - mvn -f $MODULE/pom.xml clean deploy
 - 'if [ "$MODULE" = "core/broadcaster" ]; then

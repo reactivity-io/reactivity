@@ -36,10 +36,10 @@ script:
             cd front;
             xvfb-run npm test;
             xvfb-run npm run e2e;
-            cd  ..;
+            cd ..;
     fi'
 after_script:
-- 'if [ "$MODULE" = "core/broadcaster" ]; then ./stop-app.sh; fi'
+- 'if [ "$MODULE" = "core/broadcaster" ]; then ./script/stop-app.sh; fi'
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io

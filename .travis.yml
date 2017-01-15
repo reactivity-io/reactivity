@@ -30,7 +30,7 @@ install:
 script:
 - mvn -f $MODULE/pom.xml clean deploy
 - 'if [ "$MODULE" = "core/broadcaster" ]; then
-            ./script/start-app.sh;
+            ./script/run-app.sh;
             cd front;
             xvfb-run npm test;
             xvfb-run npm run e2e;

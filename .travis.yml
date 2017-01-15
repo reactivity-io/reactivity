@@ -19,6 +19,7 @@ env:
 before_install:
 - cp config/settings.xml ~/.m2/settings.xml
 - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
+install:
 - 'if [ "$MODULE" = "core/broadcaster" ]; then
             cd front;
             nvm install node;
@@ -28,8 +29,15 @@ before_install:
     fi'
 script:
 - mvn -f $MODULE/pom.xml clean deploy
-- 'if [ "$MODULE" = "core/broadcaster" ]; then cd front; xvfb-run npm test; fi'
-- 'if [ "$MODULE" = "core/broadcaster" ]; then xvfb-run npm run e2e; fi'
+- 'if [ "$MODULE" = "core/broadcaster" ]; then
+            ./script/start-app.sh;
+            cd front;
+            xvfb-run npm test;
+            xvfb-run npm run e2e;
+            cd  ..;
+    fi'
+after_script:
+- 'if [ "$MODULE" = "core/broadcaster" ]; then ./stop-app.sh; fi'
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io

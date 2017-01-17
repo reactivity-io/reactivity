@@ -27,7 +27,6 @@ import io.reactivity.core.lib.event.Organization;
 import io.reactivity.core.lib.event.Period;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;

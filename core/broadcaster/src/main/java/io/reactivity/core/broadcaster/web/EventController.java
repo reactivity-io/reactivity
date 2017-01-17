@@ -57,11 +57,29 @@ public class EventController {
      * @return the event flux
      */
     @GetMapping("/load/artifacts/{viewId}/limit/{limit}/maxage/{maxAge}")
-    Flux<Event<ReactivityEntity>> loadArtifacts(
+    Flux<Event<ReactivityEntity>> loadArtifactsLteMaxAge(
             @PathVariable(name = "viewId") final String viewId,
             @PathVariable(name = "limit") final int limit,
             @PathVariable(name = "maxAge") final long maxAge) {
-        return eventService.loadArtifacts(viewId, limit, maxAge);
+        return eventService.loadArtifactsLteMaxAge(viewId, limit, maxAge);
+    }
+
+    /**
+     * <p>
+     * Loads all the artifacts matching the given view but with the specified period.
+     * </p>
+     *
+     * @param viewId the view ID
+     * @param limit maximum number of returned artifacts
+     * @param minAge lowest possible age for an artifact
+     * @return the event flux
+     */
+    @GetMapping("/load/artifacts/{viewId}/limit/{limit}/minage/{minAge}")
+    Flux<Event<ReactivityEntity>> loadArtifactsGteMinAge(
+            @PathVariable(name = "viewId") final String viewId,
+            @PathVariable(name = "limit") final int limit,
+            @PathVariable(name = "minAge") final long minAge) {
+        return eventService.loadArtifactsGteMinAge(viewId, limit, minAge);
     }
 
     /**

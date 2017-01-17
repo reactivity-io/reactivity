@@ -44,5 +44,11 @@ public class TestConfig extends CouchbaseConfig {
         if (nodes != null) {
             setNodes(nodes.split(","));
         }
+
+        final String bucket = System.getenv("REACTIVITY_COUCHBASE_BUCKET");
+
+        if (bucket != null) {
+            setBucket(bucket);
+        }
     }
 }

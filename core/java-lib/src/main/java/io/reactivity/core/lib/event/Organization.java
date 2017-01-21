@@ -19,6 +19,7 @@
 package io.reactivity.core.lib.event;
 
 import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.Version;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class Organization extends ReactivityEntity {
      * @param picture the organization picture
      * @param members the organization members
      */
-    public Organization(final String version,
+    public Organization(final Version version,
                         final String id,
                         final long timestamp,
                         final String name,

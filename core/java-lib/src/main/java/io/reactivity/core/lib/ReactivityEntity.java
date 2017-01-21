@@ -37,7 +37,7 @@ public abstract class ReactivityEntity {
      * The version of the entity.
      */
     @JsonIgnore
-    private final String version;
+    private final Version version;
 
     /**
      * The entity ID.
@@ -60,7 +60,7 @@ public abstract class ReactivityEntity {
      * @param id the entity ID
      * @param updated when the entity was created/updated
      */
-    protected ReactivityEntity(final String version, final String id, final long updated) {
+    protected ReactivityEntity(final Version version, final String id, final long updated) {
         this.version = version;
         this.id = id;
         this.updated = updated;
@@ -73,7 +73,7 @@ public abstract class ReactivityEntity {
      *
      * @return the version
      */
-    public String getVersion() {
+    public Version getVersion() {
         return version;
     }
 

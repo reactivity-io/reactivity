@@ -48,15 +48,23 @@ abstract class CouchbaseReactvityRepository implements ReactivityRepository {
     private final AsyncBucket bucket;
 
     /**
+     * The {@link ArtifactViewQueryFactory} that builds queries.
+     */
+    private final ArtifactViewQueryFactory artifactViewQueryFactory;
+
+    /**
      * <p>
      * Builds a new repository.
      * </p>
      *
      * @param bucket the bucket
+     * @param artifactViewQueryFactory the factory that builds queries
      * @throws IOException if the repository is not able to initialize the views
      */
-    protected CouchbaseReactvityRepository(final Bucket bucket) throws IOException {
+    protected CouchbaseReactvityRepository(final Bucket bucket, final ArtifactViewQueryFactory artifactViewQueryFactory)
+            throws IOException {
         this.bucket = bucket.async();
+        this.artifactViewQueryFactory = artifactViewQueryFactory;
     }
 
     /**
@@ -64,7 +72,7 @@ abstract class CouchbaseReactvityRepository implements ReactivityRepository {
      */
     @Override
     public <T> Publisher<T> findArtifactFromView(final ArtifactView view, final Function<ReactivityEntity, T> mapper) {
-        final ArtifactViewQuery artifactViewQuery = ArtifactViewQueryFactory.INSTANCE.create(view);
+        final ArtifactViewQuery artifactViewQuery = artifactViewQueryFactory.create(view);
 
         return RxReactiveStreams.toPublisher(artifactViewQuery.query(bucket).map(mapper::apply));
     }

@@ -19,6 +19,7 @@
 package io.reactivity.core.broadcaster;
 
 import io.reactivity.core.broadcaster.config.CouchbaseConfig;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -31,7 +32,8 @@ import org.springframework.context.annotation.Configuration;
  * @since 0.1.0
  */
 @Configuration
-public class TestConfig extends CouchbaseConfig {
+@ComponentScan(basePackageClasses = TestConfig.class)
+class TestConfig extends CouchbaseConfig {
 
     /**
      * <p>

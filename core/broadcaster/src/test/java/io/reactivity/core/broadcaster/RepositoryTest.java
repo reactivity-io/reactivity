@@ -21,14 +21,24 @@ package io.reactivity.core.broadcaster;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.document.JsonDocument;
 import com.couchbase.client.java.document.json.JsonObject;
+import io.reactivity.core.broadcaster.repository.couchbase.MockCouchbaseReactivityRepository;
+import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.Version;
+import io.reactivity.core.lib.ViewType;
+import io.reactivity.core.lib.event.ArtifactView;
+import io.reactivity.core.lib.event.Period;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,6 +54,7 @@ import java.util.function.BiConsumer;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
+@TestPropertySource(properties = "build.version=0.1.0")
 public class RepositoryTest {
 
     /**
@@ -53,7 +64,13 @@ public class RepositoryTest {
     private Bucket bucket;
 
     /**
-     * Inserts 1000 random artifacts to the repository.
+     * Repository.
+     */
+    @Autowired
+    private MockCouchbaseReactivityRepository couchbaseReactivityRepository;
+
+    /**
+     * Inserts 10 random artifacts to the repository.
      */
     @Test
     public void insertSomeArtifactsDocuments() {
@@ -75,12 +92,79 @@ public class RepositoryTest {
             categories.put("description", "Description of Artifact " + id);
 
             final JsonObject object = JsonObject.create()
-                    .put("version", "0.1.0-SNAPSHOT")
+                    .put("version", 10)
+                    .put("snapshot", true)
                     .put("organization", "Organization/1")
                     .put("updated", System.currentTimeMillis())
                     .put("categories", JsonObject.from(categories));
 
             return bucket.insert(JsonDocument.create(id, object));
         }).repeat(10).subscribe();
+    }
+
+    /**
+     * Tests version filtering.
+     */
+    @Test
+    public void testVersions() {
+        final long start = System.currentTimeMillis();
+        bucket.insert(JsonDocument.create(UUID.randomUUID().toString(), JsonObject.create()
+                .put("version", 10)
+                .put("snapshot", true)
+                .put("organization", "Organization/1")
+                .put("updated", start + 1)
+                .put("categories", JsonObject.create())));
+
+        bucket.insert(JsonDocument.create(UUID.randomUUID().toString(), JsonObject.create()
+                .put("version", 10)
+                .put("snapshot", false)
+                .put("organization", "Organization/1")
+                .put("updated", start + 1)
+                .put("categories", JsonObject.create())));
+
+        bucket.insert(JsonDocument.create(UUID.randomUUID().toString(), JsonObject.create()
+                .put("version", 9)
+                .put("snapshot", true)
+                .put("organization", "Organization/1")
+                .put("updated", start + 1)
+                .put("categories", JsonObject.create())));
+
+        bucket.insert(JsonDocument.create(UUID.randomUUID().toString(), JsonObject.create()
+                .put("version", 9)
+                .put("snapshot", false)
+                .put("organization", "Organization/1")
+                .put("updated", start + 1)
+                .put("categories", JsonObject.create())));
+
+        bucket.insert(JsonDocument.create(UUID.randomUUID().toString(), JsonObject.create()
+                .put("version", 11)
+                .put("snapshot", true)
+                .put("organization", "Organization/1")
+                .put("updated", start + 1)
+                .put("categories", JsonObject.create())));
+
+        bucket.insert(JsonDocument.create(UUID.randomUUID().toString(), JsonObject.create()
+                .put("version", 11)
+                .put("snapshot", false)
+                .put("organization", "Organization/1")
+                .put("updated", start + 1)
+                .put("categories", JsonObject.create())));
+
+        final List<ReactivityEntity> list = Flux.from(couchbaseReactivityRepository.findArtifactFromView(
+                new ArtifactView(
+                        new Version("0.1.0-SNAPSHOT"),
+                        UUID.randomUUID().toString(),
+                        System.currentTimeMillis(),
+                        "Organization/1",
+                        "Last artifacts created in your organization",
+                        new Period(start, start + 2, null, null),
+                        ViewType.LIST.name()), e -> e))
+                .collectList()
+                .block();
+
+        Assert.assertEquals(2, list.size());
+
+        list.forEach(c -> Assert.assertEquals(5, c.getVersion().getSemver().length()));
+        list.forEach(c -> Assert.assertFalse(c.getVersion().isSnapshot()));
     }
 }

@@ -20,11 +20,17 @@ package io.reactivity.core.broadcaster.repository.couchbase;
 
 import com.couchbase.client.java.AsyncBucket;
 import com.couchbase.client.java.document.json.JsonObject;
-import com.couchbase.client.java.query.*;
+
+import com.couchbase.client.java.query.AsyncN1qlQueryRow;
+import com.couchbase.client.java.query.N1qlQuery;
+import com.couchbase.client.java.query.ParameterizedN1qlQuery;
+import com.couchbase.client.java.query.Select;
+import com.couchbase.client.java.query.Statement;
 import com.couchbase.client.java.query.dsl.Expression;
 import com.couchbase.client.java.query.dsl.Sort;
 import com.couchbase.client.java.query.dsl.path.LimitPath;
 import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.Version;
 import io.reactivity.core.lib.event.Artifact;
 import io.reactivity.core.lib.event.ArtifactView;
 import io.reactivity.core.lib.event.Period;
@@ -48,7 +54,7 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
     /**
      * Fields in the SELECT clause of the query.
      */
-    private static final String FIELDS = "version, meta(artifact).id, categories, updated";
+    private static final String FIELDS = "version, snapshot, meta(artifact).id, categories, updated";
 
     /**
      * The view to use.
@@ -61,14 +67,28 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     /**
+     * The application version.
+     */
+    private int version;
+
+    /**
+     * Indicates if the application is a snapshot or not.
+     */
+    private boolean isSnapshot;
+
+    /**
      * <p>
      * Builds a new instance.
      * </p>
      *
      * @param view the view corresponding to the executed query
+     * @param version the version of the application build
+     * @param isSnapshot {@code true} if the application is a snapshot, {@code false} otherwise
      */
-    ListArtifactViewQuery(final ArtifactView view) {
+    ListArtifactViewQuery(final ArtifactView view, final int version, final boolean isSnapshot) {
         this.view = view;
+        this.version = version;
+        this.isSnapshot = isSnapshot;
     }
 
     /**
@@ -90,6 +110,12 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
 
         if (accept(period.getTo())) {
             expression = expression.and(Expression.x(timestampField).lte(period.getTo()));
+        }
+
+        expression = expression.and(Expression.x("version")).lte(version);
+
+        if (!isSnapshot) {
+            expression = expression.and(Expression.x("snapshot").eq(false));
         }
 
         final LimitPath limitPath = Select.select(FIELDS)
@@ -117,7 +143,7 @@ class ListArtifactViewQuery implements ArtifactViewQuery {
      */
     private Artifact toArtifact(final AsyncN1qlQueryRow row) {
         final JsonObject o = JsonObject.class.cast(row.value());
-        return new Artifact(o.getString("version"),
+        return new Artifact(new Version(o.getBoolean("snapshot"), o.getInt("version")),
                 o.getString("id"),
                 o.getLong("updated"),
                 Collections.singletonList(view.getId()),

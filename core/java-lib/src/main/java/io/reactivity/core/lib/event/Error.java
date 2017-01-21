@@ -19,6 +19,7 @@
 package io.reactivity.core.lib.event;
 
 import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.Version;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +39,7 @@ public class Error extends ReactivityEntity {
     /**
      * Application version.
      */
-    private static String version;
+    private static Version version;
 
     /**
      * Error message.
@@ -52,7 +53,7 @@ public class Error extends ReactivityEntity {
         try (final InputStream is = Error.class.getResourceAsStream("/io/reactivity/core/lib/application.properties")) {
             properties = new Properties();
             properties.load(is);
-            version = properties.getProperty("application.version");
+            version = new Version(properties.getProperty("application.version"));
         } catch (IOException ioe) {
             throw new IllegalStateException(ioe);
         }

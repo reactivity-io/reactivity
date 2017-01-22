@@ -3,3 +3,7 @@ applications:
    memory: 512M
    random-route: true
    path: core/broadcaster/target/broadcaster-0.1.0-SNAPSHOT.jar
+- name: reactivity-front
+   memory: 64M
+   random-route: true
+   buildpack: https://github.com/cloudfoundry/staticfile-buildpack.git

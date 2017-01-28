@@ -42,6 +42,8 @@
     "http-proxy-middleware": "^0.17.3",
     "protractor": "^5.0.0",
     "web-component-tester": "^5.0.0",
-    "webdriver-manager": "^11.1.1"
+    "webdriver-manager": "^11.1.1",
+    "gulp-file": "^0.3.0",
+    "js-yaml": "^3.7.0"
   }
 }

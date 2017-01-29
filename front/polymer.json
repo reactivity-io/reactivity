@@ -1,0 +1,13 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/reactivity-shell.html",
+  "fragments": [],
+  "sources": [
+    "app/**/*"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.js",
+    "bower_components/sw-toolbox/sw-toolbox.js"
+  ]
+}

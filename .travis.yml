@@ -24,7 +24,6 @@ install:
             cd front;
             nvm install node;
             npm install;
-            npm run webdriver:update;
             cd ..;
     fi'
 before_script:
@@ -34,6 +33,7 @@ script:
 - 'if [ "$MODULE" = "core/broadcaster" ]; then
             ./script/run-app.sh;
             cd front;
+            npm run webdriver:update;
             xvfb-run npm test;
             xvfb-run npm run e2e;
             cd ..;

@@ -16,26 +16,52 @@
  */
 
 
-package io.reactivity.core.broadcaster;
+package io.reactivity.core.broadcaster.security;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * Bootstrap class.
+ * <p>
+ * Represents an authentication state in reactivity.
+ * </p>
  *
  * @author Guillaume DROUET
+ * @since 0.1.0
  */
-@SpringBootApplication
-public class Application {
+public class ReactivityAuthentication extends AbstractAuthenticationToken {
 
     /**
-     * Main.
-     *
-     * @param args ignored args
-     * @throws Exception if spring fails
+     * The authenticated user details.
      */
-	public static void main(final String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
+    private final UserDetails userDetails;
+
+    /**
+     * <p>
+     * Builds a new instance.
+     * </p>
+     *
+     * @param userDetails the user details
+     */
+    public ReactivityAuthentication(final UserDetails userDetails) {
+        super(userDetails.getAuthorities());
+        this.userDetails = userDetails;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object getCredentials() {
+        return userDetails.getPassword();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object getPrincipal() {
+        return userDetails;
+    }
 }

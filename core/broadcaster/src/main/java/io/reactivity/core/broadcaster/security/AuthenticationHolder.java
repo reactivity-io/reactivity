@@ -16,26 +16,46 @@
  */
 
 
-package io.reactivity.core.broadcaster;
+package io.reactivity.core.broadcaster.security;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.core.Authentication;
+
+import java.util.function.Supplier;
 
 /**
- * Bootstrap class.
+ * <p>
+ * This class holds in a {@code ThreadLocal} a {@code Supplier} of {@code Authentication}.
+ * </p>
  *
  * @author Guillaume DROUET
+ * @since 0.1.0
  */
-@SpringBootApplication
-public class Application {
+public class AuthenticationHolder {
 
     /**
-     * Main.
-     *
-     * @param args ignored args
-     * @throws Exception if spring fails
+     * The {@code ThreadLocal}.
      */
-	public static void main(final String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
+    private static final ThreadLocal<Supplier<Authentication>> CURRENT_AUTHENTICATION = new ThreadLocal<>();
+
+    /**
+     * <p>
+     * Gets the {@code Authentication} object.
+     * </p>
+     *
+     * @return the authentication
+     */
+    static Authentication getCurrentAuthentication() {
+        return CURRENT_AUTHENTICATION.get().get();
+    }
+
+    /**
+     * <p>
+     * Sets the {@code Supplier} of {@code Authentication}.
+     * </p>
+     *
+     * @param supplier the supplier
+     */
+    static void setAuthenticationSupplier(final Supplier<Authentication> supplier) {
+        CURRENT_AUTHENTICATION.set(supplier);
+    }
 }

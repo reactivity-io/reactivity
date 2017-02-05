@@ -7,6 +7,50 @@ const fs = require('fs');
 const through = require('through2');
 const yaml = require('js-yaml');
 
+// Keep the global.config above any of the gulp-tasks that depend on it
+global.config = {
+    build: {
+        rootDirectory: 'dist',
+        bundledDirectory: 'bundled',
+        unbundledDirectory: 'unbundled',
+        // A bundled version will be vulcanized and sharded. An unbundled version will not have its files combined
+        // This is for projects using HTTP/2 server push.
+        bundleType: 'both'
+    },
+    // Path to your service worker, relative to the build root directory
+    serviceWorkerPath: 'service-worker.js',
+    // Service Worker precache options based on https://github.com/GoogleChrome/sw-precache#options-parameter
+    swPrecacheConfig: {
+        staticFileGlobs: [
+            '/index.html',
+            '/manifest.json',
+            '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
+            '/src/**/*.*',
+        ],
+        navigateFallback: '/index.html',
+        importScripts: ['/bower_components/sw-toolbox/sw-toolbox.js'],
+        runtimeCaching: [],
+        // See sample below for actual runtime caching:
+        //runtimeCaching: [{
+        //    urlPattern: /\/network-first\//,
+        //    handler: 'networkFirst'
+        //}, {
+        //    urlPattern: /\/cache-first\//,
+        //    handler: 'cacheFirst',
+        //    options: {
+        //        cache: {
+        //            maxEntries: 5,
+        //            name: 'cache-first'
+        //        }
+        //    }
+        //}],
+    }
+};
+
+const buildTask = require('./gulp_tasks/build.task.js');
+const project = require('./gulp_tasks/polymer-build.task.js');
+const clean = require('./gulp_tasks/clean.task.js');
+
 const options = {
     target: 'http://localhost:8080',
     changeOrigin: true,
@@ -15,7 +59,7 @@ const options = {
     }
 };
 
-var deleteFolderRecursive = (path) => {
+const deleteFolderRecursive = (path) => {
     if (fs.existsSync(path) ) {
         fs.readdirSync(path).forEach((file,index) => {
             var curPath = path + "/" + file;
@@ -113,3 +157,9 @@ gulp.task('dist-api-domain', (done) => {
 });
 
 gulp.task('dist', gulp.series("dist-clean", "dist-bower", "dist-src", "dist-index", "staticfile", "dist-api-domain"));
+
+gulp.task('dist2', gulp.series([
+  clean,
+  project.merge(buildTask.source, buildTask.dependencies),
+  project.serviceWorker,
+]));

@@ -19,6 +19,7 @@
 package io.reactivity.core.broadcaster.config;
 
 import io.reactivity.core.broadcaster.security.AuthenticationFilter;
+import io.reactivity.core.broadcaster.security.CorsFilter;
 import io.reactivity.core.broadcaster.security.ReactivityAuthenticationObjectFactory;
 import io.reactivity.core.broadcaster.session.ReactivitySessionScope;
 import io.reactivity.core.broadcaster.session.ReactivityUserDetailsService;
@@ -94,6 +95,18 @@ public class SecurityConfig {
 
     /**
      * <p>
+     * Creates a {@code WebFilter} configured the CORS for the API.
+     * </p>
+     *
+     * @return the filter
+     */
+    @Bean
+    WebFilter corsFilter() {
+        return new CorsFilter();
+    }
+
+    /**
+     * <p>
      * Returns a {@code UserDetailsService} that loads user information to be stored in the {@code Authentication}.
      * </p>
      *
@@ -103,5 +116,4 @@ public class SecurityConfig {
     UserDetailsService userDetailsService() {
         return new ReactivityUserDetailsService();
     }
-
 }

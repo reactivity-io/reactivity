@@ -122,10 +122,10 @@ gulp.task('staticfile', (done) => {
     done();
 });
 
-// This task expose in api-domain.json file the location of API endpoints to be consumed
+// This task expose in domain-api.json file the location of API endpoints to be consumed
 // This information is contained in the route attributes of manifest.yml, the CloudFoundry configuration file
 // The goal of this task is to parse the yaml file and extract the desired route into a file that will be uploaded on the HTTP server
-gulp.task('dist-api-domain', (done) => {
+gulp.task('dist-domain-api', (done) => {
     gulp.src(['../manifest.yml'])
         .pipe(through.obj((chunk, enc, cb) => {
             var doc = yaml.safeLoad(fs.readFileSync(chunk.path, 'utf8'));
@@ -138,7 +138,7 @@ gulp.task('dist-api-domain', (done) => {
                             index += ", ";
                         }
                         
-                        apiDomain += "'" + item.route + "'";
+                        apiDomain += '"https://' + item.route + '"';
                         
                         return true;
                     });
@@ -151,12 +151,12 @@ gulp.task('dist-api-domain', (done) => {
             
             cb(null, apiDomain + ']');
         }))
-        .pipe(fs.createWriteStream('./dist/api-domain.json'));
+        .pipe(fs.createWriteStream('./dist/domain-api.json'));
         
     done();
 });
 
-gulp.task('dist', gulp.series("dist-clean", "dist-bower", "dist-src", "dist-index", "staticfile", "dist-api-domain"));
+gulp.task('dist', gulp.series("dist-clean", "dist-bower", "dist-src", "dist-index", "staticfile", "dist-domain-api"));
 
 gulp.task('dist2', gulp.series([
   clean,

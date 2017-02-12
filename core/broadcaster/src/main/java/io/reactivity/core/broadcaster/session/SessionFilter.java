@@ -29,6 +29,8 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /**
  * <p>
  * This filter creates resolves a session a refer it in the server exchange attributes.
@@ -66,23 +68,30 @@ public class SessionFilter implements WebFilter {
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
         final HttpCookie cookie = exchange.getRequest().getCookies().getFirst("SESSION");
+        final String cookieValue;
 
-        if (cookie != null) {
-            ExpiringSession session = sessionRepository.getSession(cookie.getValue());
+        if (cookie == null) {
+            final String sessionId = UUID.randomUUID().toString();
+            exchange.getResponse().getHeaders().set("Set-Cookie", "SESSION=" + sessionId);
+            cookieValue = sessionId;
+        } else {
+            cookieValue = cookie.getValue();
+        }
 
-            if (session == null) {
-                session = new MapSession(cookie.getValue());
-                sessionRepository.save(session);
-            } else {
-                if (session.isExpired()) {
-                    logger.info("Session {} has expired, auto-refreshing...", session.getId());
-                }
+        ExpiringSession session = sessionRepository.getSession(cookieValue);
 
-                session.setLastAccessedTime(System.currentTimeMillis());
+        if (session == null) {
+            session = new MapSession(cookieValue);
+            sessionRepository.save(session);
+        } else {
+            if (session.isExpired()) {
+                logger.info("Session {} has expired, auto-refreshing...", session.getId());
             }
 
-            exchange.getAttributes().put(ExpiringSession.class.getName(), session);
+            session.setLastAccessedTime(System.currentTimeMillis());
         }
+
+        exchange.getAttributes().put(ExpiringSession.class.getName(), session);
 
         return chain.filter(exchange);
     }

@@ -104,9 +104,11 @@ public class RepositoryTest {
 
     /**
      * Tests version filtering.
+     *
+     * @throws InterruptedException if test fails
      */
     @Test
-    public void testVersions() {
+    public void testVersions() throws InterruptedException {
         final long start = System.currentTimeMillis();
         bucket.insert(JsonDocument.create(UUID.randomUUID().toString(), JsonObject.create()
                 .put("version", 10)
@@ -149,6 +151,9 @@ public class RepositoryTest {
                 .put("organization", "Organization/1")
                 .put("updated", start + 1)
                 .put("categories", JsonObject.create())));
+
+        // Wait a little bit and let couchbase store the document
+        Thread.sleep(300L);
 
         final List<ReactivityEntity> list = Flux.from(couchbaseReactivityRepository.findArtifactFromView(
                 new ArtifactView(

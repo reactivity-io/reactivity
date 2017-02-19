@@ -37,6 +37,9 @@ class ShellView extends mix(Polymer.Element).with(GlobalConst, Http) {
                 if (data.length) {
                     this.maxage = data[data.length - 1].updated - 1;
                     this.setProperties({artifacts: this.artifacts.concat(data), isLoading: false});
+                } else if (data.length == 0) {
+                    this.maxage = 0;
+                    this.setProperties({isLoading: false});
                 }
             });
     }

@@ -22,7 +22,12 @@ RUN \
      fontconfig \
      python \
      g++ \
+	 ruby \
+	 ruby-dev \
 	 build-essential && \
+		
+  # install travis
+  gem install travis && \
 	 
   # cleanup
   apt-get clean && \

@@ -1,3 +1,5 @@
+dist: trusty
+sudo: required
 language: java
 jdk:
   - oraclejdk8
@@ -8,8 +10,12 @@ env:
 before_install:
   - cp config/settings.xml ~/.m2/settings.xml
   - echo "MAVEN_OPTS='-Xmx1024m'" > ~/.mavenrc
+  - chmod +x script/*.sh
+  - 'if [ "$MODULE" = "core/broadcaster" ]; then ./script/install-couchbase.sh; fi'
 script: 
   - mvn -f $MODULE/pom.xml clean deploy
+after_script:
+  - 'if [ "$MODULE" = "core/broadcaster" ]; then sudo service couchbase-server stop; fi'
 deploy:
 - provider: cloudfoundry
   api: https://api.run.pivotal.io

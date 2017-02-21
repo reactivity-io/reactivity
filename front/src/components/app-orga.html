@@ -44,14 +44,15 @@
                 flex-direction: row;
                 padding: 0 15px;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: space-around;
             }
         </style>
         <div class="view" >
             <img src="data:image/png;base64,{{image}}"/>
-            <div class="card-footer">
-                {{name}}
-                <paper-button raised on-click="handleTap"><iron-icon icon="file-download"></iron-icon>open</paper-button>
+            <div class="card-footer" on-click="handleTap">
+                <span>{{name}}</span>
+                <paper-icon-button icon="file-download" raised></paper-icon-button>
+                <span>Open</span>
             </div>
         </div>
     </template>

@@ -57,22 +57,6 @@ const options = {
     }
 };
 
-const deleteFolderRecursive = (path) => {
-    if (fs.existsSync(path) ) {
-        fs.readdirSync(path).forEach((file,index) => {
-            var curPath = path + "/" + file;
-            
-            if( fs.lstatSync(curPath).isDirectory()) { // recurse
-                deleteFolderRecursive(curPath);
-            } else { // delete file
-                fs.unlinkSync(curPath);
-            }
-        });
-
-        fs.rmdirSync(path);
-    }
-};
-
 // Watch scss AND html files, doing different things with each.
 gulp.task('default', () => {
     // Serve files from the root of this project
@@ -92,27 +76,6 @@ gulp.task('default', () => {
             ]
         }
     });
-});
-
-gulp.task('dist-clean', (done) => {
-    deleteFolderRecursive('./dist');
-    done();
-});
-
-gulp.task('dist-bower', (done) => {    
-    gulp.src(['./bower_components/**/*.{js,html}'])
-        .pipe(gulp.dest("./dist/bower_components"));
-    done();
-});
-
-gulp.task('dist-src', (done) => {
-    gulp.src(['./src/**/*']).pipe(gulp.dest("./dist/src"));
-    done();
-});
-
-gulp.task('dist-index', (done) => {
-    gulp.src(['./index.html']).pipe(gulp.dest("./dist"));
-    done();
 });
 
 gulp.task('staticfile', (done) => {
@@ -154,8 +117,6 @@ gulp.task('dist-domain-api', (done) => {
     done();
 });
 
-gulp.task('dist', gulp.series("dist-clean", "dist-bower", "dist-src", "dist-index", "staticfile", "dist-domain-api"));
-
-gulp.task('dist2', gulp.series([
-    buildTask.build,
+gulp.task('dist', gulp.series([
+    buildTask.build, "staticfile", "dist-domain-api",
 ]));

@@ -15,27 +15,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
-package io.reactivity.core.broadcaster;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 /**
- * Bootstrap class.
- *
- * @author Guillaume DROUET
+ * Security package for the broadcaster micro service.
  */
-@SpringBootApplication
-public class Application {
-
-    /**
-     * Main.
-     *
-     * @param args ignored args
-     * @throws Exception if spring fails
-     */
-	public static void main(final String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
-}
+package io.reactivity.core.broadcaster.security;

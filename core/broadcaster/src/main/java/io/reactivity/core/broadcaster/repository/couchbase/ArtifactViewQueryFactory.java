@@ -18,8 +18,11 @@
 
 package io.reactivity.core.broadcaster.repository.couchbase;
 
+import io.reactivity.core.lib.Version;
 import io.reactivity.core.lib.ViewType;
 import io.reactivity.core.lib.event.ArtifactView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * <p>
@@ -30,12 +33,25 @@ import io.reactivity.core.lib.event.ArtifactView;
  * @author Guillaume DROUET
  * @since 0.1.0
  */
-enum ArtifactViewQueryFactory {
+@Component
+class ArtifactViewQueryFactory {
 
     /**
-     * Singleton.
+     * The application version.
      */
-    INSTANCE;
+    private final Version version;
+
+    /**
+     * <p>
+     * Build a new instance.
+     * </p>
+     *
+     * @param version the application version
+     */
+    @Autowired
+    public ArtifactViewQueryFactory(final Version version) {
+        this.version = version;
+    }
 
     /**
      * <p>
@@ -50,7 +66,7 @@ enum ArtifactViewQueryFactory {
 
         switch (type) {
             case LIST:
-                return new ListArtifactViewQuery(view);
+                return new ListArtifactViewQuery(view, version.getNumber(), version.isSnapshot());
             default:
                 throw new UnsupportedOperationException();
         }

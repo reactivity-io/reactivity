@@ -38,6 +38,11 @@ public class Event<T extends ReactivityEntity> {
     private final String version;
 
     /**
+     * Indicates if the version is a snapshot or not.
+     */
+    private final boolean snapshot;
+
+    /**
      * The event ID.
      */
     private final String id;
@@ -70,7 +75,8 @@ public class Event<T extends ReactivityEntity> {
         this.event = event;
         this.updated = data.getUpdated();
         this.data = data;
-        this.version = data.getVersion();
+        this.version = data.getVersion().getSemver();
+        this.snapshot = data.getVersion().isSnapshot();
     }
 
     /**
@@ -82,6 +88,17 @@ public class Event<T extends ReactivityEntity> {
      */
     public String getVersion() {
         return version;
+    }
+
+    /**
+     * <p>
+     * Indicates if the version is a snapshot or not.
+     * </p>
+     *
+     * @return {@code true} if the version is a snapshot, {@code false} otherwise
+     */
+    public boolean isSnapshot() {
+        return snapshot;
     }
 
     /**

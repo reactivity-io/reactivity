@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.UUID;
 
 /**
  * <p>
@@ -45,9 +44,7 @@ public class MockController {
      */
     @GetMapping("/")
     public ResponseEntity<String> index() throws IOException {
-        final String sessionId = UUID.randomUUID().toString();
         final HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add("Set-Cookie", "SESSION=" + sessionId);
         responseHeaders.set("Content-Type", "text/html");
 
         try (InputStreamReader isr = new InputStreamReader(resourceLoader.getResource(INDEX).getInputStream())) {

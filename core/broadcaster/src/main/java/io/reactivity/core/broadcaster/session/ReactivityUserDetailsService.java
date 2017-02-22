@@ -16,26 +16,30 @@
  */
 
 
-package io.reactivity.core.broadcaster;
+package io.reactivity.core.broadcaster.session;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import java.util.Collections;
 
 /**
- * Bootstrap class.
+ * <p>
+ * This {@code UserDetailsService} provides details object related to reactivity users.
+ * </p>
  *
  * @author Guillaume DROUET
+ * @since 0.1.0
  */
-@SpringBootApplication
-public class Application {
+public class ReactivityUserDetailsService implements UserDetailsService {
 
     /**
-     * Main.
-     *
-     * @param args ignored args
-     * @throws Exception if spring fails
+     * {@inheritDoc}
      */
-	public static void main(final String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
+    @Override
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        return new User(username, "", Collections.emptyList());
+    }
 }

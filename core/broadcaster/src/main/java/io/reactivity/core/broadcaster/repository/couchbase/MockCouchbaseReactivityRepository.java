@@ -20,6 +20,7 @@ package io.reactivity.core.broadcaster.repository.couchbase;
 
 import com.couchbase.client.java.Bucket;
 import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.Version;
 import io.reactivity.core.lib.ViewType;
 import io.reactivity.core.lib.event.ArtifactView;
 import io.reactivity.core.lib.event.Member;
@@ -27,7 +28,6 @@ import io.reactivity.core.lib.event.Organization;
 import io.reactivity.core.lib.event.Period;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
@@ -60,16 +60,24 @@ public class MockCouchbaseReactivityRepository extends CouchbaseReactvityReposit
     private ResourceLoader resourceLoader;
 
     /**
+     * The version.
+     */
+    @Autowired
+    private Version version;
+
+    /**
      * <p>
      * Builds a new repository.
      * </p>
      *
      * @param bucket the bucket
+     * @param artifactViewQueryFactory the factory that builds queries
      * @throws IOException if the repository is not able to initialize the views
      */
     @Autowired
-    public MockCouchbaseReactivityRepository(final Bucket bucket) throws IOException {
-        super(bucket);
+    public MockCouchbaseReactivityRepository(final Bucket bucket, final ArtifactViewQueryFactory artifactViewQueryFactory)
+            throws IOException {
+        super(bucket, artifactViewQueryFactory);
     }
 
     /**
@@ -87,7 +95,7 @@ public class MockCouchbaseReactivityRepository extends CouchbaseReactvityReposit
     public <T> Publisher<T> findViewsFromOrganization(final String organizationId, final Function<ReactivityEntity, T> mapper) {
         return RxReactiveStreams.toPublisher(
                 Observable.fromCallable(() -> new ArtifactView(
-                        "0.1.0-SNAPSHOT",
+                        version,
                         nextMockedId(),
                         nexMockTimestamp(),
                         organizationId,
@@ -103,7 +111,7 @@ public class MockCouchbaseReactivityRepository extends CouchbaseReactvityReposit
     @Override
     public <T> Publisher<T> findOrganizationsWithMember(final String memberId, final Function<ReactivityEntity, T> mapper) {
         return RxReactiveStreams.toPublisher(Observable.fromCallable(() -> new Organization(
-                "0.1.0-SNAPSHOT",
+                version,
                 "Organization/1",
                 nexMockTimestamp(),
                 "Reactivity",

@@ -19,6 +19,7 @@
 package io.reactivity.core.lib.event;
 
 import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.Version;
 
 /**
  * <p>
@@ -81,7 +82,7 @@ public class ArtifactView extends ReactivityEntity {
      * @param period the period covering the selected artifacts
      * @param type the view type
      */
-    public ArtifactView(final String version,
+    public ArtifactView(final Version version,
                         final String id,
                         final long timestamp,
                         final String organization,

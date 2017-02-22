@@ -16,26 +16,29 @@
  */
 
 
-package io.reactivity.core.broadcaster;
+package io.reactivity.core.broadcaster.security;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
 
 /**
- * Bootstrap class.
+ * <p>
+ * This filter configures CORS to allow the API to be consumed by any domain.
+ * </p>
  *
  * @author Guillaume DROUET
+ * @since 0.1.0
  */
-@SpringBootApplication
-public class Application {
+public class CorsFilter implements WebFilter {
 
     /**
-     * Main.
-     *
-     * @param args ignored args
-     * @throws Exception if spring fails
+     * {@inheritDoc}
      */
-	public static void main(final String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
+    @Override
+    public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
+        exchange.getResponse().getHeaders().set("Access-Control-Allow-Origin", "*");
+        return chain.filter(exchange);
+    }
 }

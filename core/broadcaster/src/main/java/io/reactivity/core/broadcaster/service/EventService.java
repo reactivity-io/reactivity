@@ -69,35 +69,44 @@ public class EventService {
      * @param viewId the view ID
      * @return the event flux
      */
-    public Flux<Event<ReactivityEntity>> loadArtifacts(final String viewId, final int limit, final long maxAge) {
+    public Flux<Event<ReactivityEntity>> loadArtifactsLteMaxAge(final String viewId, final int limit, final long maxAge) {
 
         // When the view is retrieve, update the period state to select artifacts according to parameters
-        final Function<ReactivityEntity, ReactivityEntity> periodAdapter =
-                v -> {
-                    if (v instanceof ArtifactView) {
-                        final ArtifactView cast = ArtifactView.class.cast(v);
-                        final Period p = cast.getPeriod();
+        return loadArtifacts(viewId, v -> {
+            if (v instanceof ArtifactView) {
+                final ArtifactView cast = ArtifactView.class.cast(v);
+                final Period p = cast.getPeriod();
 
-                        return new ArtifactView(cast, new Period(p.getFrom(), maxAge, limit, p.getCategory()));
-                    }
+                return new ArtifactView(cast, new Period(p.getFrom(), maxAge, limit, p.getCategory()));
+            }
 
-                    return v;
-                };
+            return v;
+        });
+    }
 
-        // Load the view and substitute the item to the corresponding artifacts
-        return Flux.from(repository.findViewById(viewId, periodAdapter))
-                .concatMap(v -> {
-                    if (v instanceof ArtifactView) {
-                        final ArtifactView cast = ArtifactView.class.cast(v);
-                        return repository.findArtifactFromView(cast, EventType.READ_ARTIFACT::newEvent);
-                    } else if (v instanceof Error) {
-                        return PublisherJust.just(EventType.ERROR.newEvent(v));
-                    }
+    /**
+     * <p>
+     * Loads all the artifacts matching the given view but with the specified period.
+     * </p>
+     *
+     * @param viewId the view ID
+     * @param limit maximum number of returned artifacts
+     * @param minAge lowest possible age for an artifact
+     * @return the event flux
+     */
+    public Flux<Event<ReactivityEntity>> loadArtifactsGteMinAge(final String viewId, final int limit, final long minAge) {
 
-                    // Handle artifact view or error only
-                    throw new IllegalArgumentException(
-                            String.format("Unsupported ReactivityEntity in this mapper: %s", v.getClass().getName()));
-                });
+        // When the view is retrieve, update the period state to select artifacts according to parameters
+        return loadArtifacts(viewId, v -> {
+            if (v instanceof ArtifactView) {
+                final ArtifactView cast = ArtifactView.class.cast(v);
+                final Period p = cast.getPeriod();
+
+                return new ArtifactView(cast, new Period(minAge, p.getTo(), limit, p.getCategory()));
+            }
+
+            return v;
+        });
     }
 
     /**
@@ -168,5 +177,33 @@ public class EventService {
                 });
             });
         });
+    }
+
+
+    /**
+     * <p>
+     * Loads all the artifacts matching the given view but with the period adapter.
+     * </p>
+     *
+     * @param viewId the view ID
+     * @param periodAdapter a function that changes the period
+     * @return the event flux
+     */
+    private Flux<Event<ReactivityEntity>> loadArtifacts(final String viewId,
+                                                        final Function<ReactivityEntity, ReactivityEntity> periodAdapter) {
+        // Load the view and substitute the item to the corresponding artifacts
+        return Flux.from(repository.findViewById(viewId, periodAdapter))
+                .concatMap(v -> {
+                    if (v instanceof ArtifactView) {
+                        final ArtifactView cast = ArtifactView.class.cast(v);
+                        return repository.findArtifactFromView(cast, EventType.READ_ARTIFACT::newEvent);
+                    } else if (v instanceof Error) {
+                        return PublisherJust.just(EventType.ERROR.newEvent(v));
+                    }
+
+                    // Handle artifact view or error only
+                    throw new IllegalArgumentException(
+                            String.format("Unsupported ReactivityEntity in this mapper: %s", v.getClass().getName()));
+                });
     }
 }

@@ -1,5 +1,5 @@
 /*
- * The MIT License (MIT) Copyright (c) 2016 The reactivity authors
+ * The MIT License (MIT) Copyright (c) 2017 The reactivity authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
  * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -19,11 +19,16 @@
 package io.reactivity.core.broadcaster.web;
 
 import io.reactivity.core.broadcaster.service.EventService;
+import io.reactivity.core.broadcaster.session.ReactivitySessionScope;
 import io.reactivity.core.lib.event.Event;
 import io.reactivity.core.lib.event.Organization;
 import io.reactivity.core.lib.ReactivityEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 /**
@@ -35,13 +40,32 @@ import reactor.core.publisher.Flux;
  * @since 0.1.0
  */
 @RestController
+@Scope(ReactivitySessionScope.REACTIVITY_SESSION)
 public class EventController {
 
     /**
      * The service.
      */
+    private final EventService eventService;
+
+    /**
+     * Current authentication.
+     */
+    private final Authentication authentication;
+
+    /**
+     * <p>
+     * Builds a new instance.
+     * </p>
+     *
+     * @param eventService the event service
+     * @param authentication the current authentication
+     */
     @Autowired
-    private EventService eventService;
+    public EventController(final EventService eventService, final Authentication authentication) {
+        this.eventService = eventService;
+        this.authentication = authentication;
+    }
 
     /**
      * <p>
@@ -49,16 +73,34 @@ public class EventController {
      * </p>
      *
      * @param viewId the view ID
-     * @param limit  maximum number of returned artifacts
+     * @param limit maximum number of returned artifacts
      * @param maxAge highest possible age for an artifact
      * @return the event flux
      */
     @GetMapping("/load/artifacts/{viewId}/limit/{limit}/maxage/{maxAge}")
-    Flux<Event<ReactivityEntity>> loadArtifacts(
+    Flux<Event<ReactivityEntity>> loadArtifactsLteMaxAge(
             @PathVariable(name = "viewId") final String viewId,
             @PathVariable(name = "limit") final int limit,
             @PathVariable(name = "maxAge") final long maxAge) {
-        return eventService.loadArtifacts(viewId, limit, maxAge);
+        return eventService.loadArtifactsLteMaxAge(viewId, limit, maxAge);
+    }
+
+    /**
+     * <p>
+     * Loads all the artifacts matching the given view but with the specified period.
+     * </p>
+     *
+     * @param viewId the view ID
+     * @param limit maximum number of returned artifacts
+     * @param minAge lowest possible age for an artifact
+     * @return the event flux
+     */
+    @GetMapping("/load/artifacts/{viewId}/limit/{limit}/minage/{minAge}")
+    Flux<Event<ReactivityEntity>> loadArtifactsGteMinAge(
+            @PathVariable(name = "viewId") final String viewId,
+            @PathVariable(name = "limit") final int limit,
+            @PathVariable(name = "minAge") final long minAge) {
+        return eventService.loadArtifactsGteMinAge(viewId, limit, minAge);
     }
 
     /**
@@ -66,14 +108,12 @@ public class EventController {
      * Loads the organizations as specified by {@link EventService#loadOrganizations(String)}.
      * </p>
      *
-     * @param sessionId the session ID
      * @return the organization event flux
      */
     @GetMapping("/load/organizations")
-    public Flux<Event<ReactivityEntity>> loadOrganizations(
-            @CookieValue(value = "SESSION", required = false) final String sessionId) {
-        // Retrieve the organizations: member ID can be an arbitrary value (here the session ID) as it is currently mocked
-        return eventService.loadOrganizations(sessionId);
+    public Flux<Event<ReactivityEntity>> loadOrganizations() {
+        // Retrieve the organizations: member ID can be an arbitrary value as it is currently mocked
+        return eventService.loadOrganizations(authentication.getName());
     }
 
     /**

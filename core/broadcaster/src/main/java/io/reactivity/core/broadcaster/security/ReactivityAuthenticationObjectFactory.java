@@ -16,26 +16,28 @@
  */
 
 
-package io.reactivity.core.broadcaster;
+package io.reactivity.core.broadcaster.security;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.security.core.Authentication;
 
 /**
- * Bootstrap class.
+ * <p>
+ * An {@code ObjectFactory} that simply gets the {@code Authentication}
+ * object provided by the {@link AuthenticationHolder}.
+ * </p>
  *
  * @author Guillaume DROUET
+ * @since 0.1.0
  */
-@SpringBootApplication
-public class Application {
+public class ReactivityAuthenticationObjectFactory implements ObjectFactory<Authentication> {
 
     /**
-     * Main.
-     *
-     * @param args ignored args
-     * @throws Exception if spring fails
+     * {@inheritDoc}
      */
-	public static void main(final String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
+    @Override
+    public Authentication getObject() throws BeansException {
+        return AuthenticationHolder.getCurrentAuthentication();
+    }
 }

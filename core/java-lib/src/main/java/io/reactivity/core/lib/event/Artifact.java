@@ -19,6 +19,7 @@
 package io.reactivity.core.lib.event;
 
 import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.Version;
 
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class Artifact extends ReactivityEntity {
      * @param views the views containing the artifact
      * @param categories the categories
      */
-    public Artifact(final String version,
+    public Artifact(final Version version,
                     final String id,
                     final long timestamp,
                     final List<String> views,

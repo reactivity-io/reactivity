@@ -48,8 +48,6 @@ global.config = {
 };
 
 const buildTask = require('./gulp_tasks/build.task.js');
-const project = require('./gulp_tasks/polymer-build.task.js');
-const clean = require('./gulp_tasks/clean.task.js');
 
 const options = {
     target: 'http://localhost:8080',
@@ -159,7 +157,5 @@ gulp.task('dist-domain-api', (done) => {
 gulp.task('dist', gulp.series("dist-clean", "dist-bower", "dist-src", "dist-index", "staticfile", "dist-domain-api"));
 
 gulp.task('dist2', gulp.series([
-  clean,
-  project.merge(buildTask.source, buildTask.dependencies),
-  project.serviceWorker,
+    buildTask.build,
 ]));

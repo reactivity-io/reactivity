@@ -1,3 +1,5 @@
+#!/bin/bash
+
 java -jar core/broadcaster/target/broadcaster-0.1.0-SNAPSHOT.jar&
 echo $! > script/broadcaster.pid
 cd front

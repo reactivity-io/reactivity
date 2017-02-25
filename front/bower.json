@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0",
-    "sw-toolbox": "^3.4.0"
+    "sw-toolbox": "3.4.0"
   },
   "resolutions": {
     "lodash": "^3.7.0",

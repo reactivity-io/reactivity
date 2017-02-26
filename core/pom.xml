@@ -16,6 +16,8 @@
         <!-- github server corresponds to entry in settings.xml -->
         <github.global.server>github</github.global.server>
         <site-maven-plugin.version>0.12</site-maven-plugin.version>
+
+        <source-plugin.version>3.0.1</source-plugin.version>
     </properties>
 
     <distributionManagement>
@@ -36,6 +38,24 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${source-plugin.version}</version>
+                <configuration>
+                    <excludeResources>true</excludeResources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                            <goal>aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- This plugin selects artifacts deployed locally and upload them to Github -->

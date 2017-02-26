@@ -1,0 +1,33 @@
+<link rel="import" href="../../../components/app-view.html">
+<dom-module id="s-organisation">
+    <template>
+        <style>
+            :host{
+                display: block;
+                height: calc(100vh - var(--topbar-height));
+                background-color: var(--app-greyscale-1);
+            }
+            .content {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+            .hidden {
+                display: none;
+            }
+        </style>
+        <div class="content">
+            <dom-repeat class="hidden" items="{{views}}">
+                <template>
+                    <app-view
+                            id="{{item.id}}"
+                            name="{{item.data.name}}"
+                            updated="{{item.updated}}"
+                            version="{{item.version}}">
+                    </app-view>
+                </template>
+            </dom-repeat>
+        </div>
+    </template>
+    <script src="organisation.js"></script>
+</dom-module>

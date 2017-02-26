@@ -1,0 +1,32 @@
+<link rel="import" href="../../../components/app-artifact-list.html">
+<dom-module id="s-view">
+    <template>
+        <style>
+            #content{
+                height: calc(100vh - var(--topbar-height));
+                overflow-y: auto;
+            }
+        </style>
+        <div id="content">
+            <dom-repeat items="{{artifacts}}">
+                <template>
+                    <app-artifact-list
+                            id="{{item.id}}"
+                            description="{{item.data.categories.description}}"
+                            category="{{item.data.categories.category}}"
+                            priority="{{item.data.categories.priority}}"
+                            assignee="{{item.data.categories.assignee}}"
+                            updated="{{item.updated}}">
+                    </app-artifact-list>
+                </template>
+            </dom-repeat>
+
+            <dom-if if="[[isLoading]]">
+                <template>
+                    <app-artifact-list is-loading="{{isLoading}}"></app-artifact-list>
+                </template>
+            </dom-if>
+        </div>
+    </template>
+    <script src="view.js"></script>
+</dom-module>

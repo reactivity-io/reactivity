@@ -1,0 +1,27 @@
+{
+  "parser": "babel-eslint",
+  "ecmaFeatures": { "modules": true },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": "google", // supposedly good, ajusting some values below.
+  "rules": {
+    "arrow-body-style": ["error", "as-needed"],
+    "comma-dangle": 0, // too much
+    "no-console": 0,
+    "spaced-comment": 0, // sucks for code comments
+    "max-len": ["error", 120], // I don't code on my smartphone, need more than the default 80
+    "no-param-reassign": ["error", { "props": false }],
+    "require-jsdoc": 0,
+    "new-cap": 0,//Mixin don't need new
+    "no-unused-vars": 0 //Mixin have global def
+  },
+  "settings": {
+    "import/resolve": {
+      "extensions": [ ".js" ]
+    },
+    "import/parser": "babel-eslint"
+  }
+}

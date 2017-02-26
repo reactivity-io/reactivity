@@ -1,0 +1,31 @@
+<dom-module id="s-settings">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: calc(100vh - var(--topbar-height));
+                background-color: var(--app-greyscale-1);
+            }
+
+            #content {
+                color: white;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                flex-wrap: wrap;
+                padding: 0 130px;
+            }
+
+            .block {
+                width: 23%;
+                height: 100px;
+                margin-bottom: 1%;
+                background-color: var(--app-greyscale-3);
+            }
+        </style>
+        <div id="content">
+            Settings
+        </div>
+    </template>
+    <script src="./settings.js"></script>
+</dom-module>

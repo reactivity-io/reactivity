@@ -1,0 +1,20 @@
+{
+  "verbose": true,
+  "plugins": {
+    "sauce": {
+      "disabled": true,
+      "browsers": [
+        {
+          "browserName": "chrome",
+          "platform": "Windows 10",
+          "version": ""
+        }
+      ]
+    },
+    "local": {
+      "browsers": [
+        "chrome"
+      ]
+    }
+  }
+}

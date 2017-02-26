@@ -1,5 +1,11 @@
 applications:
  - name: reactivity-broadcaster
    memory: 512M
-   random-route: true
+   routes:
+   - route: reactivity-api.cfapps.io
    path: core/broadcaster/target/broadcaster-0.1.0-SNAPSHOT.jar
+ - name: reactivity-front
+   memory: 64M
+   routes:
+   - route: reactivity.cfapps.io
+   path: front/dist

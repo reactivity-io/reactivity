@@ -1,0 +1,63 @@
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<dom-module id="s-navbar">
+  <template>
+    <style>
+      .header {
+        background-color: var(--app-primary-color);
+        height: var(--topbar-height);
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1000;
+        font-weight: 400;
+        font-size: 1.5em;
+        display: flex;
+        align-items: center;
+        color: var(--app-greyscale-7);
+        padding: 0 var(--topbar-height);
+        overflow: hidden;
+        justify-content: space-between;
+        box-shadow: 0 5px 10px rgba(0,0,0,.15);
+      }
+
+      .horizontal-wrapper {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+        width: auto;
+        height: 55px;
+        margin-right: 10px;
+      }
+      a {
+        display: flex;
+        text-decoration: none;
+        color: var(--app-greyscale-7);
+      }
+
+    </style>
+    <div class="header">
+      <div class="horizontal-wrapper">
+        <a href="/" on-click="handlePrev" tabindex="-1">
+          <paper-icon-button icon="icons:arrow-back"></paper-icon-button>
+        </a>
+        <a href="/" class="horizontal-wrapper" on-click="handleClick">
+          <span>Reactivity</span>
+        </a>
+
+      </div>
+      <div class="horizontal-wrapper">
+        <a href="/settings" on-click="handleClick">
+          <paper-icon-button icon="icons:settings"></paper-icon-button>
+        </a>
+        <a href="/404" on-click="handleClick">
+          <paper-icon-button icon="icons:error-outline"></paper-icon-button>
+        </a>
+      </div>
+    </div>
+  </template>
+  <script src="navbar.js"></script>
+</dom-module>

@@ -1,4 +1,4 @@
-## Reactivity
+## Reactivity [![Build Status](https://travis-ci.org/reactivity-io/reactivity.svg?branch=master)](https://travis-ci.org/reactivity-io/reactivity)
 
 Reactivity is an open-source WEB application offering a visual way to manage your activity in a reactive manner.
 

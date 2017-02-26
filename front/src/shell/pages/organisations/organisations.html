@@ -1,0 +1,46 @@
+<link rel="import" href="../../../components/app-orga.html">
+
+<dom-module id="s-organisations">
+    <template>
+        <style>
+            :host{
+                display: block;
+                height: calc(100vh - var(--topbar-height));
+                background-color: var(--app-greyscale-1);
+            }
+            #content {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                box-sizing: border-box;
+                background-color: var(--app-greyscale-1);
+            }
+
+            s-organisations {
+                max-width: calc(25% - 35px);
+                min-width: 325px;
+                margin: 20px 10px;
+            }
+
+            s-organisations:hover {
+                cursor: pointer;
+            }
+
+            .hidden {
+                display: none;
+            }
+        </style>
+        <div id="content">
+            <dom-repeat class="hidden" items="{{organisations}}">
+                <template>
+                    <app-orga
+                            id="{{item.id}}"
+                            name="{{item.data.name}}"
+                            image="{{item.data.picture}}">
+                    </app-orga>
+                </template>
+            </dom-repeat>
+        </div>
+    </template>
+    <script src="./organisations.js"></script>
+</dom-module>

@@ -1,0 +1,87 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html"/>
+<dom-module id="app-orga">
+    <template>
+        <style is="custom-style">
+            .view {
+                width: var(--card-width);
+                background-color: var(--app-primary-ligth);
+                display: flex;
+                position: relative;
+                border-radius: 2px;
+                box-sizing: border-box;
+                overflow: hidden;
+                cursor: pointer;
+                transition: box-shadow 200ms;
+                transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+                color: var(--app-greyscale-7);
+                border: none;
+                flex-direction: column;
+            }
+
+            .view:hover {
+                box-shadow: 0 5px 10px rgba(0, 0, 0, .15);
+            }
+
+            .view img {
+                height: var(--card-img-heigth);
+            }
+
+            paper-button {
+                background-color: var(--app-primary-dark);
+                height: 30px;
+                font-size: 13px;
+            }
+
+            iron-icon {
+                width: 15px;
+                height: 15px;
+            }
+
+            .card-footer {
+                height: var(--card-footer-heigth);
+                display: flex;
+                flex-direction: row;
+                padding: 0 15px;
+                align-items: center;
+                justify-content: space-around;
+            }
+        </style>
+        <div class="view" >
+            <img src="data:image/png;base64,{{image}}"/>
+            <div class="card-footer" on-click="handleTap">
+                <span>{{name}}</span>
+                <paper-icon-button icon="file-download" raised></paper-icon-button>
+                <span>Open</span>
+            </div>
+        </div>
+    </template>
+    <script>
+        // Extend Polymer.Element base class
+        class AppOrga extends Polymer.Element {
+            static get is() {
+                return 'app-orga';
+            }
+
+            static get config() {
+                return {
+                    properties: {
+                        id: String,
+                        name: String,
+                        image: String
+                    }
+                };
+            }
+
+            handleTap(e) {
+                //TODO: check with GIUM struct of organisation's ID "Organisation/1"
+                var decodeUrl = this.id.split('/');
+                var orgaId = decodeUrl[decodeUrl.length - 1];
+                e.preventDefault();
+                document.dispatchEvent(new CustomEvent('nav', {detail: {path: `/organisation/${orgaId}`}}));
+            }
+        }
+        // Register custom element definition using standard platform API
+        customElements.define(AppOrga.is, AppOrga);
+    </script>
+</dom-module>

@@ -31,7 +31,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
@@ -53,7 +53,7 @@ import java.util.function.BiConsumer;
  * @since 0.1.0
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = "build.version=0.1.0")
 public class RepositoryTest {
 
@@ -144,7 +144,7 @@ public class RepositoryTest {
                 .put("categories", JsonObject.from(createCategories(id)))));
 
         // Wait a little bit and let couchbase store the document
-        Thread.sleep(300L);
+        Thread.sleep(400L);
 
         final List<ReactivityEntity> list = Flux.from(couchbaseReactivityRepository.findArtifactFromView(
                 new ArtifactView(

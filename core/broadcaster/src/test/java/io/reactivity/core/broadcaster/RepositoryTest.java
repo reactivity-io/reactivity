@@ -53,7 +53,7 @@ import java.util.function.BiConsumer;
  * @since 0.1.0
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @TestPropertySource(properties = "build.version=0.1.0")
 public class RepositoryTest {
 

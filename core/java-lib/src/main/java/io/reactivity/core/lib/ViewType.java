@@ -24,6 +24,7 @@ package io.reactivity.core.lib;
  * </p>
  *
  * @author Guillaume DROUET
+ * @since 0.1.0
  */
 public enum ViewType {
 

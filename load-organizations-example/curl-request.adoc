@@ -1,0 +1,4 @@
+[source,bash]
+----
+$ curl 'http://your-reactivity-server/load/organizations' -i
+----

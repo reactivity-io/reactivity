@@ -1,0 +1,52 @@
+|===
+|Path|Type|Description
+
+|`[].version`
+|`String`
+|The application version corresponding to the wrapped entity.
+
+|`[].snapshot`
+|`Boolean`
+|If the application that generated this entity is a snapshot.
+
+|`[].id`
+|`String`
+|The entity ID.
+
+|`[].event`
+|`String`
+|The type of event.
+
+|`[].updated`
+|`Number`
+|When the entity was updated.
+
+|`[].version`
+|`String`
+|The application version corresponding to the wrapped entity.
+
+|`[].snapshot`
+|`Boolean`
+|If the application that generated this entity is a snapshot.
+
+|`[].id`
+|`String`
+|The entity ID.
+
+|`[].event`
+|`String`
+|The type of event.
+
+|`[].updated`
+|`Number`
+|When the entity was updated.
+
+|`[].data.views`
+|`Array`
+|The ID of views that are able to display the artifact.
+
+|`[].data.categories`
+|`Object`
+|The categories (a simple key/value pair) defined in the artifact.
+
+|===

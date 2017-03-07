@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 237
+
+[{"version":"1.0.0","snapshot":false,"id":"a319af21-1d46-4a14-9e5a-75454941d3d9","event":"READ_VIEW","updated":1,"data":{"organization":"my-org","name":"my-view","period":{"from":0,"to":1,"limit":10,"category":"dueDate"},"type":"LIST"}}]
+----

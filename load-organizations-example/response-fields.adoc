@@ -1,0 +1,44 @@
+|===
+|Path|Type|Description
+
+|`[].version`
+|`String`
+|The application version corresponding to the wrapped entity.
+
+|`[].snapshot`
+|`Boolean`
+|If the application that generated this entity is a snapshot.
+
+|`[].id`
+|`String`
+|The entity ID.
+
+|`[].event`
+|`String`
+|The type of event.
+
+|`[].updated`
+|`Number`
+|When the entity was updated.
+
+|`[].data.name`
+|`String`
+|The organization name.
+
+|`[].data.picture`
+|`String`
+|The base64 representation of the organization avatar.
+
+|`[].data.members`
+|`Array`
+|The organization's members.
+
+|`[].data.members[].id`
+|`String`
+|The member ID.
+
+|`[].data.members[].role`
+|`String`
+|The member role.
+
+|===

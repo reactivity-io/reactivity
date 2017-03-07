@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 162
+
+[{"version":"1.0.0","snapshot":false,"id":"2e89f1a4-0cd3-41ae-bc57-6c29765c31e2","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
+----

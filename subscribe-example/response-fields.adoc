@@ -1,0 +1,56 @@
+|===
+|Path|Type|Description
+
+|`[].version`
+|`String`
+|The application version corresponding to the wrapped entity.
+
+|`[].snapshot`
+|`Boolean`
+|If the application that generated this entity is a snapshot.
+
+|`[].id`
+|`String`
+|The entity ID.
+
+|`[].event`
+|`String`
+|The type of event.
+
+|`[].updated`
+|`Number`
+|When the entity was updated.
+
+|`[].data.name`
+|`String`
+|The view name.
+
+|`[].data.organization`
+|`String`
+|The organization ID.
+
+|`[].data.period`
+|`Object`
+|The period defined for that view.
+
+|`[].data.period.from`
+|`Number`
+|From when the period starts.
+
+|`[].data.period.to`
+|`Number`
+|When the period ends.
+
+|`[].data.period.limit`
+|`Number`
+|Limit the number of results (if 'from' or 'to' is undefined).
+
+|`[].data.period.category`
+|`String`
+|The optional category containing a date to test with the period (updated by default).
+
+|`[].data.type`
+|`String`
+|The type of view.
+
+|===

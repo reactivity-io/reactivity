@@ -1,0 +1,28 @@
+|===
+|Path|Type|Description
+
+|`[].version`
+|`String`
+|The application version corresponding to the wrapped entity.
+
+|`[].snapshot`
+|`Boolean`
+|If the application that generated this entity is a snapshot.
+
+|`[].id`
+|`String`
+|The entity ID.
+
+|`[].event`
+|`String`
+|The type of event.
+
+|`[].updated`
+|`Number`
+|When the entity was updated.
+
+|`[].data.message`
+|`String`
+|The message
+
+|===

@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 233
+
+[{"version":"1.0.0","snapshot":false,"id":"9a863254-eb2d-4762-93b0-b07d4bd42ee8","event":"READ_ORGANIZATION","updated":1,"data":{"name":"my-org","picture":"","members":[{"id":"d70d9937-4df1-4248-854b-a1b221685e84","role":"ADMIN"}]}}]
+----

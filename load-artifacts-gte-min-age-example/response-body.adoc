@@ -1,0 +1,4 @@
+[source,options="nowrap"]
+----
+[{"version":"1.0.0","snapshot":false,"id":"d17396d5-3e09-4dab-bac2-0474097b423d","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
+----

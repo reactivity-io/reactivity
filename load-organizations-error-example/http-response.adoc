@@ -1,0 +1,8 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 160
+
+[{"version":"0.1.0","snapshot":true,"id":"08dcebf4-a87e-49ed-8411-37d66d562563","event":"ERROR","updated":1488900472564,"data":{"message":"An error message."}}]
+----

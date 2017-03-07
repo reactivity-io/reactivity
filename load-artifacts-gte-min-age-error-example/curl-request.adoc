@@ -1,0 +1,4 @@
+[source,bash]
+----
+$ curl 'http://your-reactivity-server/load/artifacts/myView/limit/1/minage/1' -i
+----

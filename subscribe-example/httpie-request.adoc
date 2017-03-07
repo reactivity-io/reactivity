@@ -1,0 +1,4 @@
+[source,bash]
+----
+$ http GET 'http://your-reactivity-server/subscribe/1'
+----

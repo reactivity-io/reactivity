@@ -4,5 +4,5 @@ HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
 Content-Length: 233
 
-[{"version":"1.0.0","snapshot":false,"id":"9a863254-eb2d-4762-93b0-b07d4bd42ee8","event":"READ_ORGANIZATION","updated":1,"data":{"name":"my-org","picture":"","members":[{"id":"d70d9937-4df1-4248-854b-a1b221685e84","role":"ADMIN"}]}}]
+[{"version":"1.0.0","snapshot":false,"id":"1045892e-4f37-4a9d-ae65-7b262501f8e3","event":"READ_ORGANIZATION","updated":1,"data":{"name":"my-org","picture":"","members":[{"id":"901ec6cb-82fc-41d2-9b8d-f3214bf05cfb","role":"ADMIN"}]}}]
 ----

@@ -43,6 +43,6 @@
 
 |`[].data.message`
 |`String`
-|The message
+|The error message.
 
 |===

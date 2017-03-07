@@ -4,5 +4,5 @@ HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
 Content-Length: 162
 
-[{"version":"1.0.0","snapshot":false,"id":"d17396d5-3e09-4dab-bac2-0474097b423d","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
+[{"version":"1.0.0","snapshot":false,"id":"fb09f703-ab77-4915-a1f1-110b498f4464","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
 ----

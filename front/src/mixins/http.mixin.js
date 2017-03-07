@@ -1,26 +1,27 @@
-let Http = (superclass) => class extends superclass {
-    fetch(method, url) {
+let Http = (superclass) => class extends mix(superclass).with(GlobalConst){
+    fetchReactivity(method, url) {
         const deferred = Q.defer();
         const req = new XMLHttpRequest();
-
-        req.open(method, url, true);
-        req.onreadystatechange = () => {
-            if (req.readyState == 4) {
-                if (req.status == 200) {
-                    try {
-                        const retval = JSON.parse(req.responseText);
-                        deferred.resolve(retval);
-                    } catch (e) {
-                        deferred.reject(e.message);
-                        this.dispatchCustomError(e.message);
+        this.wsURL.then((api_domain) => {
+            req.open(method, `${api_domain}${url}`, true);
+            req.onreadystatechange = () => {
+                if (req.readyState == 4) {
+                    if (req.status == 200) {
+                        try {
+                            const retval = JSON.parse(req.responseText);
+                            deferred.resolve(retval);
+                        } catch (e) {
+                            deferred.reject(e.message);
+                            this.dispatchCustomError(e.message);
+                        }
+                    } else {
+                        deferred.reject(req.responseText);
+                        this.dispatchRequestError(req);
                     }
-                } else {
-                    deferred.reject(req.responseText);
-                    this.dispatchRequestError(req);
                 }
-            }
-        };
-        req.send(null);
+            };
+            req.send(null);
+        });
 
         return deferred.promise;
     }

@@ -15,7 +15,8 @@
     "paper-icon-button": "2.0-preview",
     "app-router": "blasten/app-router#master",
     "lodash": "^4.17.4",
-    "q": "^1.4.1"
+    "q": "^1.4.1",
+    "webcomponentsjs": "v1.0.0-rc.4"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0",
@@ -23,7 +24,6 @@
   },
   "resolutions": {
     "lodash": "^3.7.0",
-    "polymer": "2.0-preview",
-    "webcomponentsjs": "v1"
+    "polymer": "2.0-preview"
   }
 }

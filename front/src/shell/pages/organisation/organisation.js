@@ -13,7 +13,7 @@ class ShellOrganisation extends mix(Polymer.Element).with(GlobalConst, Http) {
         super.connectedCallback();
 
         if (this.id) {
-            this.fetch('GET', `${this.wsURL}/subscribe/${this.id}`).then((data) => {
+            this.fetchReactivity('GET', `/subscribe/${this.id}`).then((data) => {
                 const groups = _.groupBy(data, 'event');
                 this.setProperties({views: groups['READ_VIEW'], artifacts: groups['READ_ARTIFACT']});
             });

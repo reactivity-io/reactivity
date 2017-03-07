@@ -112,6 +112,7 @@
 
             constructor() {
                 super();
+
                 this.defaultColor = [
                     {
                         primary: '#081B28',
@@ -132,6 +133,11 @@
                         primary: '#BF4B60',
                         primaryDark: '#32A6AE',
                         primaryLight: '#D9C58B',
+                    },
+                    {
+                        primary: '#2F2F2F',
+                        primaryDark: '#5B5B5B',
+                        primaryLight: '#A4A4A4',
                     }
                 ];
                 this.greyscales = [
@@ -183,6 +189,12 @@
 
             init(ctrl) {
                 this.ctrl = ctrl;
+
+                if (!navigator.onLine) {
+                    this.ctrl.updateStyles({'--app-primary-color': '#2F2F2F'});
+                    this.ctrl.updateStyles({'--app-primary-dark': '#5B5B5B'});
+                    this.ctrl.updateStyles({'--app-primary-ligth': '#A4A4A4'});
+                }
             }
 
             changeColor(e) {

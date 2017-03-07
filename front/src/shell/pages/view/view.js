@@ -32,7 +32,7 @@ class ShellView extends mix(Polymer.Element).with(GlobalConst, Http) {
     }
 
     fetchNextData(limit, maxage) {
-        this.fetch('GET', `${this.wsURL}/load/artifacts/${this.id}/limit/${limit}/maxage/${maxage}`)
+        this.fetchReactivity('GET', `/load/artifacts/${this.id}/limit/${limit}/maxage/${maxage}`)
             .then((data) => {
                 if (data.length) {
                     this.maxage = data[data.length - 1].updated - 1;

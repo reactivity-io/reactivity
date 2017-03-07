@@ -6,44 +6,46 @@
 
 <dom-module id="s-reactivity">
     <template>
-        <style>
-            body {
-                margin: 0;
-                font-family: 'Roboto', 'Noto', sans-serif;
-                background-color: var(--app-greyscale-1);
-            }
+        <custom-style>
+            <style>
+                body {
+                    margin: 0;
+                    font-family: 'Roboto', 'Noto', sans-serif;
+                    background-color: var(--app-greyscale-1);
+                }
 
-            :host {
-                margin: 0;
-                display: block;
-                height: 100vh;
-                font-family: 'Roboto', 'Noto', sans-serif;
+                :host {
+                    margin: 0;
+                    display: block;
+                    height: 100vh;
+                    font-family: 'Roboto', 'Noto', sans-serif;
 
-                --app-primary-color: #E8345A;
-                --app-primary-dark: #961632;
-                --app-primary-ligth: #E86F89;
+                    --app-primary-color: #E8345A;
+                    --app-primary-dark: #961632;
+                    --app-primary-ligth: #E86F89;
 
-                --app-greyscale-1: #2b2b2b;
-                --app-greyscale-2: #313335;
-                --app-greyscale-3: #3C3E3F;
-                --app-greyscale-4: #3c3f41;
-                --app-greyscale-5: #515658;
-                --app-greyscale-6: #65686A;
-                --app-greyscale-7: #FFFFFF;
+                    --app-greyscale-1: #2b2b2b;
+                    --app-greyscale-2: #313335;
+                    --app-greyscale-3: #3C3E3F;
+                    --app-greyscale-4: #3c3f41;
+                    --app-greyscale-5: #515658;
+                    --app-greyscale-6: #65686A;
+                    --app-greyscale-7: #FFFFFF;
 
-                --topbar-height: 65px;
+                    --topbar-height: 65px;
 
-                --card-width: 455px;
-                --card-img-heigth: 218px;
-                --card-footer-heigth: 56px;
+                    --card-width: 455px;
+                    --card-img-heigth: 218px;
+                    --card-footer-heigth: 56px;
 
-            }
+                }
 
-            #router {
-                top: var(--topbar-height);
-                position: relative;
-            }
-        </style>
+                #router {
+                    top: var(--topbar-height);
+                    position: relative;
+                }
+            </style>
+        </custom-style>
 
         <s-navbar></s-navbar>
         <app-router id="router" class="flex" mode="pushstate">
@@ -58,11 +60,11 @@
         </app-router>
         <color-konami id="konami"/>
     </template>
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/q/q.js"></script>
     <script src="./mixins/mixinBuilder.js"></script>
     <script src="./mixins/const.mixin.js"></script>
     <script src="./mixins/http.mixin.js"></script>
-    <script src="../bower_components/lodash/lodash.js"></script>
-    <script src="../bower_components/q/q.js"></script>
     <script>
         // Extend Polymer.Element base class
         class ReactivityShell extends Polymer.Element {
@@ -82,6 +84,7 @@
                 document.addEventListener('error', () => {
                     this.$.router.go('/404');
                 });
+
                 //No need to removeListener cause this is the main entry point of the application (if unmount no more fun)
             }
         }

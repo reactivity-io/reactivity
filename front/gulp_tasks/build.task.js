@@ -89,7 +89,7 @@ function build() {
           project: polymerProject,
           buildRoot: buildDirectory,
           bundled: true,
-          swPrecacheConfig: swPrecacheConfig
+          swPrecacheConfig
         });
       })
       .then(() => {

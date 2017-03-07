@@ -4,5 +4,5 @@ HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
 Content-Length: 398
 
-[{"version":"1.0.0","snapshot":false,"id":"bbfbdbf5-2fc9-42f1-aa29-a72adbe6fee1","event":"READ_VIEW","updated":1,"data":{"organization":"my-org","name":"my-view","period":{"from":0,"to":1,"limit":10,"category":"dueDate"},"type":"LIST"}},{"version":"1.0.0","snapshot":false,"id":"cce583c9-9df8-46d8-be12-33e6d172c3ff","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
+[{"version":"1.0.0","snapshot":false,"id":"99330acd-3871-4c1b-8562-6aec4d615fdf","event":"READ_VIEW","updated":1,"data":{"organization":"my-org","name":"my-view","period":{"from":0,"to":1,"limit":10,"category":"dueDate"},"type":"LIST"}},{"version":"1.0.0","snapshot":false,"id":"eadec5ed-0d0a-4faa-affb-97737702e4a3","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
 ----

@@ -1,4 +1,4 @@
 [source,options="nowrap"]
 ----
-[{"version":"0.1.0","snapshot":true,"id":"b44885a0-f569-4f4c-ac4e-5029508132e2","event":"ERROR","updated":1488904658470,"data":{"message":"An error message."}}]
+[{"version":"0.1.0","snapshot":true,"id":"5341655b-9ac9-4580-9911-5ce870ac398b","event":"ERROR","updated":1488906216387,"data":{"message":"An error message."}}]
 ----

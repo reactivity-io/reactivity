@@ -48,6 +48,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
@@ -193,13 +194,13 @@ public class ApiTest {
      */
     @Test
     public void subscribeTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newViewEvent()))
+        Mockito.doAnswer(invocation -> Arrays.asList(newViewEvent(), newArtifactEvent()))
                 .when(controller).subscribe(ArgumentMatchers.anyString());
 
         mockMvc.perform(get("/subscribe/1"))
                 .andExpect(status().isOk())
                 .andDo(document("subscribe-example",
-                        responseFields(eventFieldDescriptors(
+                        responseFields(merge(eventFieldDescriptors(
                                 fieldWithPath("[].data.name").description("The view name."),
                                 fieldWithPath("[].data.organization").description("The organization ID."),
                                 fieldWithPath("[].data.period").description("The period defined for that view."),
@@ -207,7 +208,8 @@ public class ApiTest {
                                 fieldWithPath("[].data.period.to").description("When the period ends."),
                                 fieldWithPath("[].data.period.limit").description("Limit the number of results (if 'from' or 'to' is undefined)."),
                                 fieldWithPath("[].data.period.category").description("The optional category containing a date to test with the period (updated by default)."),
-                                fieldWithPath("[].data.type").description("The type of view.")))));
+                                fieldWithPath("[].data.type").description("The type of view.")),
+                                artifactEventFieldDescriptors()))));
     }
 
     /**
@@ -296,7 +298,7 @@ public class ApiTest {
      * @return the field descriptor array
      */
     private FieldDescriptor[] errorEventFieldDescriptors() {
-        return eventFieldDescriptors(fieldWithPath("[].data.message").description("The message"));
+        return eventFieldDescriptors(fieldWithPath("[].data.message").description("The error message."));
     }
 
     /**
@@ -317,11 +319,7 @@ public class ApiTest {
                 fieldWithPath("[].updated").description("When the entity was updated."),
         };
 
-        final FieldDescriptor[] retval = new FieldDescriptor[eventFields.length + additionalFields.length];
-        System.arraycopy(eventFields, 0, retval, 0, eventFields.length);
-        System.arraycopy(additionalFields, 0, retval, eventFields.length, additionalFields.length);
-
-        return retval;
+        return merge(eventFields, additionalFields);
     }
 
     /**
@@ -335,5 +333,21 @@ public class ApiTest {
         return eventFieldDescriptors(
                 fieldWithPath("[].data.views").description("The ID of views that are able to display the artifact."),
                 fieldWithPath("[].data.categories").description("The categories (a simple key/value pair) defined in the artifact."));
+    }
+
+    /**
+     * <p>
+     * Merges the two given array.
+     * </p>
+     *
+     * @param a the first array
+     * @param b the second array
+     * @return the merge result
+     */
+    private FieldDescriptor[] merge(final FieldDescriptor[] a, final FieldDescriptor[] b) {
+        final FieldDescriptor[] retval = new FieldDescriptor[a.length + b.length];
+        System.arraycopy(a, 0, retval, 0, a.length);
+        System.arraycopy(b, 0, retval, a.length, b.length);
+        return retval;
     }
 }

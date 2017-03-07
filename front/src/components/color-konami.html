@@ -195,6 +195,18 @@
                     this.ctrl.updateStyles({'--app-primary-dark': '#5B5B5B'});
                     this.ctrl.updateStyles({'--app-primary-ligth': '#A4A4A4'});
                 }
+
+                window.addEventListener('online', () => {
+                    this.ctrl.updateStyles({'--app-primary-color': '#081B28'});
+                    this.ctrl.updateStyles({'--app-primary-dark': '#54898D'});
+                    this.ctrl.updateStyles({'--app-primary-ligth': '#E0E9DB'});
+                });
+
+                window.addEventListener('offline', () => {
+                    this.ctrl.updateStyles({'--app-primary-color': '#2F2F2F'});
+                    this.ctrl.updateStyles({'--app-primary-dark': '#5B5B5B'});
+                    this.ctrl.updateStyles({'--app-primary-ligth': '#A4A4A4'});
+                });
             }
 
             changeColor(e) {
@@ -220,6 +232,14 @@
                 this.ctrl.updateStyles({'--topbar-height': `${tobar}px`});
             }
         }
-        customElements.define(ColorKonami.is, ColorKonami);
+
+        customElements
+                .define(ColorKonami
+
+                                .is
+                        ,
+                        ColorKonami
+                )
+        ;
     </script>
 </dom-module>

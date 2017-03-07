@@ -22,7 +22,7 @@ module.exports = {
             handler: 'networkFirst',
             options: {
                 cache: {
-                    maxEntries: 5,
+                    // maxEntries: 5,
                     name: 'api'
                 }
             }
@@ -32,7 +32,7 @@ module.exports = {
             handler: 'networkFirst',
             options: {
                 cache: {
-                    maxEntries: 5,
+                    // maxEntries: 5,
                     name: 'api'
                 }
             }
@@ -42,25 +42,10 @@ module.exports = {
             handler: 'networkFirst',
             options: {
                 cache: {
-                    maxEntries: 5,
+                    // maxEntries: 5,
                     name: 'api'
                 }
             }
         }
     ]
-    // .
-    // See sample below for actual runtime caching:
-    //runtimeCaching: [{
-    //    urlPattern: /\/network-first\//,
-    //    handler: 'networkFirst'
-    //}, {
-    //    urlPattern: /\/cache-first\//,
-    //    handler: 'cacheFirst',
-    //    options: {
-    //        cache: {
-    //            maxEntries: 5,
-    //            name: 'cache-first'
-    //        }
-    //    }
-    //}],
 };

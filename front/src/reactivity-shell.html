@@ -5,6 +5,12 @@
 <link rel="import" href="shell/navbar/navbar.html">
 
 <dom-module id="s-reactivity">
+    <script src="../bower_components/lodash/lodash.js"></script>
+    <script src="../bower_components/q/q.js"></script>
+    <script src="./mixins/provider.mixin.js"></script>
+    <script src="./mixins/mixinBuilder.js"></script>
+    <script src="./mixins/const.mixin.js"></script>
+    <script src="./mixins/http.mixin.js"></script>
     <template>
         <custom-style>
             <style>
@@ -47,6 +53,7 @@
             </style>
         </custom-style>
 
+        <my-provider></my-provider>
         <s-navbar></s-navbar>
         <app-router id="router" class="flex" mode="pushstate">
             <app-route path="/" import="./src/shell/pages/organisations/organisations.html"
@@ -60,11 +67,6 @@
         </app-router>
         <color-konami id="konami"/>
     </template>
-    <script src="../bower_components/lodash/lodash.js"></script>
-    <script src="../bower_components/q/q.js"></script>
-    <script src="./mixins/mixinBuilder.js"></script>
-    <script src="./mixins/const.mixin.js"></script>
-    <script src="./mixins/http.mixin.js"></script>
     <script>
         // Extend Polymer.Element base class
         class ReactivityShell extends Polymer.Element {
@@ -75,8 +77,10 @@
             connectedCallback() {
                 super.connectedCallback();
                 console.log('%cWelcome to Reactivity!\n%cweb components are the <bees-knees>', "font-size:1.5em;color:#4558c9;", "color:#d61a7f;font-size:1em;")
+
                 this.$.konami.init(this);
                 //The application (My-app element) manage the routing so let him switch page :)
+
                 document.addEventListener('nav', (e) => {
                     this.$.router.go(e.detail.path);
                 });

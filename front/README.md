@@ -37,3 +37,9 @@ launch e2e test
 ```sh
 npm run e2e
 ```
+
+
+[ ] refactor color konami
+[ ] change/clean import (global vs singleton)
+[ ] IOC
+[ ] don't call artifact ws the first time, consider artifacts already get from the view (limit 100)

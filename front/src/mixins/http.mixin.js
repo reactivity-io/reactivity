@@ -2,6 +2,7 @@ let Http = (superclass) => class extends mix(superclass).with(GlobalConst){
     fetchReactivity(method, url) {
         const deferred = Q.defer();
         const req = new XMLHttpRequest();
+
         this.wsURL.then((api_domain) => {
             req.open(method, `${api_domain}${url}`, true);
             req.onreadystatechange = () => {

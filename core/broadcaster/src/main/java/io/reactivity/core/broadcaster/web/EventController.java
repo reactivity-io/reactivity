@@ -20,6 +20,8 @@ package io.reactivity.core.broadcaster.web;
 
 import io.reactivity.core.broadcaster.service.EventService;
 import io.reactivity.core.broadcaster.session.ReactivitySessionScope;
+import io.reactivity.core.lib.ReactivityEntity;
+import io.reactivity.core.lib.event.Event;
 import io.reactivity.core.lib.event.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -27,6 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 /**
  * <p>
@@ -75,7 +78,7 @@ public class EventController {
      * @return the event flux
      */
     @GetMapping("/load/artifacts/{viewId}/limit/{limit}/maxage/{maxAge}")
-    public Object loadArtifactsLteMaxAge(
+    public Flux<Event<ReactivityEntity>> loadArtifactsLteMaxAge(
             @PathVariable(name = "viewId") final String viewId,
             @PathVariable(name = "limit") final int limit,
             @PathVariable(name = "maxAge") final long maxAge) {
@@ -93,7 +96,7 @@ public class EventController {
      * @return the event flux
      */
     @GetMapping("/load/artifacts/{viewId}/limit/{limit}/minage/{minAge}")
-    public Object loadArtifactsGteMinAge(
+    public Flux<Event<ReactivityEntity>> loadArtifactsGteMinAge(
             @PathVariable(name = "viewId") final String viewId,
             @PathVariable(name = "limit") final int limit,
             @PathVariable(name = "minAge") final long minAge) {
@@ -108,7 +111,7 @@ public class EventController {
      * @return the organization event flux
      */
     @GetMapping("/load/organizations")
-    public Object loadOrganizations() {
+    public Flux<Event<ReactivityEntity>> loadOrganizations() {
         // Retrieve the organizations: member ID can be an arbitrary value as it is currently mocked
         return eventService.loadOrganizations(authentication.getName());
     }
@@ -122,7 +125,7 @@ public class EventController {
      * @return the event flux
      */
     @GetMapping("/subscribe/{organizationId}")
-    public Object subscribe(@PathVariable(name = "organizationId") final String organizationId) {
+    public Flux<Event<ReactivityEntity>> subscribe(@PathVariable(name = "organizationId") final String organizationId) {
         return eventService.subscribe(organizationId);
     }
 }

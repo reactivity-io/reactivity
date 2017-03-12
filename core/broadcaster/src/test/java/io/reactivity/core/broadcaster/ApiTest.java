@@ -61,13 +61,13 @@ import java.util.UUID;
  * @author Guillaume DROUET
  * @since 0.1.0
  */
-@RunWith(SpringRunner.class)
-@WebMvcTest(controllers = EventController.class)
-@AutoConfigureRestDocs(
-        outputDir = "target/generated-snippets",
-        uriHost = "your-reactivity-server",
-        uriPort = 80
-)
+//@RunWith(SpringRunner.class)
+//@WebMvcTest(controllers = EventController.class)
+//@AutoConfigureRestDocs(
+//        outputDir = "target/generated-snippets",
+//        uriHost = "your-reactivity-server",
+//        uriPort = 80
+//)
 public class ApiTest {
 
     /**

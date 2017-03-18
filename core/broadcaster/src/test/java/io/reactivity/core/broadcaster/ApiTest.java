@@ -36,6 +36,7 @@ import io.reactivity.core.lib.event.EventType;
 import io.reactivity.core.lib.event.Member;
 import io.reactivity.core.lib.event.Organization;
 import io.reactivity.core.lib.event.Period;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -61,13 +62,14 @@ import java.util.UUID;
  * @author Guillaume DROUET
  * @since 0.1.0
  */
-//@RunWith(SpringRunner.class)
-//@WebMvcTest(controllers = EventController.class)
-//@AutoConfigureRestDocs(
-//        outputDir = "target/generated-snippets",
-//        uriHost = "your-reactivity-server",
-//        uriPort = 80
-//)
+@RunWith(SpringRunner.class)
+@WebMvcTest(controllers = EventController.class)
+@AutoConfigureRestDocs(
+        outputDir = "target/generated-snippets",
+        uriHost = "your-reactivity-server",
+        uriPort = 80
+)
+@Ignore("Mock support for webflux tests not ready yet")
 public class ApiTest {
 
     /**

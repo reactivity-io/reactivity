@@ -1,14 +1,14 @@
 <!--Import polymer element once at the main element -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-router/app-router.html">
-<link rel="import" href="./components/color-konami.html">
+<link rel="import" href="./component/color-konami.html">
 <link rel="import" href="shell/navbar/navbar.html">
+<link rel="import" href="shell/store/redux-mixin.html">
 
 <dom-module id="s-reactivity">
-    <script src="./mixins/provider.mixin.js"></script>
-    <script src="./mixins/mixinBuilder.js"></script>
-    <script src="./mixins/const.mixin.js"></script>
-    <script src="./mixins/http.mixin.js"></script>
+    <script src="service/mixinBuilder.js"></script>
+    <script src="service/const.service.js"></script>
+    <script src="service/http.service.js"></script>
     <template>
         <custom-style>
             <style>
@@ -54,14 +54,14 @@
         <my-provider></my-provider>
         <s-navbar></s-navbar>
         <app-router id="router" class="flex" mode="pushstate">
-            <app-route path="/" import="./src/shell/pages/organisations/organisations.html"
+            <app-route path="/" import="./src/shell/page/organisations/organisations.html"
                        element="s-organisations"></app-route>
-            <app-route path="/settings" import="./src/shell/pages/settings/settings.html"
+            <app-route path="/settings" import="./src/shell/page/settings/settings.html"
                        element="s-settings"></app-route>
-            <app-route path="/organisation/:id" import="./src/shell/pages/organisation/organisation.html"
+            <app-route path="/organisation/:id" import="./src/shell/page/organisation/organisation.html"
                        element="s-organisation"></app-route>
-            <app-route path="/view/:id" import="./src/shell/pages/view/view.html" element="s-view"></app-route>
-            <app-route path="*" import="./src/shell/pages/404/view-404.html"></app-route>
+            <app-route path="/view/:id" import="./src/shell/page/view/view.html" element="s-view"></app-route>
+            <app-route path="*" import="./src/shell/page/404/view-404.html"></app-route>
         </app-router>
         <color-konami id="konami"/>
     </template>

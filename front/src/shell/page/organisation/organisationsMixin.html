@@ -1,0 +1,41 @@
+<link rel="import" href="../../store/redux-mixin.html">
+<script>
+  OrganisationsMixin = Parent => class OrganisationsMixin extends ReduxMixin(Parent) {
+    constructor() {
+      super();
+      this.http = Injector.requestProvider('http');
+    }
+
+    static get properties() {
+      return {
+        views: {
+          type: Array,
+          statePath(state) {
+            return _.filter(state.views, (o) => {
+              return o.data && o.data.organization === `Organization/${this.id}`;
+            });
+          }
+        }
+      };
+    }
+
+    fetchOrganisation(id) {
+      this.http.fetchReactivity('GET', `/subscribe/${id}`)
+          .then(data => {
+            const groups = _.groupBy(data, 'event');
+            this.dispatch({
+              type: 'FETCH_ORGANISATIONS_SUCCESS',
+              organisation: {
+                id: `Organization/${id}`,
+                views: groups['READ_VIEW'],
+                artifacts: groups['READ_ARTIFACT']
+              }
+            })
+          });
+
+      this.dispatch({
+        type: 'FETCH_ORGANISATIONS'
+      })
+    }
+  };
+</script>

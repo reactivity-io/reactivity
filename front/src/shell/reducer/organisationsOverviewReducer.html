@@ -1,0 +1,10 @@
+<script>
+  const organisationsOverviewReducer = (state = [], action) => {
+    switch (action.type) {
+      case 'FETCH_ORGANISATIONS_OVERVIEW_SUCCESS':
+        return [].concat(action.organisations);
+      default:
+        return state;
+    }
+  };
+</script>

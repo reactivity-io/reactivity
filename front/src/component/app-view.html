@@ -50,6 +50,14 @@
       static get is() {
         return 'app-view';
       }
+
+      static get properties() {
+        return {
+          name: {
+            type: String
+          }
+        }
+      }
       handleTap(e) {
         e.preventDefault();
         document.dispatchEvent(new CustomEvent('nav',{detail: {path: `/view/${this.id}`}}));

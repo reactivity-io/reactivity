@@ -2,11 +2,11 @@
   "entrypoint": "index.html",
   "shell": "src/reactivity-shell.html",
   "fragments": [
-    "src/shell/pages/404/view-404.html",
-    "src/shell/pages/organisation/organisation.html",
-    "src/shell/pages/organisations/organisations.html",
-    "src/shell/pages/settings/settings.html",
-    "src/shell/pages/view/view.html"
+    "src/shell/page/404/view-404.html",
+    "src/shell/page/organisation/organisation.html",
+    "src/shell/page/organisations/organisations.html",
+    "src/shell/page/settings/settings.html",
+    "src/shell/page/view/view.html"
   ],
   "sources": [
     "app/**/*"

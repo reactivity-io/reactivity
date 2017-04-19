@@ -1,0 +1,105 @@
+<link rel="import" href="../../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="../../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html"/>
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html"/>
+<dom-module id="app-orga">
+  <template>
+    <style is="custom-style">
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      paper-card {
+        margin: 5px;
+        max-width: 500px;
+        overflow: hidden;
+        background-color: var(--app-greyscale-7);
+        color: var(--app-greyscale-5);
+      }
+
+      .card-content {
+        flex: 3;
+        padding: 15px;
+        overflow: hidden;
+      }
+
+      .card-content p {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .orga-layout {
+        display: flex;
+        justify-content: space-between;
+        height: 100px;
+      }
+
+      .orga-image {
+        flex: 1;
+        background: no-repeat center;
+        background-size: 150%;
+      }
+
+      .header {
+        @apply(--paper-font-headline);
+      }
+
+      .light {
+        color: var(--paper-grey-600);
+      }
+    </style>
+    <paper-card>
+      <div class="orga-layout">
+        <div class="card-content">
+          <div class="header">{{name}}
+          </div>
+          <p class="light">Small plates, salads &amp; sandwiches in an intimate setting.</p>
+        </div>
+        <div class="orga-image" style="background-image: url(data:image/png;base64,{{image}});">
+        </div>
+      </div>
+      <div class="card-actions">
+        <div class="horizontal ">
+          <paper-icon-button icon="icons:users">{{members.langth}}</paper-icon-button>
+          <paper-button on-click="handleTap">Open</paper-button>
+        </div>
+      </div>
+    </paper-card>
+    <!--</div>-->
+  </template>
+  <script>
+    // Extend Polymer.Element base class
+    class AppOrga extends Polymer.Element {
+      static get is() {
+        return 'app-orga';
+      }
+
+      static get config() {
+        return {
+          properties: {
+            id: String,
+            name: String,
+            image: String
+          }
+        };
+      }
+
+      handleTap(e) {
+        //TODO: check with GIUM struct of organisation's ID "Organisation/1"
+        var decodeUrl = this.id.split('/');
+        var orgaId = decodeUrl[decodeUrl.length - 1];
+        e.preventDefault();
+        document.dispatchEvent(new CustomEvent('nav', {
+          detail: {
+            path: `/organisation/${orgaId}`
+          }
+        }));
+      }
+    }
+    // Register custom element definition using standard platform API
+    customElements.define(AppOrga.is, AppOrga);
+  </script>
+</dom-module>

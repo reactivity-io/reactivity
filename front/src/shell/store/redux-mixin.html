@@ -1,0 +1,25 @@
+<link rel="import" href="../../../bower_components/polymer-redux/polymer-redux.html"/>
+<link rel="import" href="../reducer/organisationsOverviewReducer.html"/>
+<link rel="import" href="../reducer/artifactReducer.html"/>
+<link rel="import" href="../reducer/viewReducer.html"/>
+
+<script>
+  const store = Redux.createStore(
+      createReducer(),
+      {},
+      Redux.compose(
+          Redux.applyMiddleware(ReduxThunk.default),
+          window.devToolsExtension ? window.devToolsExtension() : f => f
+      )
+  );
+
+  var ReduxMixin = PolymerRedux(store);
+
+  function createReducer() {
+    return Redux.combineReducers({
+      organisationsOverview: organisationsOverviewReducer,
+      artifacts: artifactsReducer,
+      views: viewsReducer
+    });
+  }
+</script>

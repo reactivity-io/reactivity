@@ -1,0 +1,72 @@
+<link rel="import" href="../../../component/app-orga.html">
+<link rel="import" href="../../../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="./organisationsOverviewMixin.html">
+
+<dom-module id="s-organisations">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: calc(100vh - var(--topbar-height));
+        background-color: var(--app-greyscale-1);
+      }
+
+      #content {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        /*justify-content: space-around;*/
+        box-sizing: border-box;
+        background-color: var(--app-greyscale-1);
+        padding: 20px;
+      }
+
+      s-organisations {
+        max-width: calc(25% - 35px);
+        min-width: 325px;
+        margin: 20px 10px;
+      }
+
+      s-organisations:hover {
+        cursor: pointer;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+
+    <div id="content">
+      <dom-repeat class="hidden" items="{{organisations}}">
+        <template>
+          <app-orga
+              id="{{item.id}}"
+              name="{{item.data.name}}"
+              image="{{item.data.picture}}">
+          </app-orga>
+        </template>
+      </dom-repeat>
+    </div>
+  </template>
+
+  <script>
+
+    class ShellOrganisations extends OrganisationsOverviewMixin(Polymer.Element) {
+      static get is() {
+        return 's-organisations';
+      }
+
+      constructor() {
+        super();
+      }
+
+      ready() {
+        super.ready();
+        this.fetchOrganisationsOverview();
+      }
+    }
+    // Register custom element definition using standard platform API
+    customElements.define(ShellOrganisations.is, ShellOrganisations);
+
+  </script>
+</dom-module>

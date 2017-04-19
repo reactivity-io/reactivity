@@ -1,0 +1,21 @@
+<script>
+  const artifactsReducer = (state = [], action) => {
+    switch (action.type) {
+      case 'FETCH_ORGANISATIONS_SUCCESS':
+      case 'FETCH_ARTIFACTS_SUCCESS':
+        if (action.artifacts || action.organisation.artifacts) {
+          //Add new artifact after subscribing form organization
+          const diff = _.differenceBy(
+              action.artifacts || action.organisation.artifacts,
+              state,
+              (a) => (a.id)
+          );
+          //Ignore intersection cause already handle by another subscriber
+          return state.concat(diff);
+        }
+        return state;
+      default:
+        return state;
+    }
+  };
+</script>

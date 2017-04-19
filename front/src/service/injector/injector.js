@@ -13,6 +13,19 @@ class ReactivityInjector {
     provide(key, factory) {
         this._providers.set(key, factory);
     }
+
+    requestProvider(key) {
+        const event = new CustomEvent('request-provider',
+            {
+                detail: {key},
+                bubble: true,
+                cancelable: true
+            }
+        );
+
+        document.dispatchEvent(event);
+        return event.detail.provider;
+    }
 }
 
 const Injector = new ReactivityInjector();

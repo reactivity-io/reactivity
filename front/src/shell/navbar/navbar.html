@@ -19,7 +19,7 @@
         padding: 0 var(--topbar-height);
         overflow: hidden;
         justify-content: space-between;
-        box-shadow: 0 5px 10px rgba(0,0,0,.15);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .15);
       }
 
       .horizontal-wrapper {
@@ -32,6 +32,7 @@
         height: 55px;
         margin-right: 10px;
       }
+
       a {
         display: flex;
         text-decoration: none;
@@ -41,6 +42,8 @@
     </style>
     <div class="header">
       <div class="horizontal-wrapper">
+        <paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button>
+
         <a href="/" on-click="handlePrev" tabindex="-1">
           <paper-icon-button icon="icons:arrow-back"></paper-icon-button>
         </a>
@@ -59,5 +62,24 @@
       </div>
     </div>
   </template>
-  <script src="navbar.js"></script>
+  <script>
+    class ShellNavbar extends Polymer.Element {
+      static get is() {
+        return 's-navbar';
+      }
+
+      handleClick(e) {
+        e.preventDefault();
+        document.dispatchEvent(new CustomEvent('nav', {detail: {path: e.currentTarget.pathname}}));
+      }
+
+      handlePrev(e) {
+        e.preventDefault();
+        window.history.back();
+      }
+    }
+
+    // Register custom element definition using standard platform API
+    customElements.define(ShellNavbar.is, ShellNavbar);
+  </script>
 </dom-module>

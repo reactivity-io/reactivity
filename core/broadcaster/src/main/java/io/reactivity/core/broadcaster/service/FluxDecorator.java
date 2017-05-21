@@ -86,8 +86,9 @@ public class FluxDecorator {
      */
     Flux<Event<ReactivityEntity>> decorate(final Flux<Event<ReactivityEntity>> flux, final String log) {
         return flux.timeout(TIMEOUT, PublisherJust.fromCallable(Error::timeoutEvent))
-                .doOnError(t -> logger.error("Intercepted Flux error", t))
-                .switchOnError(PublisherJust.fromCallable(Error::exceptionEvent))
-                .log(log);
+                .onErrorResume(err -> {
+                    logger.error("Intercepted Flux error", err);
+                    return PublisherJust.fromCallable(Error::exceptionEvent);
+                }).log(log);
     }
 }

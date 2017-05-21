@@ -21,8 +21,8 @@
         <couchbase-client.version>2.3.4</couchbase-client.version>
         <rxjava.version>1.1.9</rxjava.version>
         <rxjava-reactive-streams.version>1.1.1</rxjava-reactive-streams.version>
-        <reactor-core.version>3.0.4.RELEASE</reactor-core.version>
-        <spring-boot-dependencies.version>2.0.0.BUILD-SNAPSHOT</spring-boot-dependencies.version>
+        <spring-boot-dependencies.version>2.0.0.M1</spring-boot-dependencies.version>
+        <projectreactor.version>Aluminium-SR1</projectreactor.version>
         <spring-web-reactive.version>0.1.0.BUILD-SNAPSHOT</spring-web-reactive.version>
         <reactive-streams-common.version>0.6.0.BUILD-SNAPSHOT</reactive-streams-common.version>
         <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
@@ -35,6 +35,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-bom</artifactId>
+                <version>Aluminium-SR1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -80,7 +87,6 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>${reactor-core.version}</version>
         </dependency>
 
         <dependency>

@@ -17,7 +17,7 @@
     "app-router": "blasten/app-router#master",
     "lodash": "^4.17.4",
     "q": "^1.4.1",
-    "polymer-redux": "polymer-2"
+    "polymer-redux": "^1.0.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0",

@@ -24,7 +24,7 @@
     "sw-toolbox": "3.4.0"
   },
   "resolutions": {
-    "lodash": "4.0.0",
+    "lodash": "4.17.4",
     "webcomponentsjs": "v1.0.0-rc.6"
   }
 }

@@ -2,52 +2,52 @@
 <link rel="import" href="./organisationsMixin.html">
 
 <dom-module id="s-organisation">
-  <template>
-    <style>
-      :host {
-        display: block;
-        height: calc(100vh - var(--topbar-height));
-        background-color: var(--app-greyscale-1);
-      }
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: calc(100vh - var(--topbar-height));
+                background-color: var(--app-greyscale-1);
+            }
 
-      .content {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-      }
+            .content {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+            }
 
-      .hidden {
-        display: none;
-      }
-    </style>
-    <div class="content">
-      <dom-repeat class="hidden" items="{{views}}">
-        <template>
-          <app-view
-              id="{{item.id}}"
-              name="{{item.data.name}}"
-              updated="{{item.updated}}"
-              version="{{item.version}}">
-          </app-view>
-        </template>
-      </dom-repeat>
-    </div>
-  </template>
-  <script>
-    class ShellOrganisation extends OrganisationsMixin(Polymer.Element) {
-      static get is() {
-        return 's-organisation';
-      }
+            .hidden {
+                display: none;
+            }
+        </style>
+        <div class="content">
+            <dom-repeat class="hidden" items="{{views}}">
+                <template>
+                    <app-view
+                            id="{{item.id}}"
+                            name="{{item.data.name}}"
+                            updated="{{item.updated}}"
+                            version="{{item.version}}">
+                    </app-view>
+                </template>
+            </dom-repeat>
+        </div>
+    </template>
+    <script>
+        class ShellOrganisation extends OrganisationsMixin(Polymer.Element) {
+            static get is() {
+                return 's-organisation';
+            }
 
-      ready() {
-        super.ready();
-        if (this.id) {
-          this.fetchOrganisation(this.id);
+            ready() {
+                super.ready();
+                if (this.id) {
+                    this.fetchOrganisation(this.id);
+                }
+            }
         }
-      }
-    }
-    // Register custom element definition using standard platform API
-    customElements.define(ShellOrganisation.is, ShellOrganisation);
+        // Register custom element definition using standard platform API
+        customElements.define(ShellOrganisation.is, ShellOrganisation);
 
-  </script>
+    </script>
 </dom-module>

@@ -1,5 +1,5 @@
 "use strict";
-(function () {
+(function() {
     class Http {
         constructor() {
             this.GLOBAL_CONST = Injector.requestProvider('GLOBAL_CONST');

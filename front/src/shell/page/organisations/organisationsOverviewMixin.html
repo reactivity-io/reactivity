@@ -1,35 +1,35 @@
 <link rel="import" href="../../store/redux-mixin.html">
 <script>
-  OrganisationsOverviewMixin = Parent => class OrganisationsOverviewMixin extends ReduxMixin(Parent) {
-    constructor() {
-      super();
-      this.http = Injector.requestProvider('http');
-    }
-
-    static get properties() {
-      return {
-        organisations: {
-          type: Array,
-          statePath(state) {
-            return 'organisationsOverview';
-          }
+    OrganisationsOverviewMixin = Parent => class OrganisationsOverviewMixin extends ReduxMixin(Parent) {
+        constructor() {
+            super();
+            this.http = Injector.requestProvider('http');
         }
-      };
-    }
 
-    fetchOrganisationsOverview() {
-      // Fetch data and emit success
-      this.http.fetchReactivity('GET', `/load/organizations`)
-          .then(data => {
+        static get properties() {
+            return {
+                organisations: {
+                    type: Array,
+                    statePath(state) {
+                        return 'organisationsOverview';
+                    }
+                }
+            };
+        }
+
+        fetchOrganisationsOverview() {
+            // Fetch data and emit success
+            this.http.fetchReactivity('GET', `/load/organizations`)
+                .then(data => {
+                    this.dispatch({
+                        type: 'FETCH_ORGANISATIONS_OVERVIEW_SUCCESS',
+                        organisations: data
+                    })
+                });
+
             this.dispatch({
-              type: 'FETCH_ORGANISATIONS_OVERVIEW_SUCCESS',
-              organisations: data
+                type: 'FETCH_ORGANISATIONS_OVERVIEW'
             })
-          });
-
-      this.dispatch({
-        type: 'FETCH_ORGANISATIONS_OVERVIEW'
-      })
-    }
-  };
+        }
+    };
 </script>

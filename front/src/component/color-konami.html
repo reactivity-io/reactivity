@@ -191,55 +191,55 @@
                 this.ctrl = ctrl;
 
                 if (!navigator.onLine) {
-                    this.ctrl.updateStyles({'--app-primary-color': '#2F2F2F'});
-                    this.ctrl.updateStyles({'--app-primary-dark': '#5B5B5B'});
-                    this.ctrl.updateStyles({'--app-primary-ligth': '#A4A4A4'});
+                    this.ctrl.updateStyles({ '--app-primary-color': '#2F2F2F' });
+                    this.ctrl.updateStyles({ '--app-primary-dark': '#5B5B5B' });
+                    this.ctrl.updateStyles({ '--app-primary-ligth': '#A4A4A4' });
                 }
 
                 window.addEventListener('online', () => {
-                    this.ctrl.updateStyles({'--app-primary-color': '#081B28'});
-                    this.ctrl.updateStyles({'--app-primary-dark': '#54898D'});
-                    this.ctrl.updateStyles({'--app-primary-ligth': '#E0E9DB'});
+                    this.ctrl.updateStyles({ '--app-primary-color': '#081B28' });
+                    this.ctrl.updateStyles({ '--app-primary-dark': '#54898D' });
+                    this.ctrl.updateStyles({ '--app-primary-ligth': '#E0E9DB' });
                 });
 
                 window.addEventListener('offline', () => {
-                    this.ctrl.updateStyles({'--app-primary-color': '#2F2F2F'});
-                    this.ctrl.updateStyles({'--app-primary-dark': '#5B5B5B'});
-                    this.ctrl.updateStyles({'--app-primary-ligth': '#A4A4A4'});
+                    this.ctrl.updateStyles({ '--app-primary-color': '#2F2F2F' });
+                    this.ctrl.updateStyles({ '--app-primary-dark': '#5B5B5B' });
+                    this.ctrl.updateStyles({ '--app-primary-ligth': '#A4A4A4' });
                 });
             }
 
             changeColor(e) {
                 const colors = e.currentTarget.dataColors;
-                this.ctrl.updateStyles({'--app-primary-color': colors.primary});
-                this.ctrl.updateStyles({'--app-primary-dark': colors.primaryDark});
-                this.ctrl.updateStyles({'--app-primary-ligth': colors.primaryLight});
+                this.ctrl.updateStyles({ '--app-primary-color': colors.primary });
+                this.ctrl.updateStyles({ '--app-primary-dark': colors.primaryDark });
+                this.ctrl.updateStyles({ '--app-primary-ligth': colors.primaryLight });
             }
 
             changeGrey(e) {
                 const colors = e.currentTarget.dataColors;
-                this.ctrl.updateStyles({'--app-greyscale-1': colors.greyscale1});
-                this.ctrl.updateStyles({'--app-greyscale-2': colors.greyscale2});
-                this.ctrl.updateStyles({'--app-greyscale-3': colors.greyscale3});
-                this.ctrl.updateStyles({'--app-greyscale-4': colors.greyscale4});
-                this.ctrl.updateStyles({'--app-greyscale-5': colors.greyscale5});
-                this.ctrl.updateStyles({'--app-greyscale-6': colors.greyscale6});
-                this.ctrl.updateStyles({'--app-greyscale-7': colors.greyscale7});
+                this.ctrl.updateStyles({ '--app-greyscale-1': colors.greyscale1 });
+                this.ctrl.updateStyles({ '--app-greyscale-2': colors.greyscale2 });
+                this.ctrl.updateStyles({ '--app-greyscale-3': colors.greyscale3 });
+                this.ctrl.updateStyles({ '--app-greyscale-4': colors.greyscale4 });
+                this.ctrl.updateStyles({ '--app-greyscale-5': colors.greyscale5 });
+                this.ctrl.updateStyles({ '--app-greyscale-6': colors.greyscale6 });
+                this.ctrl.updateStyles({ '--app-greyscale-7': colors.greyscale7 });
             }
 
             changeTopbar(e) {
                 const tobar = e.currentTarget.value;
-                this.ctrl.updateStyles({'--topbar-height': `${tobar}px`});
+                this.ctrl.updateStyles({ '--topbar-height': `${tobar}px` });
             }
         }
 
         customElements
-                .define(ColorKonami
+            .define(ColorKonami
 
-                                .is
-                        ,
-                        ColorKonami
-                )
+                    .is
+                ,
+                ColorKonami
+            )
         ;
     </script>
 </dom-module>

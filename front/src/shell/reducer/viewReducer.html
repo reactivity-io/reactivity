@@ -1,17 +1,17 @@
 <script>
-  const viewsReducer = (state = [], action) => {
-    if (!state) return [];
-    switch (action.type) {
-      case 'FETCH_ORGANISATIONS_SUCCESS':
-        if (action.organisation.views.length) {
-          //Add new artifact after subscribing form organization
-          const diff = _.differenceBy(action.organisation.views, state, (a) => (a.id));
-          //Ignore intersection cause already handle by another subscriber
-          return state.concat(diff);
+    const viewsReducer = (state = [], action) => {
+        if (!state) return [];
+        switch (action.type) {
+            case 'FETCH_ORGANISATIONS_SUCCESS':
+                if (action.organisation.views.length) {
+                    //Add new artifact after subscribing form organization
+                    const diff = _.differenceBy(action.organisation.views, state, (a) => (a.id));
+                    //Ignore intersection cause already handle by another subscriber
+                    return state.concat(diff);
+                }
+                return state;
+            default:
+                return state;
         }
-        return state;
-      default:
-        return state;
-    }
-  };
+    };
 </script>

@@ -1,42 +1,42 @@
 <link rel="import" href="../../store/redux-mixin.html">
 <script>
-  ViewMixin = Parent => class ViewMixin extends ReduxMixin(Parent) {
-    constructor() {
-      super();
-      this.http = Injector.requestProvider('http');
-    }
-
-    static get properties() {
-      return {
-        id: {
-          type: String
-        },
-        artifacts: {
-          type: Array,
-          statePath(state) {
-            if (this.id) {
-              return _.filter(state.artifacts, (a) => {
-                return a.data.views.includes(this.id);
-              })
-            }
-          }
+    ViewMixin = Parent => class ViewMixin extends ReduxMixin(Parent) {
+        constructor() {
+            super();
+            this.http = Injector.requestProvider('http');
         }
-      }
-    };
 
-    fetchNextData(viewId, limit, maxage) {
-      this.http.fetchReactivity('GET', `/load/artifacts/${viewId}/limit/${limit}/maxage/${maxage}`)
-          .then((data) => {
+        static get properties() {
+            return {
+                id: {
+                    type: String
+                },
+                artifacts: {
+                    type: Array,
+                    statePath(state) {
+                        if (this.id) {
+                            return _.filter(state.artifacts, (a) => {
+                                return a.data.views.includes(this.id);
+                            })
+                        }
+                    }
+                }
+            }
+        };
+
+        fetchNextData(viewId, limit, maxage) {
+            this.http.fetchReactivity('GET', `/load/artifacts/${viewId}/limit/${limit}/maxage/${maxage}`)
+                .then((data) => {
+                    this.dispatch({
+                        type: 'FETCH_ARTIFACTS_SUCCESS',
+                        viewId,
+                        artifacts: data
+                    })
+                });
+
             this.dispatch({
-              type: 'FETCH_ARTIFACTS_SUCCESS',
-              viewId,
-              artifacts: data
+                type: 'FETCH_ARTIFACTS'
             })
-          });
-
-      this.dispatch({
-        type: 'FETCH_ARTIFACTS'
-      })
-    }
-  };
+        }
+    };
 </script>

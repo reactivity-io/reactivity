@@ -1,5 +1,5 @@
 "use strict";
-(function () {
+(function() {
     const deferred = Q.defer();
     let retval = null;
     const API_DOMAINS = () => {

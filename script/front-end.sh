@@ -5,7 +5,7 @@ git clone https://github.com/creationix/nvm.git ~/.nvm
 cd ~/.nvm
 git checkout `git describe --abbrev=0 --tags`
 source ~/.nvm/nvm.sh
-nvm install $NODEJS_VERSION
+nvm install
 cd $TRAVIS_BUILD_DIR/front
 npm install
 

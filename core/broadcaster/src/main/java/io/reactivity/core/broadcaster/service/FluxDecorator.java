@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-import rsc.publisher.PublisherJust;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -85,10 +85,10 @@ public class FluxDecorator {
      * @return the decorated {@code Flux}
      */
     Flux<Event<ReactivityEntity>> decorate(final Flux<Event<ReactivityEntity>> flux, final String log) {
-        return flux.timeout(TIMEOUT, PublisherJust.fromCallable(Error::timeoutEvent))
+        return flux.timeout(TIMEOUT, Mono.fromSupplier(Error::timeoutEvent)
                 .onErrorResume(err -> {
                     logger.error("Intercepted Flux error", err);
-                    return PublisherJust.fromCallable(Error::exceptionEvent);
-                }).log(log);
+                    return Mono.fromSupplier(Error::exceptionEvent);
+                }).log(log));
     }
 }

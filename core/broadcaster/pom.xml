@@ -17,14 +17,7 @@
     </parent>
 
     <properties>
-        <spring-data.version>2.0.0.DATACMNS-836-SNAPSHOT</spring-data.version>
-        <couchbase-client.version>2.3.4</couchbase-client.version>
-        <rxjava.version>1.1.9</rxjava.version>
-        <rxjava-reactive-streams.version>1.1.1</rxjava-reactive-streams.version>
-        <spring-boot-dependencies.version>2.0.0.M1</spring-boot-dependencies.version>
-        <projectreactor.version>Aluminium-SR1</projectreactor.version>
-        <spring-web-reactive.version>0.1.0.BUILD-SNAPSHOT</spring-web-reactive.version>
-        <reactive-streams-common.version>0.6.0.BUILD-SNAPSHOT</reactive-streams-common.version>
+        <spring-boot-dependencies.version>2.0.0.M7</spring-boot-dependencies.version>
         <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
     </properties>
 
@@ -38,13 +31,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>io.projectreactor</groupId>
-                <artifactId>reactor-bom</artifactId>
-                <version>Aluminium-SR1</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -53,40 +39,17 @@
         <!-- Spring Data with couchbase (including RxJava for async driver) -->
         <dependency>
             <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-            <version>${spring-data.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.couchbase.client</groupId>
-            <artifactId>java-client</artifactId>
-            <version>${couchbase-client.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.reactivex</groupId>
-            <artifactId>rxjava</artifactId>
-            <version>${rxjava.version}</version>
+            <artifactId>spring-data-couchbase</artifactId>
         </dependency>
         <dependency>
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava-reactive-streams</artifactId>
-            <version>${rxjava-reactive-streams.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactive-streams-commons</artifactId>
-            <version>${reactive-streams-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.reactivity.core</groupId>
             <artifactId>java-lib</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <!-- Spring with reactive support -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
         </dependency>
 
         <dependency>
@@ -127,7 +90,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session</artifactId>
+            <artifactId>spring-session-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -182,18 +145,8 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>io.projectreactor.ipc</groupId>
-                    <artifactId>reactor-netty</artifactId>
-                </dependency>
-                <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-webflux</artifactId>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-starter-tomcat</artifactId>
-                        </exclusion>
-                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
@@ -202,22 +155,23 @@
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-webflux</artifactId>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-reactor-netty</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
             </dependencies>
         </profile>
     </profiles>
 
     <repositories>
-        <repository>
-            <!-- RxNetty -->
-            <id>jfrog-snapshots</id>
-            <name>JFrog Snapshots</name>
-            <url>https://oss.jfrog.org/libs-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>spring-snapshots</id>
             <name>Spring Snapshots</name>

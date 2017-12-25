@@ -32,8 +32,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.FileCopyUtils;
-import rx.Observable;
-import rx.RxReactiveStreams;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,16 +92,16 @@ public class MockCouchbaseReactivityRepository extends CouchbaseReactvityReposit
      */
     @Override
     public <T> Publisher<T> findViewsFromOrganization(final String organizationId, final Function<ReactivityEntity, T> mapper) {
-        return RxReactiveStreams.toPublisher(
-                Observable.fromCallable(() -> new ArtifactView(
-                        version,
-                        nextMockedId(),
-                        nexMockTimestamp(),
-                        organizationId,
-                        "Last artifacts created in your organization",
-                        new Period(null, null, 100, null),
-                        ViewType.LIST.name()))
-                        .map(mapper::apply));
+        return Mono.fromSupplier(
+            () -> new ArtifactView(
+                version,
+                nextMockedId(),
+                nexMockTimestamp(),
+                organizationId,
+                "Last artifacts created in your organization",
+                new Period(null, null, 100, null),
+                ViewType.LIST.name())
+        ).map(mapper::apply);
     }
 
     /**
@@ -110,13 +109,15 @@ public class MockCouchbaseReactivityRepository extends CouchbaseReactvityReposit
      */
     @Override
     public <T> Publisher<T> findOrganizationsWithMember(final String memberId, final Function<ReactivityEntity, T> mapper) {
-        return RxReactiveStreams.toPublisher(Observable.fromCallable(() -> new Organization(
+        return Mono.fromSupplier(() ->
+            new Organization(
                 version,
                 "Organization/1",
                 nexMockTimestamp(),
                 "Reactivity",
                 loadMockedImage("react-3.png"),
-                Collections.singletonList(new Member("User/1", "ADMIN")))).map(mapper::apply));
+                Collections.singletonList(new Member("User/1", "ADMIN")))
+        ).map(mapper::apply);
     }
 
     private String nextMockedId() {

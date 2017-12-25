@@ -22,10 +22,12 @@ import io.reactivity.core.broadcaster.session.SessionFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.session.ExpiringSession;
+import org.springframework.session.MapSession;
 import org.springframework.session.MapSessionRepository;
 import org.springframework.session.SessionRepository;
 import org.springframework.web.server.WebFilter;
+
+import java.util.HashMap;
 
 /**
  * <p>
@@ -71,7 +73,7 @@ public class SessionConfig {
      * @return the spring session repository
      */
     @Bean
-    SessionRepository<ExpiringSession> sessionRepository() {
-        return new MapSessionRepository();
+    SessionRepository<MapSession> sessionRepository() {
+        return new MapSessionRepository(new HashMap<>());
     }
 }

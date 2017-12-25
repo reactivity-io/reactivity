@@ -30,7 +30,6 @@ import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-import rsc.publisher.PublisherJust;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -198,7 +197,7 @@ public class EventService {
                         final ArtifactView cast = ArtifactView.class.cast(v);
                         return repository.findArtifactFromView(cast, EventType.READ_ARTIFACT::newEvent);
                     } else if (v instanceof Error) {
-                        return PublisherJust.just(EventType.ERROR.newEvent(v));
+                        return Flux.just(EventType.ERROR.newEvent(v));
                     }
 
                     // Handle artifact view or error only

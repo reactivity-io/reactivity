@@ -21,7 +21,7 @@ package io.reactivity.core.broadcaster.security;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.session.ExpiringSession;
+import org.springframework.session.Session;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -62,7 +62,7 @@ public class AuthenticationFilter implements WebFilter {
      */
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
-        final Optional<ExpiringSession> optional = exchange.getAttribute(ExpiringSession.class.getName());
+        final Optional<Session> optional = Optional.ofNullable(exchange.getAttribute(Session.class.getName()));
 
         optional.ifPresent(session -> {
             UserDetails userDetails = session.getAttribute(UserDetails.class.getName());

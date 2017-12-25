@@ -21,15 +21,12 @@ package io.reactivity.core.broadcaster.session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpCookie;
-import org.springframework.session.ExpiringSession;
-import org.springframework.session.MapSession;
+import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-
-import java.util.UUID;
 
 /**
  * <p>
@@ -39,12 +36,12 @@ import java.util.UUID;
  * @author Guillaume DROUET
  * @since 0.1.0
  */
-public class SessionFilter implements WebFilter {
+public class SessionFilter<T extends Session> implements WebFilter {
 
     /**
      * Session repository.
      */
-    private final SessionRepository<ExpiringSession> sessionRepository;
+    private final SessionRepository<T> sessionRepository;
 
     /**
      * The logger.
@@ -58,7 +55,7 @@ public class SessionFilter implements WebFilter {
      *
      * @param sessionRepository the session repository
      */
-    public SessionFilter(final SessionRepository<ExpiringSession> sessionRepository) {
+    public SessionFilter(final SessionRepository<T> sessionRepository) {
         this.sessionRepository = sessionRepository;
     }
 
@@ -68,31 +65,27 @@ public class SessionFilter implements WebFilter {
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
         final HttpCookie cookie = exchange.getRequest().getCookies().getFirst("SESSION");
-        final String cookieValue;
 
         if (cookie == null) {
-            final String sessionId = UUID.randomUUID().toString();
-            exchange.getResponse().getHeaders().set("Set-Cookie", "SESSION=" + sessionId);
-            cookieValue = sessionId;
+            setNewSessionCookie(exchange);
         } else {
-            cookieValue = cookie.getValue();
-        }
+            T session = sessionRepository.findById(cookie.getValue());
 
-        ExpiringSession session = sessionRepository.getSession(cookieValue);
-
-        if (session == null) {
-            session = new MapSession(cookieValue);
-            sessionRepository.save(session);
-        } else {
-            if (session.isExpired()) {
-                logger.info("Session {} has expired, auto-refreshing...", session.getId());
+            if (session == null) {
+                logger.info("Session does not exist or has expired.");
+                session = setNewSessionCookie(exchange);
             }
 
-            session.setLastAccessedTime(System.currentTimeMillis());
+            exchange.getAttributes().put(Session.class.getName(), session);
         }
 
-        exchange.getAttributes().put(ExpiringSession.class.getName(), session);
-
         return chain.filter(exchange);
+    }
+
+    private T setNewSessionCookie(final ServerWebExchange exchange) {
+        final T session = sessionRepository.createSession();
+        sessionRepository.save(session);
+        exchange.getResponse().getHeaders().set("Set-Cookie", "SESSION=" + session.getId());
+        return session;
     }
 }

@@ -80,7 +80,7 @@
 
         <dependency>
             <groupId>org.springframework.restdocs</groupId>
-            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <artifactId>spring-restdocs-webtestclient</artifactId>
             <scope>test</scope>
         </dependency>
 

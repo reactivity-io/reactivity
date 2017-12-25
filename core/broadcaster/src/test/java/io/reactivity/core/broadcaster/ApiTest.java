@@ -18,12 +18,11 @@
 
 package io.reactivity.core.broadcaster;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
 
 import io.reactivity.core.broadcaster.web.EventController;
 import io.reactivity.core.lib.ReactivityEntity;
@@ -36,20 +35,20 @@ import io.reactivity.core.lib.event.EventType;
 import io.reactivity.core.lib.event.Member;
 import io.reactivity.core.lib.event.Organization;
 import io.reactivity.core.lib.event.Period;
-import org.junit.Ignore;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
@@ -63,14 +62,19 @@ import java.util.UUID;
  * @since 0.1.0
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = EventController.class)
+//@WebMvcTest(controllers = EventController.class)
 @AutoConfigureRestDocs(
-        outputDir = "target/generated-snippets",
-        uriHost = "your-reactivity-server",
-        uriPort = 80
+    outputDir = "target/generated-snippets",
+    uriHost = "your-reactivity-server",
+    uriPort = 80
 )
-@Ignore("Mock support for webflux tests not ready yet")
 public class ApiTest {
+
+    /**
+     * Will be used as response filter to generate documentation.
+     */
+    @Rule
+    public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
 
     /**
      * Mocked {@link EventController}.
@@ -79,10 +83,17 @@ public class ApiTest {
     private EventController controller;
 
     /**
-     * The mock MVC.
+     * The webflux client.
      */
-    @Autowired
-    private MockMvc mockMvc;
+    private WebTestClient client;
+
+    @Before
+    public void setUp() {
+        client = WebTestClient.bindToController(controller)
+            .configureClient()
+            .filter(documentationConfiguration(restDocumentation))
+            .build();
+    }
 
     /**
      * Tests artifact with a max age.
@@ -91,14 +102,14 @@ public class ApiTest {
      */
     @Test
     public void loadArtifactsLteMaxAgeTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newArtifactEvent()))
-                .when(controller).loadArtifactsLteMaxAge(
-                        ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
+        Mockito.doAnswer(invocation -> Flux.just(newArtifactEvent()))
+            .when(controller).loadArtifactsLteMaxAge(
+            ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
 
-        mockMvc.perform(get("/load/artifacts/myView/limit/1/maxage/1"))
-                .andExpect(status().isOk())
-                .andDo(document("load-artifacts-lte-max-age-example",
-                        responseFields(eventFieldDescriptors(artifactEventFieldDescriptors()))));
+        client.get().uri("/load/artifacts/myView/limit/1/maxage/1").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("load-artifacts-lte-max-age-example",
+                responseFields(eventFieldDescriptors(artifactEventFieldDescriptors()))));
     }
 
     /**
@@ -108,14 +119,14 @@ public class ApiTest {
      */
     @Test
     public void loadArtifactsLteMaxAgeErrorTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newErrorEvent()))
-                .when(controller).loadArtifactsLteMaxAge(
-                        ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
+        Mockito.doAnswer(invocation -> Flux.just(newErrorEvent()))
+            .when(controller).loadArtifactsLteMaxAge(
+            ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
 
-        mockMvc.perform(get("/load/artifacts/myView/limit/1/maxage/1"))
-                .andExpect(status().isOk())
-                .andDo(document("load-artifacts-lte-max-age-error-example",
-                        responseFields(errorEventFieldDescriptors())));
+        client.get().uri("/load/artifacts/myView/limit/1/maxage/1").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("load-artifacts-lte-max-age-error-example",
+                responseFields(errorEventFieldDescriptors())));
     }
 
     /**
@@ -125,14 +136,14 @@ public class ApiTest {
      */
     @Test
     public void loadArtifactsGteMinAgeTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newArtifactEvent()))
-                .when(controller).loadArtifactsGteMinAge(
-                        ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
+        Mockito.doAnswer(invocation -> Flux.just(newArtifactEvent()))
+            .when(controller).loadArtifactsGteMinAge(
+            ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
 
-        mockMvc.perform(get("/load/artifacts/myView/limit/1/minage/1"))
-                .andExpect(status().isOk())
-                .andDo(document("load-artifacts-gte-min-age-example",
-                        responseFields(eventFieldDescriptors(artifactEventFieldDescriptors()))));
+        client.get().uri("/load/artifacts/myView/limit/1/minage/1").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("load-artifacts-gte-min-age-example",
+                responseFields(eventFieldDescriptors(artifactEventFieldDescriptors()))));
     }
 
     /**
@@ -142,14 +153,14 @@ public class ApiTest {
      */
     @Test
     public void loadArtifactsGteMinAgeErrorTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newErrorEvent()))
-                .when(controller).loadArtifactsGteMinAge(
-                        ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
+        Mockito.doAnswer(invocation -> Flux.just(newErrorEvent()))
+            .when(controller).loadArtifactsGteMinAge(
+            ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyLong());
 
-        mockMvc.perform(get("/load/artifacts/myView/limit/1/minage/1"))
-                .andExpect(status().isOk())
-                .andDo(document("load-artifacts-gte-min-age-error-example",
-                        responseFields(eventFieldDescriptors(errorEventFieldDescriptors()))));
+        client.get().uri("/load/artifacts/myView/limit/1/minage/1").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("load-artifacts-gte-min-age-error-example",
+                responseFields(eventFieldDescriptors(errorEventFieldDescriptors()))));
     }
 
     /**
@@ -159,18 +170,18 @@ public class ApiTest {
      */
     @Test
     public void loadOrganizationsTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newOrganizationEvent()))
-                .when(controller).loadOrganizations();
+        Mockito.doAnswer(invocation -> Flux.just(newOrganizationEvent()))
+            .when(controller).loadOrganizations();
 
-        mockMvc.perform(get("/load/organizations"))
-                .andExpect(status().isOk())
-                .andDo(document("load-organizations-example",
-                        responseFields(eventFieldDescriptors(
-                                fieldWithPath("[].data.name").description("The organization name."),
-                                fieldWithPath("[].data.picture").description("The base64 representation of the organization avatar."),
-                                fieldWithPath("[].data.members").description("The organization's members."),
-                                fieldWithPath("[].data.members[].id").description("The member ID."),
-                                fieldWithPath("[].data.members[].role").description("The member role.")))));
+        client.get().uri("/load/organizations").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("load-organizations-example",
+                responseFields(eventFieldDescriptors(
+                    fieldWithPath("[].data.name").description("The organization name."),
+                    fieldWithPath("[].data.picture").description("The base64 representation of the organization avatar."),
+                    fieldWithPath("[].data.members").description("The organization's members."),
+                    fieldWithPath("[].data.members[].id").description("The member ID."),
+                    fieldWithPath("[].data.members[].role").description("The member role.")))));
     }
 
     /**
@@ -180,13 +191,13 @@ public class ApiTest {
      */
     @Test
     public void loadOrganizationErrorTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newErrorEvent()))
-                .when(controller).loadOrganizations();
+        Mockito.doAnswer(invocation -> Flux.just(newErrorEvent()))
+            .when(controller).loadOrganizations();
 
-        mockMvc.perform(get("/load/organizations"))
-                .andExpect(status().isOk())
-                .andDo(document("load-organizations-error-example",
-                        responseFields(errorEventFieldDescriptors())));
+        client.get().uri("/load/organizations").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("load-organizations-error-example",
+                responseFields(errorEventFieldDescriptors())));
     }
 
     /**
@@ -196,22 +207,21 @@ public class ApiTest {
      */
     @Test
     public void subscribeTest() throws Exception {
-        Mockito.doAnswer(invocation -> Arrays.asList(newViewEvent(), newArtifactEvent()))
-                .when(controller).subscribe(ArgumentMatchers.anyString());
+        Mockito.doAnswer(invocation -> Flux.just(newViewEvent()))
+            .when(controller).subscribe(ArgumentMatchers.anyString());
 
-        mockMvc.perform(get("/subscribe/1"))
-                .andExpect(status().isOk())
-                .andDo(document("subscribe-example",
-                        responseFields(merge(eventFieldDescriptors(
-                                fieldWithPath("[].data.name").description("The view name."),
-                                fieldWithPath("[].data.organization").description("The organization ID."),
-                                fieldWithPath("[].data.period").description("The period defined for that view."),
-                                fieldWithPath("[].data.period.from").description("From when the period starts."),
-                                fieldWithPath("[].data.period.to").description("When the period ends."),
-                                fieldWithPath("[].data.period.limit").description("Limit the number of results (if 'from' or 'to' is undefined)."),
-                                fieldWithPath("[].data.period.category").description("The optional category containing a date to test with the period (updated by default)."),
-                                fieldWithPath("[].data.type").description("The type of view.")),
-                                artifactEventFieldDescriptors()))));
+        client.get().uri("/subscribe/1").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("subscribe-example",
+                responseFields(eventFieldDescriptors(
+                    fieldWithPath("[].data.name").description("The view name."),
+                    fieldWithPath("[].data.organization").description("The organization ID."),
+                    fieldWithPath("[].data.period").description("The period defined for that view."),
+                    fieldWithPath("[].data.period.from").description("From when the period starts."),
+                    fieldWithPath("[].data.period.to").description("When the period ends."),
+                    fieldWithPath("[].data.period.limit").description("Limit the number of results (if 'from' or 'to' is undefined)."),
+                    fieldWithPath("[].data.period.category").description("The optional category containing a date to test with the period (updated by default)."),
+                    fieldWithPath("[].data.type").description("The type of view.")))));
     }
 
     /**
@@ -221,13 +231,13 @@ public class ApiTest {
      */
     @Test
     public void subscribeErrorTest() throws Exception {
-        Mockito.doAnswer(invocation -> Collections.singletonList(newErrorEvent()))
-                .when(controller).subscribe(ArgumentMatchers.anyString());
+        Mockito.doAnswer(invocation -> Flux.just(newErrorEvent()))
+            .when(controller).subscribe(ArgumentMatchers.anyString());
 
-        mockMvc.perform(get("/subscribe/1"))
-                .andExpect(status().isOk())
-                .andDo(document("subscribe-error-example",
-                        responseFields(errorEventFieldDescriptors())));
+        client.get().uri("/subscribe/1").exchange()
+            .expectStatus().isOk().expectBody()
+            .consumeWith(document("subscribe-error-example",
+                responseFields(errorEventFieldDescriptors())));
     }
 
     /**
@@ -239,12 +249,12 @@ public class ApiTest {
      */
     private Event<ReactivityEntity> newOrganizationEvent() {
         return EventType.READ_ORGANIZATION.newEvent(
-                new Organization(
-                        new Version("1.0.0"), UUID.randomUUID().toString(),
-                        1L,
-                        "my-org",
-                        "",
-                        Collections.singletonList(new Member(UUID.randomUUID().toString(), "ADMIN"))));
+            new Organization(
+                new Version("1.0.0"), UUID.randomUUID().toString(),
+                1L,
+                "my-org",
+                "",
+                Collections.singletonList(new Member(UUID.randomUUID().toString(), "ADMIN"))));
     }
 
     /**
@@ -256,13 +266,13 @@ public class ApiTest {
      */
     private Event<ReactivityEntity> newViewEvent() {
         return EventType.READ_VIEW.newEvent(
-                new ArtifactView(
-                        new Version("1.0.0"), UUID.randomUUID().toString(),
-                        1L,
-                        "my-org",
-                        "my-view",
-                        new Period(0L, 1L, 10, "dueDate"),
-                        "LIST"));
+            new ArtifactView(
+                new Version("1.0.0"), UUID.randomUUID().toString(),
+                1L,
+                "my-org",
+                "my-view",
+                new Period(0L, 1L, 10, "dueDate"),
+                "LIST"));
     }
 
     /**
@@ -274,11 +284,11 @@ public class ApiTest {
      */
     private Event<ReactivityEntity> newArtifactEvent() {
         return EventType.READ_ARTIFACT.newEvent(
-                new Artifact(
-                        new Version("1.0.0"), UUID.randomUUID().toString(),
-                        1L,
-                        Collections.singletonList("myView"),
-                        new HashMap<>()));
+            new Artifact(
+                new Version("1.0.0"), UUID.randomUUID().toString(),
+                1L,
+                Collections.singletonList("myView"),
+                new HashMap<>()));
     }
 
     /**
@@ -312,13 +322,13 @@ public class ApiTest {
      * @param additionalFields the data fields
      * @return the data field with the wrapping event fields
      */
-    private FieldDescriptor[] eventFieldDescriptors(final FieldDescriptor ... additionalFields) {
-        final FieldDescriptor[] eventFields = new FieldDescriptor[] {
-                fieldWithPath("[].version").description("The application version corresponding to the wrapped entity."),
-                fieldWithPath("[].snapshot").description("If the application that generated this entity is a snapshot."),
-                fieldWithPath("[].id").description("The entity ID."),
-                fieldWithPath("[].event").description("The type of event."),
-                fieldWithPath("[].updated").description("When the entity was updated."),
+    private FieldDescriptor[] eventFieldDescriptors(final FieldDescriptor... additionalFields) {
+        final FieldDescriptor[] eventFields = new FieldDescriptor[]{
+            fieldWithPath("[].version").description("The application version corresponding to the wrapped entity."),
+            fieldWithPath("[].snapshot").description("If the application that generated this entity is a snapshot."),
+            fieldWithPath("[].id").description("The entity ID."),
+            fieldWithPath("[].event").description("The type of event."),
+            fieldWithPath("[].updated").description("When the entity was updated."),
         };
 
         return merge(eventFields, additionalFields);
@@ -333,8 +343,8 @@ public class ApiTest {
      */
     private FieldDescriptor[] artifactEventFieldDescriptors() {
         return eventFieldDescriptors(
-                fieldWithPath("[].data.views").description("The ID of views that are able to display the artifact."),
-                fieldWithPath("[].data.categories").description("The categories (a simple key/value pair) defined in the artifact."));
+            fieldWithPath("[].data.views").description("The ID of views that are able to display the artifact."),
+            fieldWithPath("[].data.categories").description("The categories (a simple key/value pair) defined in the artifact."));
     }
 
     /**

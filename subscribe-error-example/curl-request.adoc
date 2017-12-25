@@ -1,4 +1,4 @@
 [source,bash]
 ----
-$ curl 'http://your-reactivity-server/subscribe/1' -i
+$ curl 'http://localhost:8080/subscribe/1' -i
 ----

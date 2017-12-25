@@ -1,4 +1,4 @@
 [source,options="nowrap"]
 ----
-[{"version":"1.0.0","snapshot":false,"id":"450e372b-4e6d-40ad-b295-ffe8bbbbd3db","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
+[{"version":"1.0.0","snapshot":false,"id":"54bd0a21-7aaa-4d5e-a905-029185667c02","event":"READ_ARTIFACT","updated":1,"data":{"views":["myView"],"categories":{}}}]
 ----

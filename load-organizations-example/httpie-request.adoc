@@ -1,4 +1,4 @@
 [source,bash]
 ----
-$ http GET 'http://your-reactivity-server/load/organizations'
+$ http GET 'http://localhost:8080/load/organizations'
 ----

@@ -1,6 +1,6 @@
 [source,http,options="nowrap"]
 ----
 GET /load/artifacts/myView/limit/1/minage/1 HTTP/1.1
-Host: your-reactivity-server
+Host: localhost:8080
 
 ----

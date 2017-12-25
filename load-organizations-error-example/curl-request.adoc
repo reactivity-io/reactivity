@@ -1,4 +1,4 @@
 [source,bash]
 ----
-$ curl 'http://your-reactivity-server/load/organizations' -i
+$ curl 'http://localhost:8080/load/organizations' -i
 ----

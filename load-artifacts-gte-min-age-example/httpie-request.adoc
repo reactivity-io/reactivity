@@ -1,4 +1,4 @@
 [source,bash]
 ----
-$ http GET 'http://your-reactivity-server/load/artifacts/myView/limit/1/minage/1'
+$ http GET 'http://localhost:8080/load/artifacts/myView/limit/1/minage/1'
 ----
